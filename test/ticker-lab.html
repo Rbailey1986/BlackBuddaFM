@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticker Bar Lab — Black Buddha FM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Permanent+Marker&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="../critical.css?v=1.8">
+  <link rel="stylesheet" href="../styles.css?v=2.9">
+
+  <style>
+    /* ═══ Lab-only scaffolding — none of this ships to the live site ═══ */
+    .lab-wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 90px 20px 100px;
+      font-family: var(--font-text, 'Archivo', sans-serif);
+      color: var(--silver, #EEF0F4);
+    }
+
+    .lab-heading {
+      font-family: var(--font-display, 'Archivo Black', sans-serif);
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .lab-sub {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      color: var(--muted, #8C92A0);
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+    }
+
+    .lab-section-label {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--theme-primary);
+      margin: 36px 0 10px;
+    }
+
+    .lab-section-label:first-of-type {
+      margin-top: 0;
+    }
+
+    .lab-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lab-controls-divider {
+      padding-bottom: 28px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid var(--line, #2B2E34);
+    }
+
+    .lab-btn {
+      background: transparent;
+      border: 1px solid var(--line, #2B2E34);
+      color: var(--muted, #8C92A0);
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 7px 12px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .lab-btn:hover,
+    .lab-btn.active {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+
+    .idea-card {
+      border-left: 3px solid var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.05);
+      padding: 16px 20px;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 16px;
+    }
+
+    .idea-num {
+      display: inline-block;
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .idea-title {
+      font-family: var(--font-display, 'Archivo Black', sans-serif);
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: var(--silver, #EEF0F4);
+    }
+
+    .idea-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted, #8C92A0);
+    }
+
+    .idea-status {
+      display: inline-block;
+      font-family: var(--font-mono, monospace);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--transmit, #9EEB50);
+      border: 1px solid var(--transmit, #9EEB50);
+      border-radius: 2px;
+      padding: 2px 6px;
+      margin-left: 8px;
+    }
+
+    /* ═══ New ticker chrome (idea 3/4/6) — live in the real .ticker-bar ═══ */
+    .ticker-freq {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--theme-primary);
+      padding: 0 12px;
+      border-right: 1px solid rgba(var(--theme-primary-rgb), 0.25);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .ticker-freq.glitching {
+      color: #fff;
+      text-shadow: 0 0 6px var(--theme-primary);
+    }
+
+    .ticker-progress {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .ticker-progress-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ticker-progress-dot.visited {
+      background: var(--theme-primary);
+      box-shadow: 0 0 4px var(--theme-primary);
+    }
+
+    .ticker-signal {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--transmit, #9EEB50);
+      padding: 0 10px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    .ticker-signal.weak {
+      color: var(--alert, #FF5160);
+    }
+
+    /* ═══ ticker-inner redesign variants ═══ */
+    .ti-shortcut {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: 28px;
+      cursor: pointer;
+      color: var(--theme-primary);
+      opacity: 0.55;
+      transition: opacity 0.2s ease;
+    }
+
+    .ti-shortcut:hover {
+      opacity: 1;
+    }
+
+    .ti-shortcut .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .ti-now-spinning-label {
+      color: var(--transmit, #9EEB50);
+      font-weight: 800;
+      margin-right: 6px;
+    }
+
+    .ti-fade-rotator {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .ti-fade-line {
+      position: absolute;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      white-space: nowrap;
+    }
+
+    .ti-fade-line.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body class="theme-ep01">
+  <div class="crt"></div>
+
+  <!-- TICKER — this is the live sandbox target, structurally identical to index.html -->
+  <div class="ticker-bar">
+    <div class="logo-block">
+      <span class="logo-name">BLACK BUDDHA FM</span>
+      <span class="logo-sub" id="logo-sub">PIRATE BROADCASTING 24/7</span>
+    </div>
+    <div class="on-air-lamp">ON AIR</div>
+    <div class="ticker-pill">
+      <span class="dot-gold"></span>
+      <span class="ticker-genre-text" id="ticker-genre">JUNGLE</span>
+    </div>
+
+    <!-- idea 4: frequency readout with hunt-glitch on change -->
+    <span class="ticker-freq" id="ticker-freq">88.9 MHZ</span>
+
+    <!-- idea 3: chapters-explored progress dots -->
+    <div class="ticker-progress" id="ticker-progress" title="Chapters explored this session"></div>
+
+    <!-- idea 6: signal strength tied to scroll depth -->
+    <span class="ticker-signal" id="ticker-signal">SIGNAL 100%</span>
+
+    <div class="ticker-scroll">
+      <div class="ticker-inner" id="ticker"></div>
+    </div>
+
+    <div class="ticker-utility">
+      <button class="ticker-util-btn" id="theme-toggle-btn" onclick="toggleLightMode()" aria-pressed="false" title="Switch to light mode" aria-label="Switch to light mode">☾</button>
+    </div>
+  </div>
+
+  <div class="lab-wrap">
+    <div class="lab-heading">Ticker Bar Lab</div>
+    <div class="lab-sub">Isolated sandbox — pulls the real critical.css / styles.css from the parent folder, so anything that works here will work in index.html. Nothing here is wired into the live site yet.</div>
+
+    <div class="lab-section-label">1 · CHAPTER THEME — switches accent color across the whole ticker</div>
+    <div class="lab-controls lab-controls-divider" id="theme-buttons"></div>
+
+    <div class="lab-section-label">2 · TICKER-INNER REDESIGNS — swap what scrolls inside the marquee</div>
+    <div class="lab-controls" id="variant-buttons"></div>
+    <div class="lab-sub" id="variant-desc" style="margin-bottom: 0;"></div>
+    <div id="now-spinning-controls" class="lab-controls lab-controls-divider" style="display:none; margin-top: 12px;">
+      <button class="lab-btn" id="btn-toggle-playback" onclick="togglePlaybackSim()">▶ SIMULATE PLAYBACK</button>
+    </div>
+    <div class="lab-controls-divider" style="display:block; height: 1px;"></div>
+
+    <div class="lab-section-label">5 · TIME-OF-DAY GREETING — preview each state, or use your real local time</div>
+    <div class="lab-controls lab-controls-divider" id="greeting-buttons"></div>
+
+    <div class="lab-section-label">6 · SCROLL THIS PAGE to see the signal badge react — try it now ↓</div>
+    <div class="lab-sub" style="margin-bottom: 28px;">Signal reads 100% at the top of the page and dips the further you scroll, recovering as you scroll back up.</div>
+
+    <div class="lab-section-label">All six ideas</div>
+    <div id="idea-list"></div>
+  </div>
+
+  <script>
+    const GENRES = ['JUNGLE', 'DRUM & BASS', 'UK GARAGE', 'GRIME', 'DUBSTEP', 'UK FUNKY & BASSLINE', 'UK R&B', 'UK RAP & DRILL', 'ALTERNATIVE', 'MODERN DAY'];
+    const FREQS = [88.9, 91.2, 93.5, 95.8, 98.1, 100.4, 102.7, 105.0, 107.3, 109.8];
+    // A couple of real tracks per chapter, for the "Now Spinning" variant
+    const SAMPLE_TRACKS = [
+      ['Lennie De Ice — We Are I.E. (1991)', 'A Guy Called Gerald — 28 Gun Bad Boy (1992)'],
+      ['Alex Reece — Pulp Fiction (1995)', 'Bad Company UK — The Nine (1998)'],
+      ['Craig David & Artful Dodger — Re-Rewind (1999)', 'Shanks & Bigfoot — Sweet Like Chocolate (1999)'],
+      ['Wiley — Wot Do U Call It? (2004)', 'Dizzee Rascal — I Luv U (2003)'],
+      ['Skream — Midnight Request Line (2005)', 'Digital Mystikz — AntiWar Dub (2006)'],
+      ['TRC — Oo Aa Ee (2005)', 'T2 ft. Jodie — Heartbroken (2007)'],
+      ['Crazy Cousinz feat. Kyla — Do You Mind (2009)', "Donae'o — Devil in a Blue Dress (2009)"],
+      ["Giggs — Talkin' the Hardest (2007)", 'Central Cee — DoJa (2022)'],
+      ['Sade — Smooth Operator (1984)', 'Craig David — 7 Days (2000)'],
+      ['J Hus — Did You See (2017)', 'Wizkid ft. Tems — Essence (2020)']
+    ];
+
+    let currentGenreIndex = 0;
+    const visitedGenres = new Set([0]);
+
+    // ── idea 4: frequency-hunt glitch ─────────────────────────────────
+    function glitchToFrequency(targetFreq) {
+      const el = document.getElementById('ticker-freq');
+      el.classList.add('glitching');
+      let ticks = 0;
+      const maxTicks = 8;
+      const interval = setInterval(() => {
+        ticks++;
+        if (ticks >= maxTicks) {
+          clearInterval(interval);
+          el.textContent = `${targetFreq.toFixed(1)} MHZ`;
+          el.classList.remove('glitching');
+        } else {
+          const fake = (Math.random() * 21.9 + 88.9).toFixed(1);
+          el.textContent = `${fake} MHZ`;
+        }
+      }, 40);
+    }
+
+    // ── idea 3: progress dots ─────────────────────────────────────────
+    function renderProgressDots() {
+      const row = document.getElementById('ticker-progress');
+      row.innerHTML = '';
+      GENRES.forEach((genre, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'ticker-progress-dot' + (visitedGenres.has(i) ? ' visited' : '');
+        dot.title = genre;
+        row.appendChild(dot);
+      });
+    }
+
+    // ── Chapter switching (theme + freq glitch + progress + ticker-inner refresh) ──
+    function switchToGenre(i) {
+      currentGenreIndex = i;
+      visitedGenres.add(i);
+      const epNum = String(i + 1).padStart(2, '0');
+      document.body.className = document.body.className.replace(/theme-ep\d\d/, '') + ` theme-ep${epNum}`;
+      document.getElementById('ticker-genre').textContent = GENRES[i];
+      glitchToFrequency(FREQS[i]);
+      renderProgressDots();
+      document.querySelectorAll('.lab-theme-btn').forEach((b, bi) => b.classList.toggle('active', bi === i));
+      renderTickerVariant();
+    }
+
+    const themeBtnRow = document.getElementById('theme-buttons');
+    GENRES.forEach((genre, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'lab-btn lab-theme-btn' + (i === 0 ? ' active' : '');
+      btn.textContent = genre;
+      btn.onclick = () => switchToGenre(i);
+      themeBtnRow.appendChild(btn);
+    });
+
+    function toggleLightMode() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const btn = document.getElementById('theme-toggle-btn');
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        btn.textContent = '☾';
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        btn.textContent = '☀';
+        btn.setAttribute('aria-pressed', 'true');
+      }
+    }
+
+    // ── idea 1 + 2 + ticker-inner redesigns ────────────────────────────
+    let currentVariant = 'marquee';
+    let playbackSimOn = false;
+    let fadeRotatorTimer = null;
+
+    const VARIANTS = {
+      marquee: {
+        label: 'MARQUEE (CURRENT)',
+        desc: 'What ships today — a single fixed line of static boilerplate text, scrolling continuously regardless of what’s happening on the page.'
+      },
+      nowspinning: {
+        label: 'NOW SPINNING',
+        desc: 'Idea 1 — the marquee shows the current chapter’s real tracklist. Toggle playback below to see it switch from the idle state.'
+      },
+      shortcuts: {
+        label: 'GENRE SHORTCUTS',
+        desc: 'Idea 2 — the marquee becomes a chain of clickable genre chips. Click any genre in the scrolling text to jump straight to that chapter.'
+      },
+      fade: {
+        label: 'FADE ROTATOR',
+        desc: 'A different redesign entirely — instead of scrolling horizontally, single lines cross-fade in place every few seconds. Calmer, easier to read, no motion-sickness risk.'
+      }
+    };
+
+    function renderTickerVariant() {
+      const el = document.getElementById('ticker');
+      clearInterval(fadeRotatorTimer);
+      fadeRotatorTimer = null;
+
+      if (currentVariant === 'marquee') {
+        el.className = 'ticker-inner';
+        el.innerHTML = `<span>★</span> LIVE ON ${FREQS[currentGenreIndex].toFixed(1)} FM (LDN) &nbsp; <span>★</span> BLACK BUDDHA FM &nbsp; <span>★</span> PIRATE RADIO &nbsp; <span>★</span> BASS CULTURE.`;
+
+      } else if (currentVariant === 'nowspinning') {
+        el.className = 'ticker-inner';
+        const [now, next] = SAMPLE_TRACKS[currentGenreIndex];
+        if (playbackSimOn) {
+          el.innerHTML = `<span class="ti-now-spinning-label">● NOW SPINNING:</span> ${now} &nbsp; <span>★</span> <span class="ti-now-spinning-label" style="color:var(--muted);">NEXT:</span> ${next}`;
+        } else {
+          el.innerHTML = `<span>★</span> TRANSMISSION IDLE — PRESS PLAY TO TUNE IN &nbsp; <span>★</span> BLACK BUDDHA FM`;
+        }
+
+      } else if (currentVariant === 'shortcuts') {
+        el.className = 'ticker-inner';
+        el.innerHTML = GENRES.map((genre, i) =>
+          `<span class="ti-shortcut" data-idx="${i}"><span class="dot"></span>${genre}</span>`
+        ).join('');
+        el.querySelectorAll('.ti-shortcut').forEach(node => {
+          node.addEventListener('click', () => switchToGenre(parseInt(node.dataset.idx, 10)));
+        });
+
+      } else if (currentVariant === 'fade') {
+        el.className = 'ticker-inner ti-fade-rotator';
+        const lines = [
+          `LIVE ON ${FREQS[currentGenreIndex].toFixed(1)} FM (LDN)`,
+          'BLACK BUDDHA FM',
+          'PIRATE RADIO',
+          'BASS CULTURE.'
+        ];
+        el.innerHTML = lines.map((line, i) => `<span class="ti-fade-line${i === 0 ? ' visible' : ''}">${line}</span>`).join('');
+        let fadeIdx = 0;
+        const nodes = el.querySelectorAll('.ti-fade-line');
+        fadeRotatorTimer = setInterval(() => {
+          nodes[fadeIdx].classList.remove('visible');
+          fadeIdx = (fadeIdx + 1) % nodes.length;
+          nodes[fadeIdx].classList.add('visible');
+        }, 2200);
+      }
+    }
+
+    const variantBtnRow = document.getElementById('variant-buttons');
+    Object.keys(VARIANTS).forEach(key => {
+      const btn = document.createElement('button');
+      btn.className = 'lab-btn lab-variant-btn' + (key === 'marquee' ? ' active' : '');
+      btn.textContent = VARIANTS[key].label;
+      btn.onclick = () => {
+        currentVariant = key;
+        document.querySelectorAll('.lab-variant-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('variant-desc').textContent = VARIANTS[key].desc;
+        document.getElementById('now-spinning-controls').style.display = (key === 'nowspinning') ? 'flex' : 'none';
+        renderTickerVariant();
+      };
+      variantBtnRow.appendChild(btn);
+    });
+    document.getElementById('variant-desc').textContent = VARIANTS.marquee.desc;
+
+    function togglePlaybackSim() {
+      playbackSimOn = !playbackSimOn;
+      document.getElementById('btn-toggle-playback').textContent = playbackSimOn ? '■ STOP PLAYBACK' : '▶ SIMULATE PLAYBACK';
+      document.getElementById('btn-toggle-playback').classList.toggle('active', playbackSimOn);
+      renderTickerVariant();
+    }
+
+    // ── idea 5: time-of-day greeting ───────────────────────────────────
+    const GREETINGS = {
+      morning: 'MORNING SIGNAL',
+      peak: 'PEAK HOURS BROADCAST',
+      late: 'LATE NIGHT TRANSMISSION',
+      standard: 'PIRATE BROADCASTING 24/7'
+    };
+
+    function greetingForHour(hour) {
+      if (hour >= 5 && hour < 12) return GREETINGS.morning;
+      if (hour >= 12 && hour < 20) return GREETINGS.peak;
+      return GREETINGS.late;
+    }
+
+    function setGreeting(text) {
+      document.getElementById('logo-sub').textContent = text;
+    }
+
+    const greetingBtnRow = document.getElementById('greeting-buttons');
+    const greetingOptions = [
+      { label: 'MORNING', value: GREETINGS.morning },
+      { label: 'PEAK HOURS', value: GREETINGS.peak },
+      { label: 'LATE NIGHT', value: GREETINGS.late },
+      { label: 'AUTO (REAL TIME)', value: null }
+    ];
+    greetingOptions.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'lab-btn';
+      btn.textContent = opt.label;
+      btn.onclick = () => {
+        document.querySelectorAll('#greeting-buttons .lab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        setGreeting(opt.value === null ? greetingForHour(new Date().getHours()) : opt.value);
+      };
+      greetingBtnRow.appendChild(btn);
+    });
+    // Default to real local time on load
+    greetingBtnRow.children[3].classList.add('active');
+    setGreeting(greetingForHour(new Date().getHours()));
+
+    // ── idea 6: signal strength tied to scroll depth ───────────────────
+    function updateSignalFromScroll() {
+      const scrollable = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const pct = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
+      const signal = Math.round(100 - pct * 45); // dips to ~55% at full scroll, never fully drops out
+      const el = document.getElementById('ticker-signal');
+      el.textContent = `SIGNAL ${signal}%`;
+      el.classList.toggle('weak', signal < 75);
+    }
+    window.addEventListener('scroll', updateSignalFromScroll, { passive: true });
+
+    // ── init ────────────────────────────────────────────────────────
+    renderProgressDots();
+    renderTickerVariant();
+    updateSignalFromScroll();
+
+    // ── documentation cards ────────────────────────────────────────────
+    const IDEAS = [
+      { title: 'Live "Now Spinning" track ticker', text: 'Swap the static marquee text for the current chapter’s real tracklist while audio is playing. Ties the ticker to real content instead of fixed boilerplate.' },
+      { title: 'Clickable genre shortcuts in the marquee', text: 'Turn the scrolling text into a chain of small clickable genre chips that jump straight to that chapter — a compact secondary nav across all 10 chapters.' },
+      { title: 'Chapters-explored progress dots', text: 'A row of 10 small ticks that light up as the visitor tunes into each chapter this session — a quiet sense of how much of the archive they’ve covered.' },
+      { title: 'Frequency-hunt glitch on chapter change', text: 'Briefly scramble the "88.9 MHZ" readout through random digits before settling on the real number when switching chapters — like a tuner hunting for signal.' },
+      { title: 'Time-of-day broadcast greeting', text: 'Rotate the "PIRATE BROADCASTING 24/7" subtitle based on local time so the 24/7 station framing feels alive rather than printed once and static.' },
+      { title: 'Signal strength tied to scroll depth', text: 'Let the "SIGNAL 100%" badge dip and recover as the visitor scrolls, rather than sitting fixed — reinforces "receiving a transmission" over "reading a page."' }
+    ];
+
+    const list = document.getElementById('idea-list');
+    IDEAS.forEach((idea, i) => {
+      const card = document.createElement('div');
+      card.className = 'idea-card';
+      card.innerHTML = `
+        <div class="idea-num">IDEA ${String(i + 1).padStart(2, '0')} <span class="idea-status">LIVE IN THIS LAB</span></div>
+        <div class="idea-title">${idea.title}</div>
+        <div class="idea-text">${idea.text}</div>
+      `;
+      list.appendChild(card);
+    });
+  </script>
+</body>
+
+</html>

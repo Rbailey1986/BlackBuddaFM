@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticker Bar Variations — Black Buddha FM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Permanent+Marker&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="../critical.css?v=1.8">
+  <link rel="stylesheet" href="../styles.css?v=2.9">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       Lab scaffolding — none of this ships to the live site.
+       Every frame below is self-contained and scoped so the 12
+       designs never collide with each other or with the real site.
+       ═══════════════════════════════════════════════════════════════ */
+    body { background: var(--ink, #040507); }
+    .crt { z-index: 0; }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 48px 20px 100px;
+      font-family: var(--font-text, 'Archivo', sans-serif);
+      color: var(--silver, #EEF0F4);
+    }
+
+    .page-heading {
+      font-family: var(--font-display, 'Archivo Black', sans-serif);
+      font-size: 24px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .page-sub {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      color: var(--muted, #8C92A0);
+      letter-spacing: 0.05em;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      max-width: 640px;
+    }
+
+    .genre-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 20px 0 32px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--line, #2B2E34);
+    }
+
+    .lab-btn {
+      background: transparent;
+      border: 1px solid var(--line, #2B2E34);
+      color: var(--muted, #8C92A0);
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 7px 12px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .lab-btn:hover, .lab-btn.active {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+
+    .section-label {
+      font-family: var(--font-display, 'Archivo Black', sans-serif);
+      font-size: 17px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin: 56px 0 4px;
+      padding-top: 40px;
+      border-top: 2px solid var(--theme-primary);
+    }
+    .section-label:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .section-sub {
+      font-family: var(--font-mono, monospace);
+      font-size: 11px;
+      color: var(--muted, #8C92A0);
+      margin-bottom: 32px;
+    }
+
+    .variant-block { margin-bottom: 44px; }
+
+    .variant-label {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .variant-num {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      letter-spacing: 0.1em;
+    }
+
+    .variant-title {
+      font-family: var(--font-display, 'Archivo Black', sans-serif);
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .variant-desc {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--muted, #8C92A0);
+      margin-bottom: 14px;
+      max-width: 620px;
+    }
+
+    .tbv-frame {
+      position: relative;
+      border: 1px solid var(--line, #2B2E34);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #000;
+      min-height: 42px;
+    }
+
+    /* generic marquee keyframes reused across several variants */
+    @keyframes tbv-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── V1: Compact / Minimal ── */
+    .v1-bar { display: flex; align-items: center; height: 32px; padding: 0 12px; gap: 10px; background: #08080a; }
+    .v1-logo { font-family: var(--font-display); font-size: 11px; font-weight: 900; color: var(--theme-primary); letter-spacing: 0.02em; flex-shrink: 0; }
+    .v1-genre { display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--silver); flex-shrink: 0; text-transform: uppercase; }
+    .v1-marquee { flex: 1; min-width: 0; overflow: hidden; }
+    .v1-marquee-inner { display: inline-block; white-space: nowrap; font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; animation: tbv-scroll 18s linear infinite; padding-left: 100%; }
+    .v1-menu { flex-shrink: 0; background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px 6px; }
+    .v1-menu:hover { color: var(--theme-primary); }
+
+    /* ── V2: Centered Command Strip ── */
+    .v2-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 44px; padding: 0 18px; background: #08080a; border-bottom: 1px solid rgba(var(--theme-primary-rgb), 0.25); }
+    .v2-logo-name { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.04em; color: var(--silver); }
+    .v2-center { justify-self: center; display: flex; align-items: baseline; gap: 8px; font-family: var(--font-mono); }
+    .v2-center .genre { font-size: 15px; font-weight: 800; color: var(--theme-primary); letter-spacing: 0.06em; text-transform: uppercase; text-shadow: 0 0 10px rgba(var(--theme-primary-rgb), 0.5); }
+    .v2-center .freq { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
+    .v2-right { justify-self: end; display: flex; gap: 6px; }
+    .v2-icon-btn { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid rgba(var(--theme-primary-rgb), 0.3); color: var(--muted); border-radius: 3px; font-size: 11px; cursor: pointer; }
+    .v2-icon-btn:hover { border-color: var(--theme-primary); color: var(--theme-primary); }
+
+    /* ── V3: Two-Row Stacked ── */
+    .v3-bar { display: flex; flex-direction: column; background: #08080a; }
+    .v3-row-top { display: flex; align-items: center; gap: 10px; height: 20px; padding: 0 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .v3-logo { font-family: var(--font-display); font-size: 9px; letter-spacing: 0.04em; color: var(--muted); flex-shrink: 0; }
+    .v3-onair { font-family: var(--font-mono); font-size: 8px; font-weight: 800; color: #ff3333; letter-spacing: 0.1em; }
+    .v3-icon { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; }
+    .v3-row-bottom { display: flex; align-items: center; gap: 12px; height: 24px; padding: 0 12px; }
+    .v3-genre { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--theme-primary); letter-spacing: 0.05em; flex-shrink: 0; text-transform: uppercase; }
+    .v3-marquee { flex: 1; min-width: 0; overflow: hidden; font-family: var(--font-mono); font-size: 9px; color: var(--muted); white-space: nowrap; letter-spacing: 0.05em; }
+
+    /* ── V4: VU-Meter Style ── */
+    .v4-bar { display: flex; align-items: center; height: 42px; padding: 0 14px; gap: 12px; background: #08080a; }
+    .v4-logo { font-family: var(--font-display); font-size: 11px; color: var(--silver); flex-shrink: 0; }
+    .v4-vu { display: flex; align-items: flex-end; gap: 2px; height: 16px; flex-shrink: 0; }
+    .v4-vu span { width: 3px; background: var(--theme-primary); box-shadow: 0 0 4px var(--theme-primary); animation: v4-bounce 0.9s ease-in-out infinite alternate; }
+    .v4-vu span:nth-child(1) { height: 40%; animation-delay: 0s; }
+    .v4-vu span:nth-child(2) { height: 90%; animation-delay: 0.12s; }
+    .v4-vu span:nth-child(3) { height: 60%; animation-delay: 0.24s; }
+    .v4-vu span:nth-child(4) { height: 100%; animation-delay: 0.08s; }
+    .v4-vu span:nth-child(5) { height: 50%; animation-delay: 0.3s; }
+    @keyframes v4-bounce { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
+    .v4-onair { font-family: var(--font-mono); font-size: 9px; font-weight: 800; color: #ff3333; letter-spacing: 0.1em; flex-shrink: 0; }
+    .v4-genre { font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--theme-primary); text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; padding-left: 12px; border-left: 1px solid rgba(var(--theme-primary-rgb), 0.25); }
+    .v4-marquee { flex: 1; min-width: 0; overflow: hidden; font-family: var(--font-mono); font-size: 9px; color: var(--muted); white-space: nowrap; }
+
+    /* ── V5: Cassette LCD Readout ── */
+    .v5-bar { display: flex; align-items: center; height: 42px; padding: 0 14px; gap: 14px; background: #050505; }
+    .v5-logo { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: #555; letter-spacing: 0.15em; flex-shrink: 0; }
+    .v5-lcd { display: flex; align-items: center; gap: 10px; background: #0a1208; border: 1px solid #1c2e18; border-radius: 3px; padding: 5px 12px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); flex-shrink: 0; }
+    .v5-lcd-freq { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: #6dff6d; text-shadow: 0 0 6px #3d9c3d; font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
+    .v5-lcd-genre { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: #4fd44f; text-shadow: 0 0 4px #2d7a2d; letter-spacing: 0.12em; text-transform: uppercase; }
+    .v5-marquee { flex: 1; min-width: 0; overflow: hidden; font-family: var(--font-mono); font-size: 9px; color: #555; white-space: nowrap; letter-spacing: 0.06em; }
+
+    /* ── V6: Borderless Glass ── */
+    .v6-bar { display: flex; align-items: center; height: 46px; padding: 0 20px; gap: 18px; background: rgba(17, 19, 22, 0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .v6-logo { font-family: var(--font-text); font-weight: 700; font-size: 13px; color: var(--silver); letter-spacing: 0.01em; flex-shrink: 0; }
+    .v6-genre { font-family: var(--font-text); font-weight: 600; font-size: 12px; color: var(--theme-primary); flex-shrink: 0; }
+    .v6-marquee { flex: 1; min-width: 0; font-family: var(--font-text); font-size: 11px; color: var(--muted); font-style: italic; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .v6-icon { flex-shrink: 0; background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; opacity: 0.8; }
+    .v6-icon:hover { opacity: 1; color: var(--theme-primary); }
+
+    /* ── C1: Live Waveform Bar ── */
+    .c1-bar { position: relative; height: 54px; background: #050505; overflow: hidden; }
+    .c1-waveform { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 4px; gap: 2px; }
+    .c1-waveform span { flex: 1; background: var(--theme-primary); opacity: 0.55; border-radius: 1px; animation: c1-pulse 1.1s ease-in-out infinite; }
+    @keyframes c1-pulse { 0%, 100% { height: 15%; } 50% { height: var(--h, 70%); } }
+    .c1-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(180deg, rgba(0,0,0,0.75), rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.75)); }
+    .c1-overlay .genre { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.9); }
+    .c1-overlay .freq { font-family: var(--font-mono); font-size: 10px; color: var(--theme-primary); letter-spacing: 0.08em; }
+
+    /* ── C2: Vertical Side Rail ── */
+    .c2-demo { display: flex; height: 220px; background: #060606; }
+    .c2-rail { width: 56px; flex-shrink: 0; background: #08080a; border-right: 2px solid var(--theme-primary); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 16px; }
+    .c2-rail-logo { font-family: var(--font-display); font-size: 11px; line-height: 1.2; text-align: center; color: var(--theme-primary); letter-spacing: 0.02em; }
+    .c2-rail-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3333; box-shadow: 0 0 6px #ff3333; }
+    .c2-rail-info { writing-mode: vertical-rl; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+    .c2-rail-info .genre { color: var(--theme-primary); }
+    .c2-content { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; padding: 20px; }
+
+    /* ── C3: Floating Pill ── */
+    .c3-frame-inner { position: relative; height: 160px; background: #060606; }
+    .c3-pill { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 8px; background: rgba(17,19,22,0.92); border: 1px solid rgba(var(--theme-primary-rgb), 0.4); border-radius: 999px; padding: 6px 8px 6px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03); }
+    .c3-pill .genre { font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: var(--theme-primary); letter-spacing: 0.06em; text-transform: uppercase; }
+    .c3-pill button { width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--theme-primary); color: #040507; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .c3-pill button.ghost { background: transparent; border: 1px solid rgba(var(--theme-primary-rgb), 0.4); color: var(--theme-primary); }
+    .c3-hint { position: absolute; top: 14px; left: 16px; font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
+
+    /* ── C4: Newsroom Chyron (bottom-anchored) ── */
+    .c4-frame-inner { position: relative; height: 120px; background: #060606; }
+    .c4-bar { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: stretch; height: 30px; }
+    .c4-flag { flex-shrink: 0; background: #cb0020; color: #fff; font-family: var(--font-display); font-size: 11px; letter-spacing: 0.05em; display: flex; align-items: center; padding: 0 14px; }
+    .c4-ticker { flex: 1; background: #000; overflow: hidden; display: flex; align-items: center; border-top: 2px solid var(--theme-primary); }
+    .c4-ticker-inner { display: inline-block; white-space: nowrap; font-family: var(--font-mono); font-weight: 700; font-size: 11px; color: #fff; letter-spacing: 0.03em; padding-left: 100%; animation: tbv-scroll 14s linear infinite; }
+    .c4-ticker-inner .hl { color: var(--theme-primary); }
+    .c4-clock { flex-shrink: 0; background: #111; color: var(--muted); font-family: var(--font-mono); font-size: 10px; display: flex; align-items: center; padding: 0 12px; letter-spacing: 0.1em; }
+
+    /* ── C5: Interactive Mini-Dial in the Bar ── */
+    .c5-bar { display: flex; align-items: center; height: 42px; padding: 0 14px; gap: 14px; background: #08080a; }
+    .c5-logo { font-family: var(--font-display); font-size: 10px; color: var(--silver); flex-shrink: 0; }
+    .c5-mini-dial { position: relative; flex: 1; max-width: 260px; height: 16px; cursor: pointer; touch-action: none; }
+    .c5-dial-track { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.12); transform: translateY(-50%); }
+    .c5-dial-tick { position: absolute; top: 50%; width: 1px; height: 8px; background: rgba(255,255,255,0.2); transform: translate(-50%, -50%); }
+    .c5-dial-needle { position: absolute; top: 50%; width: 2px; height: 16px; background: var(--theme-primary); box-shadow: 0 0 6px var(--theme-primary); transform: translate(-50%, -50%); transition: left 0.2s ease; pointer-events: none; }
+    .c5-genre { font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: var(--theme-primary); text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; min-width: 90px; }
+
+    /* ── C6: Cassette Spine Rack ── */
+    .c6-bar { display: flex; align-items: stretch; height: 46px; background: #08080a; padding: 6px 8px; gap: 4px; }
+    .c6-spine { flex: 1; border-radius: 2px; cursor: pointer; opacity: 0.45; transition: opacity 0.2s ease, transform 0.15s ease; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3px; }
+    .c6-spine span { font-family: var(--font-mono); font-size: 7px; font-weight: 800; color: #000; letter-spacing: -0.02em; writing-mode: vertical-rl; }
+    .c6-spine:hover { opacity: 0.75; }
+    .c6-spine.active { opacity: 1; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
+  </style>
+</head>
+
+<body class="theme-ep01">
+  <div class="crt"></div>
+
+  <div class="page-wrap">
+    <div class="page-heading">Ticker Bar — 12 Directions</div>
+    <div class="page-sub">Section 1 keeps the current bar's job (logo · status · genre · marquee · utility) and refines the execution. Section 2 throws out the current layout entirely and asks what else could occupy that space. Switch genres below — every frame updates together, live.</div>
+
+    <div class="genre-switcher" id="genre-switcher"></div>
+
+    <div class="section-label">Section 1 — Six Variations</div>
+    <div class="section-sub">Same anatomy as the live ticker bar, different execution of it.</div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V1</span><span class="variant-title">Compact / Minimal</span></div>
+      <div class="variant-desc">Height cut from 42px to 32px. Drops the ON AIR lamp and utility icons behind a single overflow menu. For a quieter first impression that gets out of the hero's way.</div>
+      <div class="tbv-frame">
+        <div class="v1-bar">
+          <span class="v1-logo">BBFM</span>
+          <span class="v1-genre"><span class="dot-gold"></span><span class="tbv-genre-text">JUNGLE</span></span>
+          <div class="v1-marquee"><div class="v1-marquee-inner">★ LIVE ON <span class="tbv-freq-text">88.9</span> FM (LDN) ★ PIRATE RADIO ★ BASS CULTURE ★ LIVE ON <span class="tbv-freq-text">88.9</span> FM (LDN) ★ PIRATE RADIO ★ BASS CULTURE</div></div>
+          <button class="v1-menu">⋯</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V2</span><span class="variant-title">Centered Command Strip</span></div>
+      <div class="variant-desc">Three balanced zones instead of a left-to-right cascade. The genre + frequency becomes the visual center of gravity instead of one item among many.</div>
+      <div class="tbv-frame">
+        <div class="v2-bar">
+          <span class="v2-logo-name">BLACK BUDDHA FM</span>
+          <div class="v2-center"><span class="genre tbv-genre-text">JUNGLE</span><span class="freq">— <span class="tbv-freq-text">88.9</span> MHZ</span></div>
+          <div class="v2-right"><button class="v2-icon-btn">☾</button><button class="v2-icon-btn">?</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V3</span><span class="variant-title">Two-Row Stacked</span></div>
+      <div class="variant-desc">Same 42-44px height budget, split into two thin rows instead of one cramped line — room to breathe if more telemetry (signal, progress dots) gets added later.</div>
+      <div class="tbv-frame">
+        <div class="v3-bar">
+          <div class="v3-row-top">
+            <span class="v3-logo">BLACK BUDDHA FM</span>
+            <span class="v3-onair">ON AIR</span>
+            <button class="v3-icon">☾</button>
+          </div>
+          <div class="v3-row-bottom">
+            <span class="v3-genre"><span class="dot-gold"></span><span class="tbv-genre-text">JUNGLE</span> — <span class="tbv-freq-text">88.9</span> MHZ</span>
+            <div class="v3-marquee">★ PIRATE RADIO ★ BASS CULTURE ★ PRESERVING BLACK BRITISH MUSIC CULTURE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V4</span><span class="variant-title">VU-Meter Style</span></div>
+      <div class="variant-desc">A small animated 5-bar level meter next to the ON AIR lamp, always moving. Reinforces "this is a live broadcast" purely through motion, no new copy needed.</div>
+      <div class="tbv-frame">
+        <div class="v4-bar">
+          <span class="v4-logo">BLACK BUDDHA FM</span>
+          <div class="v4-vu"><span></span><span></span><span></span><span></span><span></span></div>
+          <span class="v4-onair">ON AIR</span>
+          <span class="v4-genre tbv-genre-text">JUNGLE</span>
+          <div class="v4-marquee">★ LIVE ON <span class="tbv-freq-text">88.9</span> FM (LDN) ★ PIRATE RADIO ★ BASS CULTURE.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V5</span><span class="variant-title">Cassette LCD Readout</span></div>
+      <div class="variant-desc">Leans harder into the hardware fantasy — an amber/green LCD-style well houses the frequency and genre like a real tape deck display, instead of plain text on a flat bar.</div>
+      <div class="tbv-frame">
+        <div class="v5-bar">
+          <span class="v5-logo">B.B.F.M.</span>
+          <div class="v5-lcd"><span class="v5-lcd-freq"><span class="tbv-freq-text">88.9</span></span><span class="v5-lcd-genre tbv-genre-text">JUNGLE</span></div>
+          <div class="v5-marquee">PIRATE RADIO — BASS CULTURE — LIVE FROM LONDON</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">V6</span><span class="variant-title">Borderless Glass</span></div>
+      <div class="variant-desc">The opposite direction from V5 — a modern, quieter frosted-glass toolbar. Sentence case instead of all-caps, no hard dividers, feels like a web app rather than a broadcast console.</div>
+      <div class="tbv-frame">
+        <div class="v6-bar">
+          <span class="v6-logo">Black Buddha FM</span>
+          <span class="v6-genre tbv-genre-text">Jungle</span>
+          <div class="v6-marquee">Live pirate broadcast · preserving Black British music culture</div>
+          <button class="v6-icon">☾</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Section 2 — Six Complete Redesigns</div>
+    <div class="section-sub">Not re-skins — different answers to "what should live at the top of this page at all."</div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C1</span><span class="variant-title">Live Waveform Bar</span></div>
+      <div class="variant-desc">The whole strip becomes an animated audio visualizer with the genre name overlaid — the bar reads as "sound" first, information second. Best paired with real playback analysis once the audio itself is fixed.</div>
+      <div class="tbv-frame">
+        <div class="c1-bar">
+          <div class="c1-waveform" id="c1-waveform"></div>
+          <div class="c1-overlay"><span class="genre tbv-genre-text">JUNGLE</span><span class="freq"><span class="tbv-freq-text">88.9</span> MHZ</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C2</span><span class="variant-title">Vertical Side Rail</span></div>
+      <div class="variant-desc">Abandons the horizontal bar entirely — a slim 56px rail docks to the left edge instead, freeing the full top of the page for the hero. Station info reads top-to-bottom instead of left-to-right.</div>
+      <div class="tbv-frame">
+        <div class="c2-demo">
+          <div class="c2-rail">
+            <div class="c2-rail-logo">BB<br>FM</div>
+            <div class="c2-rail-dot"></div>
+            <div class="c2-rail-info"><span class="genre tbv-genre-text">JUNGLE</span> — <span class="tbv-freq-text">88.9</span> MHZ</div>
+          </div>
+          <div class="c2-content">Rest of the page — hero, dial, everything — starts immediately at the very top of the viewport instead of below a fixed bar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C3</span><span class="variant-title">Floating Pill</span></div>
+      <div class="variant-desc">Not full-width at all — a small rounded capsule floats in a corner, closer to a modern mini audio-player widget than a broadcast console header. Smallest possible footprint.</div>
+      <div class="tbv-frame">
+        <div class="c3-frame-inner">
+          <span class="c3-hint">rest of page scrolls normally behind this —</span>
+          <div class="c3-pill">
+            <span class="genre tbv-genre-text">JUNGLE</span>
+            <button class="ghost">⟲</button>
+            <button>▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C4</span><span class="variant-title">Newsroom Chyron</span></div>
+      <div class="variant-desc">Moves the whole ticker concept to the bottom of the viewport, cable-news style — a hard flag block instead of a soft lamp, severe condensed type. Completely different register: journalistic rather than console-like.</div>
+      <div class="tbv-frame">
+        <div class="c4-frame-inner">
+          <div class="c4-bar">
+            <span class="c4-flag">ON AIR</span>
+            <div class="c4-ticker"><div class="c4-ticker-inner">NOW BROADCASTING: <span class="hl tbv-genre-text">JUNGLE</span> — <span class="tbv-freq-text">88.9</span> MHZ &nbsp;&nbsp;•&nbsp;&nbsp; PIRATE RADIO &nbsp;&nbsp;•&nbsp;&nbsp; BASS CULTURE &nbsp;&nbsp;•&nbsp;&nbsp; NOW BROADCASTING: <span class="hl tbv-genre-text">JUNGLE</span></div></div>
+            <span class="c4-clock">LIVE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C5</span><span class="variant-title">Interactive Mini-Dial in the Bar</span></div>
+      <div class="variant-desc">Shrinks the actual tuning dial from the console deck into a permanent strip in the bar — <strong>click anywhere along the track below to really change chapters</strong>, from anywhere on the page, without scrolling back up. Merges navigation and status into one control.</div>
+      <div class="tbv-frame">
+        <div class="c5-bar">
+          <span class="c5-logo">BBFM</span>
+          <div class="c5-mini-dial" id="c5-dial">
+            <div class="c5-dial-track"></div>
+            <div class="c5-dial-needle" id="c5-needle"></div>
+          </div>
+          <span class="c5-genre tbv-genre-text">JUNGLE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant-block">
+      <div class="variant-label"><span class="variant-num">C6</span><span class="variant-title">Cassette Spine Rack</span></div>
+      <div class="variant-desc">No marquee text at all — ten small colour-coded "spines," one per genre, form a visual index across the top. <strong>Click a spine below to jump chapters.</strong> Trades information density for a pure, glanceable color index.</div>
+      <div class="tbv-frame">
+        <div class="c6-bar" id="c6-rack"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const GENRES = ['JUNGLE', 'DRUM & BASS', 'UK GARAGE', 'GRIME', 'DUBSTEP', 'UK FUNKY & BASSLINE', 'UK R&B', 'UK RAP & DRILL', 'ALTERNATIVE', 'MODERN DAY'];
+    const FREQS = [88.9, 91.2, 93.5, 95.8, 98.1, 100.4, 102.7, 105.0, 107.3, 109.8];
+    const CHAPTER_COLORS = ['#4FCE74', '#A8BE1D', '#D4AD03', '#F59900', '#FF8E5C', '#FF898E', '#FE7FC0', '#E289F0', '#B99EFF', '#93ADFF'];
+    let currentIdx = 0;
+
+    function applyGenre(i) {
+      currentIdx = i;
+      const epNum = String(i + 1).padStart(2, '0');
+      document.body.className = document.body.className.replace(/theme-ep\d\d/, '') + ` theme-ep${epNum}`;
+      document.querySelectorAll('.tbv-genre-text').forEach(el => { el.textContent = GENRES[i]; });
+      document.querySelectorAll('.tbv-freq-text').forEach(el => { el.textContent = FREQS[i].toFixed(1); });
+      document.querySelectorAll('#genre-switcher .lab-btn').forEach((b, bi) => b.classList.toggle('active', bi === i));
+      updateC5Needle();
+      updateC6Rack();
+    }
+
+    const switcher = document.getElementById('genre-switcher');
+    GENRES.forEach((genre, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'lab-btn' + (i === 0 ? ' active' : '');
+      btn.textContent = genre;
+      btn.onclick = () => applyGenre(i);
+      switcher.appendChild(btn);
+    });
+
+    // ── C1: waveform bars ──
+    const c1 = document.getElementById('c1-waveform');
+    for (let i = 0; i < 48; i++) {
+      const bar = document.createElement('span');
+      bar.style.setProperty('--h', `${20 + Math.random() * 75}%`);
+      bar.style.animationDelay = `${(Math.random() * 1.1).toFixed(2)}s`;
+      c1.appendChild(bar);
+    }
+
+    // ── C5: mini-dial, draggable/clickable ──
+    const c5Dial = document.getElementById('c5-dial');
+    const c5Needle = document.getElementById('c5-needle');
+    for (let i = 0; i < GENRES.length; i++) {
+      const tick = document.createElement('div');
+      tick.className = 'c5-dial-tick';
+      tick.style.left = `${((i + 0.5) / GENRES.length) * 100}%`;
+      c5Dial.appendChild(tick);
+    }
+    function updateC5Needle() {
+      const pct = ((currentIdx + 0.5) / GENRES.length) * 100;
+      c5Needle.style.left = `${pct}%`;
+    }
+    function c5SelectFromEvent(e) {
+      const rect = c5Dial.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const idx = Math.min(GENRES.length - 1, Math.floor(pct * GENRES.length));
+      applyGenre(idx);
+    }
+    c5Dial.addEventListener('pointerdown', (e) => {
+      try { c5Dial.setPointerCapture(e.pointerId); } catch (err) {}
+      c5SelectFromEvent(e);
+    });
+    c5Dial.addEventListener('pointermove', (e) => {
+      if (e.buttons === 1) c5SelectFromEvent(e);
+    });
+
+    // ── C6: spine rack ──
+    const c6Rack = document.getElementById('c6-rack');
+    function updateC6Rack() {
+      c6Rack.innerHTML = '';
+      GENRES.forEach((genre, i) => {
+        const spine = document.createElement('div');
+        spine.className = 'c6-spine' + (i === currentIdx ? ' active' : '');
+        spine.style.background = CHAPTER_COLORS[i];
+        spine.title = genre;
+        spine.onclick = () => applyGenre(i);
+        const label = document.createElement('span');
+        label.textContent = genre.split(' ')[0];
+        spine.appendChild(label);
+        c6Rack.appendChild(spine);
+      });
+    }
+
+    applyGenre(0);
+  </script>
+</body>
+
+</html>

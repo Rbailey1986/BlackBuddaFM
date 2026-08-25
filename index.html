@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>BLACK BUDDHA FM | Bass Culture. Black Britain.</title>
+
+  <!-- Primary SEO Meta Tags -->
+  <meta name="description"
+    content="Black Buddha FM is a pirate radio archive preserving and documenting Black British music culture from Jungle and Drum & Bass to UK Garage, Grime, Dubstep, and beyond.">
+  <meta name="keywords"
+    content="pirate radio, black british music, bass culture, jungle, drum and bass, uk garage, grime, dubstep, uk drill, afroswing">
+  <link rel="canonical" href="https://blackbuddhafm.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blackbuddhafm.com/">
+  <meta property="og:title" content="BLACK BUDDHA FM | Bass Culture. Black Britain.">
+  <meta property="og:description"
+    content="A pirate radio archive documenting the sounds, stories and movements that shaped Black British music culture.">
+  <meta property="og:image" content="https://blackbuddhafm.com/images/logo.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://blackbuddhafm.com/">
+  <meta property="twitter:title" content="BLACK BUDDHA FM | Bass Culture. Black Britain.">
+  <meta property="twitter:description"
+    content="A pirate radio archive documenting the sounds, stories and movements that shaped Black British music culture.">
+  <meta property="twitter:image" content="https://blackbuddhafm.com/images/logo.webp">
+
+  <!-- Crisp Vector SVG Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2248%22 fill=%22%23000%22 stroke=%22%23ff00ff%22 stroke-width=%224%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2250%22 font-family=%22sans-serif%22 font-weight=%22bold%22 fill=%22%2339FF14%22>BB</text></svg>">
+
+  <!-- MusicPlaylist Structured JSON-LD Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicPlaylist",
+    "name": "BLACK BUDDHA FM",
+    "url": "https://blackbuddhafm.com/",
+    "image": "https://blackbuddhafm.com/images/logo.webp",
+    "description": "A pirate radio archive documenting the sounds, stories and movements that shaped Black British music culture."
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Permanent+Marker&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Permanent+Marker&display=swap"
+      rel="stylesheet">
+  </noscript>
+
+  <link rel="stylesheet" href="critical.css?v=1.8">
+  <link rel="preload" href="styles.css?v=2.9" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="styles.css?v=2.9">
+  </noscript>
+
+  <!-- Analytics scaffold — no account wired up yet.
+       Swap in your real domain once you set one up (Plausible shown
+       here as a privacy-friendly, no-cookie-banner default; drop in
+       GA4 or GoatCounter instead if you prefer). -->
+  <!-- <script defer data-domain="blackbuddhafm.com" src="https://plausible.io/js/script.js"></script> -->
+</head>
+
+<body class="theme-ep01 splash-active theme-ep01">
+  <div class="crt"></div>
+
+  <!-- SPLASH SCREEN OVERLAY -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-overlay"></div>
+    <div class="splash-content">
+      <button class="splash-btn" onclick="enterStation();" aria-label="Enter Broadcast Transmission">
+        <span class="btn-cap">ENTER TRANSMISSION</span>
+      </button>
+      <p class="splash-sub">WARNING: HIGH VOLTAGE BASS RELAYS ACTIVE</p>
+    </div>
+  </div>
+
+  <script>
+    function enterStation() {
+      const splash = document.getElementById('splash-screen');
+      if (!splash) return;
+
+      splash.classList.add('fade-out');
+      document.body.classList.remove('splash-active');
+
+      // Try to initialize and play radio
+      if (typeof window.playPart === 'function') {
+        window.playPart(window.currentPart || 1);
+        if (window.audioCtx && window.staticGain) {
+          try {
+            const t = window.audioCtx.currentTime;
+            window.staticGain.gain.setValueAtTime(0.4, t);
+            window.staticGain.gain.exponentialRampToValueAtTime(0.01, t + 0.5);
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+      } else {
+        // Flag to play when player.js loads
+        window.shouldAutoPlayOnLoad = true;
+      }
+
+      setTimeout(() => {
+        splash.remove();
+      }, 800);
+    }
+  </script>
+
+  <!-- TICKER -->
+  <div class="ticker-bar">
+    <div class="logo-block">
+      <span class="logo-name">BLACK BUDDHA FM</span>
+      <span class="logo-sub">PIRATE BROADCASTING 24/7</span>
+    </div>
+    <div class="on-air-lamp">ON AIR</div>
+    <div class="ticker-pill">
+      <span class="dot-gold"></span>
+      <span class="ticker-genre-text" id="ticker-genre">JUNGLE</span>
+    </div>
+    <div class="ticker-scroll">
+      <div class="ticker-inner" id="ticker">
+        <span>★</span> LIVE ON 88.9 FM (LDN) &nbsp; <span>★</span> BLACK BUDDHA FM &nbsp; <span>★</span> PIRATE RADIO &nbsp; <span>★</span> BASS CULTURE.
+      </div>
+    </div>
+
+    <div class="ticker-utility">
+      <button class="ticker-util-btn" id="theme-toggle-btn" onclick="toggleLightMode()" aria-pressed="false" title="Switch to light mode" aria-label="Switch to light mode">☾</button>
+    </div>
+  </div>
+
+  <main>
+        <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="hero-left">
+        <p class="hero-tagline">Preserving Black British Music Culture</p>
+        <h1 class="hero-title">BLACK<br><em>BUDDHA</em><br>FM</h1>
+        <p class="hero-desc">A living archive documenting the sounds, stories and movements that shaped Black British music culture.</p>
+        <a class="btn-primary" id="hero-play-btn" href="#console-card" onclick="scrollToTunerDeck(event);" style="width: fit-content; text-decoration: none; cursor: pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          LISTEN NOW
+        </a>
+        <span class="hero-live-badge">LIVE FROM LONDON</span>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         BLACK BUDDHA FM DUAL-EPISODE CONSOLE DECK
+         ════════════════════════════════════════════════════════════════════════ -->
+    <div class="main-container">
+      <div class="console-card" id="console-card">
+<section class="tuner-top">
+        <div class="tuner-top-header">
+          <div class="tuner-title-block">
+            <span class="tuner-accent-bar"></span>
+            <h2 class="tuner-title">PIRATE FREQUENCIES</h2>
+          </div>
+          <div class="tuner-header-right">
+            <div class="tuner-meta-right" id="tuner-meta-right">
+              <span>CHAPTER <span id="meta-ep-num">01/10</span> — <span id="meta-freq" class="meta-freq-accent">88.9 MHZ</span> — <span class="meta-signal-badge">SIGNAL 100%</span></span>
+            </div>
+            <button class="btn-scan" id="btn-scan" onclick="scanRandomChapter()" title="Scan to a random chapter">⟲ SCAN</button>
+          </div>
+        </div>
+
+        <!-- Ruler Dial with Needle -->
+        <div class="dial-container" id="dial-container" onpointerdown="handleDialPointerDown(event)" onpointermove="handleDialPointerMove(event)" onpointerup="handleDialPointerUp(event)" onpointercancel="handleDialPointerUp(event)" onkeydown="handleDialKeydown(event)" role="slider" tabindex="0" aria-label="Tune to a genre frequency — drag freely or use arrow keys" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
+          <div class="dial-ruler-line">
+            <div class="dial-ticks" id="dial-ticks">
+              <!-- Generated dynamically in JS -->
+            </div>
+            <div class="dial-needle" id="dial-needle" style="left: 45%;"></div>
+          </div>
+
+          <!-- Station Nodes Row -->
+          <div class="dial-stations-row" id="dial-stations-row">
+            <!-- Generated from STATIONS data -->
+          </div>
+        </div>
+
+        <div class="tuner-divider"></div>
+      </section>
+<section class="transmission-grid">
+        
+        <!-- LEFT: MAGAZINE COVER PLATE -->
+        <div class="mag-column">
+          <div class="mag-cover-card" id="mag-cover-card">
+            <div class="mag-stripes-bg"></div>
+            <img src="images/Jungle Magazine.webp" alt="Jungle chapter magazine cover — Chapter 01, Episode 1" class="mag-real-img" id="mag-real-img" width="900" height="1200" onerror="this.style.opacity='0'"/>
+            
+            <div class="mag-issue-badge" id="mag-issue-badge">CHAPTER 01 — EPISODE 1</div>
+            </div>
+
+          <button class="btn-open-mag" id="btn-open-mag" onclick="openActiveMagazine()">
+            OPEN MAGAZINE
+          </button>
+
+          <div class="mag-secondary-actions">
+            <button class="btn-secondary-action" id="btn-share-chapter" onclick="shareCurrentChapter()">SHARE</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: TRANSMISSION DETAILS & DECK -->
+        <div class="tx-column">
+          <div class="tx-top-meta">
+            <div class="tx-chapter-tag" id="tx-chapter-tag">
+              <span id="tx-chapter-text">TRANSMISSION EP 01.1 — 1991–1993</span>
+              <span class="tx-genre-pill" id="tx-genre-pill">JUNGLE</span>
+            </div>
+
+            <!-- DUAL EPISODE PART SELECTOR BUTTONS -->
+            <div class="episode-part-switcher" role="group" aria-label="Episode Switcher for current frequency">
+              <button class="part-btn active" id="btn-part-1" onclick="setEpisodePart(1)">
+                <span>●</span> EPISODE 1
+              </button>
+              <button class="part-btn" id="btn-part-2" onclick="setEpisodePart(2)">
+                <span>●</span> EPISODE 2
+              </button>
+            </div>
+          </div>
+
+                    <h2 class="tx-title" id="tx-title">EP 01 <span class="title-genre-highlight" id="title-genre-highlight">JUNGLE</span>: THE BIRTH OF JUNGLE</h2>
+
+                    <!-- ACTIONS & PLAY DECK (MOVED ABOVE HOST ROW) -->
+          <div class="tx-actions-row">
+            <div class="player-controls-line">
+              <button class="btn-tune-play" id="btn-tune-play" onclick="togglePlayActiveTrack()">
+                <span id="play-text">TUNE IN & PLAY EPISODE 1</span>
+              </button>
+
+              <!-- Switch Episode Toggle Button -->
+              <button class="btn-switch-episode" id="btn-switch-episode" onclick="toggleCurrentPart()" title="Switch to Episode 2 on this frequency">
+                <span id="switch-btn-icon">⇄</span>
+                <span id="switch-btn-text">SWITCH TO EPISODE 2</span>
+              </button>
+
+              <div class="tx-timecode" id="tx-timecode">
+                <span class="timecode-live-dot"></span>
+                <span id="timecode-display">00:00 / 52:14</span>
+              </div>
+
+              <div class="mini-wave" id="mini-wave">
+                <div class="mini-wave-bar"></div>
+                <div class="mini-wave-bar"></div>
+                <div class="mini-wave-bar"></div>
+                <div class="mini-wave-bar"></div>
+              </div>
+            </div>
+
+            <!-- Interactive Player Scrubber Bar -->
+            <div class="tx-scrubber-wrapper" id="tx-scrubber-wrapper">
+              <span class="scrub-time-current" id="scrub-time-current">00:00</span>
+              <div class="scrubber-track" id="scrubber-track" onclick="handleScrubberClick(event)">
+                <div class="scrubber-buffered" id="scrubber-buffered" style="width: 100%;"></div>
+                <div class="scrubber-progress" id="scrubber-progress" style="width: 0%;">
+                  <div class="scrubber-thumb" id="scrubber-thumb"></div>
+                </div>
+              </div>
+              <span class="scrub-time-total" id="scrub-time-total">52:14</span>
+            </div>
+          </div>
+
+          <!-- HOST & LOCATION ROW -->
+          <div class="tx-host-row">
+            <div class="host-left">
+              <span class="host-dot"></span>
+              <span>HOST</span>
+              <span class="host-name-tag" id="tx-host-name">DJ PRESIDENT BAILEY</span>
+            </div>
+            <div id="tx-location-tag" style="display:flex; align-items:center; flex-wrap: wrap; row-gap: 4px;">
+              <span>BLACK BUDDHA HQ — HACKNEY, LONDON</span>
+              <span class="host-tech-badge" id="host-tech-badge">88.9 FM</span>
+            </div>
+          </div>
+
+                    <!-- VELVET ROOM UNDERGROUND SPOTLIGHT ESSAY BOX -->
+          <div class="tx-desc-wrapper" id="tx-desc-wrapper">
+            <p id="tx-desc-box">Before Jungle had a name, breakbeat hardcore was mutating in London bedrooms and pirate radio studios. This episode traces the exact moment reggae sound-system culture collided with sped-up breaks, sampler trickery and dub-heavy bass to invent something entirely new. From Lennie De Ice's ground-zero blueprint to Deep Blue's futuristic sound design, these ten tracks capture Jungle finding its own identity between 1991 and 1993 — raw, inventive, and built to move a sound system.</p>
+          </div>
+
+          <!-- SELECTOR'S DESK — hidden unless a chapter has a selectorNote in its data -->
+          <div class="selector-desk" id="selector-desk-wrapper" style="display:none;">
+            <div class="selector-desk-label">FROM THE SELECTOR'S DESK</div>
+            <p class="selector-desk-text" id="selector-desk-text"></p>
+          </div>
+
+          <!-- Micro Chips Row -->
+          <div class="tx-chips-row" id="tx-chips-row">
+            <span class="tx-chip">160 BPM</span>
+            <span class="tx-chip">AMEN BREAK</span>
+            <span class="tx-chip">RAGGA</span>
+            <span class="tx-chip">PIRATE RADIO</span>
+            <span class="tx-chip">SOUND SYSTEM</span>
+          </div>
+
+          <!-- KEY TRACKS & DUBPLATES DROPDOWN BUTTON -->
+          <div class="tracks-section">
+            <button class="tracks-dropdown-toggle" id="tracks-dropdown-toggle" aria-expanded="false" onclick="toggleTracksDropdown()" aria-label="Toggle Key Tracks and Dubplates list">
+              <div class="toggle-left">
+                <span class="tracks-tag-pill"></span>
+                <span id="tracks-heading-text">KEY TRACKS & DUBPLATES — EPISODE 1</span>
+                <span class="toggle-count-badge" id="toggle-count-badge">(10 TRACKS)</span>
+              </div>
+              <span class="toggle-chevron" id="toggle-chevron">▼</span>
+            </button>
+
+            <!-- Collapsible Track List Container -->
+            <div class="tracks-collapsible-wrapper collapsed" id="tracks-collapsible-wrapper">
+                            <div class="tracks-list-container" id="tracks-list-container">
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">01</span>
+                    <span class="track-row-title">Lennie De Ice — We Are I.E. (1991)</span>
+                  </div>
+                  <span class="track-chip-badge">REEL 2 REEL</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">02</span>
+                    <span class="track-row-title">A Guy Called Gerald — 28 Gun Bad Boy (1992)</span>
+                  </div>
+                  <span class="track-chip-badge">JUICE BOX</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">03</span>
+                    <span class="track-row-title">SL2 — On a Ragga Tip (1992)</span>
+                  </div>
+                  <span class="track-chip-badge">XL RECORDINGS</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">04</span>
+                    <span class="track-row-title">Rufige Kru (Goldie) — Terminator (1992)</span>
+                  </div>
+                  <span class="track-chip-badge">REINFORCED</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">05</span>
+                    <span class="track-row-title">LTJ Bukem — Demon's Theme (1992)</span>
+                  </div>
+                  <span class="track-chip-badge">GOOD LOOKING</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">06</span>
+                    <span class="track-row-title">Origin Unknown — Valley of the Shadows (1993)</span>
+                  </div>
+                  <span class="track-chip-badge">RAM RECORDS</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">07</span>
+                    <span class="track-row-title">Hyper-On Experience (Foul Play Remix) — Lord of the Null Lines (1993)</span>
+                  </div>
+                  <span class="track-chip-badge">MOVING SHADOW</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">08</span>
+                    <span class="track-row-title">Omni Trio (Foul Play Remix) — Renegade Snares (1993)</span>
+                  </div>
+                  <span class="track-chip-badge">MOVING SHADOW</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">09</span>
+                    <span class="track-row-title">Krome & Time — The Slammer (1993)</span>
+                  </div>
+                  <span class="track-chip-badge">SUBURBAN BASE</span>
+                </div>
+                <div class="track-row-item">
+                  <div class="track-left-meta">
+                    <span class="track-row-num">10</span>
+                    <span class="track-row-title">Deep Blue — The Helicopter Tune (1993)</span>
+                  </div>
+                  <span class="track-chip-badge">MOVING SHADOW</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="next-chapter-row" id="next-chapter-row">
+            <button class="btn-next-chapter" id="btn-next-chapter" onclick="goToNextChapter()">
+              <span>NEXT CHAPTER</span>
+              <span id="next-chapter-label" class="next-chapter-label">DRUM &amp; BASS →</span>
+            </button>
+          </div>
+
+          </div>
+      </section>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Hidden mount referenced by inline script for signal badge text updates -->
+  <div style="display: none;">
+    <div id="signal-badge-text"></div>
+  </div>
+
+  <!-- MAGAZINE BOOKLET MODAL (Interactive reader) -->
+  <div class="magazine-modal-overlay" id="magazine-modal" role="dialog" aria-modal="true" aria-label="Magazine Archive Booklet" style="display: none;">
+    <div class="magazine-modal-content">
+      <button class="magazine-close-btn" id="magazine-close-btn" aria-label="Close magazine reader">CLOSE ARCHIVE [ESC]</button>
+      <div class="booklet-scroll-container">
+        <div class="booklet-container" id="booklet-container">
+          <!-- Dynamically populated 2-page spreads by magazine.js -->
+        </div>
+      </div>
+      <div class="booklet-nav-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+        <button class="btn-tab" id="booklet-prev-btn" style="background: #111; border: 1px solid #333; color: #fff; padding: 6px 16px; cursor: pointer;">&larr; PREVIOUS</button>
+        <span class="booklet-page-indicator" id="booklet-page-indicator" style="font-family: monospace; font-size: 11px; color: var(--theme-primary); font-weight: bold;">PAGE 1 / 4</span>
+        <button class="btn-tab" id="booklet-next-btn" style="background: #111; border: 1px solid #333; color: #fff; padding: 6px 16px; cursor: pointer;">NEXT &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="magazine.js" defer></script>
+  
+
+  <script>
+
+    const STATIONS = [
+  {
+    "epNum": "01",
+    "genre": "JUNGLE",
+    "freq": 88.9,
+    "location": "Hackney, London",
+    "cardImg": "images/Jungle Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "The Birth of Jungle",
+      "selectorNote": "Lennie De Ice's ‘We Are I.E.’ is the one I always come back to — that's the moment breakbeat hardcore stopped being sped-up reggae and became something nobody had a name for yet. If you've only got time for one track this chapter, make it ‘Terminator.’ Goldie chopping the Amen that hard, that early, still sounds like a threat.",
+      "subtitle": "THE BIRTH OF JUNGLE \u00b7 BREAKBEAT HARDCORE & RAGGA ROOTS",
+      "era": "1991\u20131993",
+      "desc": "Before Jungle had a name, breakbeat hardcore was mutating in London bedrooms and pirate radio studios. This episode traces the exact moment reggae sound-system culture collided with sped-up breaks, sampler trickery and dub-heavy bass to invent something entirely new. From Lennie De Ice's ground-zero blueprint to Deep Blue's futuristic sound design, these ten tracks capture Jungle finding its own identity between 1991 and 1993 \u2014 raw, inventive, and built to move a sound system.",
+      "chips": [
+        "160 BPM",
+        "AMEN BREAK",
+        "RAGGA",
+        "PIRATE RADIO",
+        "SOUND SYSTEM"
+      ],
+      "duration": "52:14",
+      "audio": "audio/episode-01-1.mp3",
+      "tracks": [
+        {
+          "title": "Lennie De Ice \u2014 We Are I.E. (1991)",
+          "tag": "REEL 2 REEL"
+        },
+        {
+          "title": "A Guy Called Gerald \u2014 28 Gun Bad Boy (1992)",
+          "tag": "JUICE BOX"
+        },
+        {
+          "title": "SL2 \u2014 On a Ragga Tip (1992)",
+          "tag": "XL RECORDINGS"
+        },
+        {
+          "title": "Rufige Kru (Goldie) \u2014 Terminator (1992)",
+          "tag": "REINFORCED"
+        },
+        {
+          "title": "LTJ Bukem \u2014 Demon's Theme (1992)",
+          "tag": "GOOD LOOKING"
+        },
+        {
+          "title": "Origin Unknown \u2014 Valley of the Shadows (1993)",
+          "tag": "RAM RECORDS"
+        },
+        {
+          "title": "Hyper-On Experience (Foul Play Remix) \u2014 Lord of the Null Lines (1993)",
+          "tag": "MOVING SHADOW"
+        },
+        {
+          "title": "Omni Trio (Foul Play Remix) \u2014 Renegade Snares (1993)",
+          "tag": "MOVING SHADOW"
+        },
+        {
+          "title": "Krome & Time \u2014 The Slammer (1993)",
+          "tag": "SUBURBAN BASE"
+        },
+        {
+          "title": "Deep Blue \u2014 The Helicopter Tune (1993)",
+          "tag": "MOVING SHADOW"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Jungle Takes Over",
+      "subtitle": "JUNGLE TAKES OVER \u00b7 THE RAGGA POP EXPLOSION & DRUM REVISION",
+      "era": "1994\u20131995",
+      "desc": "By 1994, Jungle had broken out of the underground and onto national radio and the UK charts. This episode follows that explosion \u2014 General Levy's ragga vocals going mainstream, Goldie's cinematic ambition on \u201cInner City Life\u201d, and Remarc's razor-edited Amen breaks pushing technical limits. Ten tracks trace how a pirate-radio sound became impossible to ignore, before quietly transforming into something new: the tighter, deeper, more technical style that would soon be renamed Drum & Bass.",
+      "chips": [
+        "165 BPM",
+        "AMEN BREAKS",
+        "RAGGA CHANTS",
+        "UK CHARTS",
+        "PIRATE RELAY"
+      ],
+      "duration": "46:20",
+      "audio": "audio/episode-01-2.mp3",
+      "tracks": [
+        {
+          "title": "M-Beat feat. General Levy \u2014 Incredible (1994)",
+          "tag": "RENK RECORDS"
+        },
+        {
+          "title": "Shy FX & UK Apachi \u2014 Original Nuttah (1994)",
+          "tag": "SOUR"
+        },
+        {
+          "title": "Conquering Lion (Rebel MC) \u2014 Code Red (1994)",
+          "tag": "MANGO"
+        },
+        {
+          "title": "Leviticus \u2014 Burial (1994)",
+          "tag": "PHILLY BLUNT"
+        },
+        {
+          "title": "Tom & Jerry (4hero) \u2014 Maximum Style (1994)",
+          "tag": "TOM & JERRY"
+        },
+        {
+          "title": "Krome & Time \u2014 The License (1994)",
+          "tag": "TEARIN VINYL"
+        },
+        {
+          "title": "Goldie feat. Diane Charlemagne \u2014 Inner City Life (1994)",
+          "tag": "FFRR / METALHEADZ"
+        },
+        {
+          "title": "Remarc \u2014 R.I.P. (1995)",
+          "tag": "SUBURBAN BASE"
+        },
+        {
+          "title": "Sound of the Future (DJ SS) \u2014 The Lighter (1995)",
+          "tag": "FORMATION"
+        },
+        {
+          "title": "DJ Zinc \u2014 Super Sharp Shooter (1995)",
+          "tag": "GANJA RECORDS"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "02",
+    "genre": "DRUM & BASS",
+    "freq": 91.2,
+    "location": "Bristol",
+    "cardImg": "images/Drum n Bass Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "The Rise of Drum & Bass",
+      "selectorNote": "This is the chapter where the sound stopped shouting and started thinking. Alex Reece's ‘Pulp Fiction’ is jazz with the safety catch off — put it next to Bad Company's ‘The Nine’ and you can hear the whole genre arguing with itself about how cold it's allowed to get.",
+      "subtitle": "THE RISE OF DRUM & BASS \u00b7 TECHSTEP, MERCURY PRIZE & PRECISION",
+      "era": "1995\u20132009",
+      "desc": "Jungle's chaos gave way to precision. This episode follows Drum & Bass from 1995 to 2009 \u2014 Alex Reece stripping the breaks back to something cold and hypnotic, Roni Size and Reprazent winning the Mercury Prize with live instrumentation, and Bad Company's techstep pushing the sound darker and more machine-like. By the 2000s the genre was reaching arenas with Pendulum and the UK charts with Chase & Status \u2014 ten records tracing bass music's journey from rave to global stage.",
+      "chips": [
+        "174 BPM",
+        "BREAKBEAT",
+        "SUB-BASS",
+        "LIQUID FUNK",
+        "TECHSTEP"
+      ],
+      "duration": "59:08",
+      "audio": "audio/episode-02-1.mp3",
+      "tracks": [
+        {
+          "title": "Alex Reece \u2014 Pulp Fiction (1995)",
+          "tag": "METALHEADZ"
+        },
+        {
+          "title": "Adam F \u2014 Circles (1995)",
+          "tag": "SECTION 5"
+        },
+        {
+          "title": "Roni Size / Reprazent \u2014 Brown Paper Bag (1997)",
+          "tag": "TALKIN LOUD"
+        },
+        {
+          "title": "Bad Company UK \u2014 The Nine (1998)",
+          "tag": "BC RECORDINGS"
+        },
+        {
+          "title": "Andy C & Shimon \u2014 Body Rock (2001)",
+          "tag": "RAM RECORDS"
+        },
+        {
+          "title": "DJ Marky & XRS feat. Stamina MC \u2014 LK (Carolina Carol Bela) (2002)",
+          "tag": "V RECORDINGS"
+        },
+        {
+          "title": "Pendulum feat. $pyda & Tenor Fly \u2014 Tarantula (2005)",
+          "tag": "BREAKBEAT KAOS"
+        },
+        {
+          "title": "Chase & Status feat. Capleton \u2014 Duppy Man (2005)",
+          "tag": "BREAKBEAT KAOS"
+        },
+        {
+          "title": "High Contrast \u2014 Kiss Kiss Bang Bang (2007)",
+          "tag": "HOSPITAL RECORDS"
+        },
+        {
+          "title": "Chase & Status feat. Plan B \u2014 End Credits (2009)",
+          "tag": "MTA / RAM"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Drum & Bass Goes Global",
+      "subtitle": "DRUM & BASS GOES GLOBAL \u00b7 FESTIVAL ANTHEMS & LIQUID REVIVALS",
+      "era": "2010\u2013Present",
+      "desc": "Drum & Bass enters its global era. From festival-ready anthems and dubstep crossovers to soulful liquid revivals and Brazilian-flavoured melody, this episode tracks how the genre spread far beyond its London and Bristol roots after 2010. Expect commercial pop crossovers from Rudimental and Wilkinson alongside uncompromising neurofunk, minimal deep cuts and MC-led jump-up energy \u2014 eleven tracks that prove Drum & Bass never stopped evolving, even as it absorbed new sounds, scenes and audiences worldwide.",
+      "chips": [
+        "175 BPM",
+        "NEUROFUNK",
+        "JUMP-UP",
+        "ROLLING BASSLINE",
+        "RAVE"
+      ],
+      "duration": "40:15",
+      "audio": "audio/episode-02-2.mp3",
+      "tracks": [
+        {
+          "title": "Sub Focus \u2014 Rock It (2009)",
+          "tag": "RAM RECORDS"
+        },
+        {
+          "title": "Skream \u2014 Where You Should Be (2010)",
+          "tag": "TEMPA"
+        },
+        {
+          "title": "Totally Enormous Extinct Dinosaurs (Calibre Remix) \u2014 Garden (2011)",
+          "tag": "POLYDOR"
+        },
+        {
+          "title": "Rudimental feat. John Newman \u2014 Feel the Love (2012)",
+          "tag": "BLACK BUTTER"
+        },
+        {
+          "title": "Wilkinson \u2014 Afterglow (2013)",
+          "tag": "RAM RECORDS"
+        },
+        {
+          "title": "Nu:Logic \u2014 Morning Light (c. 2014)",
+          "tag": "HOSPITAL RECORDS"
+        },
+        {
+          "title": "Noisia & The Upbeats \u2014 Dead Limit (2013)",
+          "tag": "VISION RECORDINGS"
+        },
+        {
+          "title": "High Contrast \u2014 If We Ever (Unglued Remix) (c. 2016)",
+          "tag": "HOSPITAL RECORDS"
+        },
+        {
+          "title": "Netsky, Daddy Waku & Chantal Kashala \u2014 Everybody Loves The Sunshine (2018)",
+          "tag": "HOSPITAL RECORDS"
+        },
+        {
+          "title": "Klinical \u2014 Around Me VIP (c. 2020)",
+          "tag": "LIFESTYLE MUSIC"
+        },
+        {
+          "title": "P Money x Whiney \u2014 Buss The Red (c. 2021)",
+          "tag": "HOSPITAL RECORDS"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "03",
+    "genre": "UK GARAGE",
+    "freq": 93.5,
+    "location": "Romford, Essex",
+    "cardImg": "images/Garage Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "The Golden Era of 4x4, 2-Step & Vocal Soul",
+      "selectorNote": "I've played ‘Re-Rewind’ more times than any other record in this archive and it still gets the same reaction every time. This is the sound of a Friday night when the champagne bars actually felt like somewhere you'd earned your way into.",
+      "subtitle": "THE GOLDEN ERA \u00b7 4X4, 2-STEP & VOCAL SOUL",
+      "era": "1995\u20132000",
+      "desc": "UK Garage's golden years, when American house and garage rhythms were reshaped into something distinctly British. This episode traces the shift from four-to-the-floor anthems into skippy, soulful 2-step, as vocal-led records by Craig David, MJ Cole and Shanks & Bigfoot carried the sound from underground raves into the charts. Champagne bars, garage nights and rewind culture defined the era \u2014 twelve tracks capturing UK Garage at its smoothest and most celebratory, just before the sound turned darker.",
+      "chips": [
+        "130 BPM",
+        "2-STEP",
+        "4X4",
+        "SPEED GARAGE",
+        "CHAMPAGNE RAVE"
+      ],
+      "duration": "42:17",
+      "audio": "audio/episode-03-1.mp3",
+      "tracks": [
+        {
+          "title": "Nightcrawlers (MK Dub Revisited Edit) \u2014 Push The Feeling On (1995)",
+          "tag": "FFRR"
+        },
+        {
+          "title": "Roy Davis Jr. (Live Garage Mix) \u2014 Gabriel (1996)",
+          "tag": "LARGE RECORDS"
+        },
+        {
+          "title": "Tina Moore (Kelly G Bump-N-Go Dub Edit) \u2014 Never Gonna Let You Go (1997)",
+          "tag": "DELIRIOUS"
+        },
+        {
+          "title": "Double 99 \u2014 RipGroove (1997)",
+          "tag": "SATELLITE"
+        },
+        {
+          "title": "Dem 2 \u2014 Destiny (Sleepless) (1998)",
+          "tag": "143 RECORDS"
+        },
+        {
+          "title": "MJ Cole \u2014 Sincere (1998)",
+          "tag": "TALKIN LOUD"
+        },
+        {
+          "title": "Artful Dodger feat. Romina Johnson \u2014 Moving Too Fast (1999)",
+          "tag": "LOCKED ON"
+        },
+        {
+          "title": "Craig David & Artful Dodger \u2014 Re-Rewind (1999)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "Shanks & Bigfoot \u2014 Sweet Like Chocolate (1999)",
+          "tag": "PEPPER RECORDS"
+        },
+        {
+          "title": "Monsta Boy \u2014 Sorry (I Didn't Know) (2000)",
+          "tag": "LOCKED ON"
+        },
+        {
+          "title": "Sweet Female Attitude (Sunship Edit) \u2014 Flowers (2000)",
+          "tag": "MILKK"
+        },
+        {
+          "title": "Wookie feat. Lain \u2014 Battle (2000)",
+          "tag": "S2S"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Dark Garage, MC Culture & The UKG Revival",
+      "subtitle": "DARK GARAGE, MC CULTURE & THE UKG REVIVAL",
+      "era": "1999\u20132023",
+      "desc": "As the champagne era faded, MC crews took over the microphone and the mood turned darker. This episode follows Garage's harder, bass-heavy turn \u2014 So Solid Crew's chart-storming \u201c21 Seconds\u201d, Oxide & Neutrino's genre-splitting \u201cBound 4 Da Reload\u201d, and The Streets' street-poet debut \u2014 before the scene fragmented into Grime and UK Rap. It closes decades later with a new generation, AJ Tracey, PinkPantheress and Sammy Virji, reviving UK Garage's rhythms and rewind culture for a fresh audience.",
+      "chips": [
+        "134 BPM",
+        "DARK GARAGE",
+        "SO SOLID",
+        "MC CULTURE",
+        "UKG REVIVAL"
+      ],
+      "duration": "38:40",
+      "audio": "audio/episode-03-2.mp3",
+      "tracks": [
+        {
+          "title": "DJ Luck & MC Neat \u2014 A Little Bit of Luck (1999)",
+          "tag": "RED ROSE"
+        },
+        {
+          "title": "Sia (Wookie Remix) \u2014 Little Man (2000)",
+          "tag": "LONG LOST BROTHER"
+        },
+        {
+          "title": "Zed Bias \u2014 Neighbourhood (2000)",
+          "tag": "LOCKED ON"
+        },
+        {
+          "title": "Oxide & Neutrino \u2014 Bound 4 Da Reload (Casualty) (2000)",
+          "tag": "EAST WEST"
+        },
+        {
+          "title": "Genius Cru \u2014 Boom Selection (2001)",
+          "tag": "KRONIK"
+        },
+        {
+          "title": "So Solid Crew \u2014 Oh No (That's the Word) (2001)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "Sticky feat. Ms. Dynamite \u2014 Booo! (2001)",
+          "tag": "SOCIAL CIRCLES"
+        },
+        {
+          "title": "So Solid Crew \u2014 21 Seconds (2001)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "The Streets \u2014 Has It Come To This? (2001)",
+          "tag": "679 RECORDINGS"
+        },
+        {
+          "title": "Daniel Bedingfield \u2014 Gotta Get Thru This (2001)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "AJ Tracey \u2014 Ladbroke Grove (Remix) (2019)",
+          "tag": "AJ TRACEY"
+        },
+        {
+          "title": "PinkPantheress \u2014 Stars (2021)",
+          "tag": "PARLOPHONE"
+        },
+        {
+          "title": "Sammy Virji feat. Flowdan \u2014 Shella Verse (2023)",
+          "tag": "VIRJI RECORDS"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "04",
+    "genre": "GRIME",
+    "freq": 95.8,
+    "location": "Bow, East London",
+    "cardImg": "images/Grime magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "Early Grime & Eskibeat Lineup",
+      "selectorNote": "Wiley's ‘Wot Do U Call It?’ is the moment the genre named itself out loud. Everything on this list was made by teenagers with no budget and a MIDI keyboard, and it still sounds more dangerous than most things made with real money since.",
+      "subtitle": "EARLY GRIME & ESKIBEAT LINEUP \u00b7 BOW E3 TO RINSE FM",
+      "era": "2000\u20132007",
+      "desc": "Grime's blueprint years. Built from Eskibeat's icy synths and pirate radio energy, this episode follows the genre from Pay As U Go Cartel's early instrumentals through Wiley and Dizzee Rascal's genre-defining 2004 output, to the crew culture of Roll Deep, Ruff Sqwad and Jammer. Seventeen tracks of raw, DIY bars over stripped-back 140bpm beats capture the sound of East London teenagers inventing an entirely new British music genre from scratch, one pirate broadcast at a time.",
+      "chips": [
+        "140 BPM",
+        "ESKIBEAT",
+        "MC CLASH",
+        "PIRATE RADIO",
+        "SINOGRIME"
+      ],
+      "duration": "38:45",
+      "audio": "audio/episode-04-1.mp3",
+      "tracks": [
+        {
+          "title": "Pay As U Go Cartel \u2014 Know We (2000)",
+          "tag": "SOLID CITY"
+        },
+        {
+          "title": "More Fire Crew \u2014 Oi (2002)",
+          "tag": "GO BEAT"
+        },
+        {
+          "title": "Dizzee Rascal \u2014 I Luv U (2003)",
+          "tag": "XL RECORDINGS"
+        },
+        {
+          "title": "Wiley \u2014 Wot Do U Call It? (2004)",
+          "tag": "XL RECORDINGS"
+        },
+        {
+          "title": "Wiley feat. Roll Deep \u2014 Morgue (2004)",
+          "tag": "WHITE LABEL"
+        },
+        {
+          "title": "Lethal Bizzle \u2014 Pow! (Forward) (2004)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "Crazy Titch \u2014 Do Some Work (2004)",
+          "tag": "CRAZY TITCH"
+        },
+        {
+          "title": "SLK \u2014 North Weezy (2004)",
+          "tag": "STICKY PRODUCTIONS"
+        },
+        {
+          "title": "Kano \u2014 P's and Q's (2004)",
+          "tag": "679 RECORDINGS"
+        },
+        {
+          "title": "Dizzee Rascal \u2014 Face (2004)",
+          "tag": "DIRTEE STANK"
+        },
+        {
+          "title": "XTC \u2014 Functions on the Low (2004)",
+          "tag": "WHITE LABEL"
+        },
+        {
+          "title": "Roll Deep \u2014 When I'm 'Ere (2005)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "Ruff Sqwad feat. Wiley \u2014 Together (2005)",
+          "tag": "RUFF SQWAD"
+        },
+        {
+          "title": "Chip \u2014 Who Are You? (2005)",
+          "tag": "ALWAYZ RECORDINGS"
+        },
+        {
+          "title": "Jammer \u2014 Murkle Man (2006)",
+          "tag": "JAHMEKIEL"
+        },
+        {
+          "title": "JME \u2014 96 Bars of Revenge (2006)",
+          "tag": "BOY BETTER KNOW"
+        },
+        {
+          "title": "The Bug feat. Flowdan \u2014 Skeng (2007)",
+          "tag": "NINJA TUNE"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Mid-2000s & Modern Grime Era",
+      "subtitle": "MID-2000S & MODERN GRIME ERA \u00b7 BOY BETTER KNOW & RESURGENCE",
+      "era": "2007\u20132024",
+      "desc": "Grime matures and multiplies. This episode tracks the genre's second decade \u2014 Skepta and Wiley's continued dominance, Newham Generals and Tempa T's rave-ready anthems, Boy Better Know's rise, D Double E's technical mastery \u2014 through to the 2010s resurgence led by Stormzy, Dave and AJ Tracey. Across more than twenty tracks spanning almost two decades, hear how grime's DIY pirate-radio roots grew into a genre capable of headlining festivals and topping the UK charts.",
+      "chips": [
+        "140 BPM",
+        "BOY BETTER KNOW",
+        "DIY BEATS",
+        "SOUND CLASH",
+        "RESURGENCE"
+      ],
+      "duration": "35:10",
+      "audio": "audio/episode-04-2.mp3",
+      "tracks": [
+        {
+          "title": "Skepta \u2014 Shutdown (2014)",
+          "tag": "BOY BETTER KNOW"
+        },
+        {
+          "title": "Skepta feat. JME \u2014 That's Not Me (2014)",
+          "tag": "BOY BETTER KNOW"
+        },
+        {
+          "title": "Wiley \u2014 Bow E3 (2007)",
+          "tag": "BIG DADA"
+        },
+        {
+          "title": "Wretch 32 feat. Badness & Ghetto \u2014 Ina Di Ghetto (2007)",
+          "tag": "LEVELS"
+        },
+        {
+          "title": "President T \u2014 Space Ship Freestyle (2008)",
+          "tag": "STAR WORK"
+        },
+        {
+          "title": "Newham Generals \u2014 Hard (2008)",
+          "tag": "DIRTEE STANK"
+        },
+        {
+          "title": "Tempa T \u2014 Next Hype (2009)",
+          "tag": "TEMPA T"
+        },
+        {
+          "title": "Novelist \u2014 Wait Stop Wait (2014)",
+          "tag": "OIL GANG"
+        },
+        {
+          "title": "Boy Better Know \u2014 Too Many Man (2009)",
+          "tag": "BOY BETTER KNOW"
+        },
+        {
+          "title": "Class of Deja feat. D Double E & Ghetts \u2014 Class of Deja (2016)",
+          "tag": "DIRTEE STANK"
+        },
+        {
+          "title": "D Double E \u2014 Street Fighter Riddim (2010)",
+          "tag": "DIRTEE STANK"
+        },
+        {
+          "title": "Merky Ace \u2014 Taunt (2011)",
+          "tag": "NO HAT NO HOOD"
+        },
+        {
+          "title": "Meridian Dan feat. Big H & JME \u2014 German Whip (2013)",
+          "tag": "PMR"
+        },
+        {
+          "title": "Dave & AJ Tracey \u2014 Thiago Silva (2016)",
+          "tag": "SANTAN"
+        },
+        {
+          "title": "Terror Danjah \u2014 Cock Back (c. 2005)",
+          "tag": "AFTERSHOCK"
+        },
+        {
+          "title": "Stormzy \u2014 Shut Up (2015)",
+          "tag": "#MERKY"
+        },
+        {
+          "title": "Lady Leshurr \u2014 Queen's Speech (Ep. 4) (2016)",
+          "tag": "LADY LESHURR"
+        },
+        {
+          "title": "P Money \u2014 Originators (2013)",
+          "tag": "NON STOP MUSIC"
+        },
+        {
+          "title": "Chip \u2014 Grime Scene Saviours Reloaded (2017)",
+          "tag": "ALWAYZ RECORDINGS"
+        },
+        {
+          "title": "Flirta D \u2014 Warp Speed 2 (c. 2016)",
+          "tag": "SLT"
+        },
+        {
+          "title": "Bashy \u2014 Black Boys (2007)",
+          "tag": "RAGZ TO RICHEZ"
+        },
+        {
+          "title": "Kasst 8 \u2014 Subliminals (c. 2020)",
+          "tag": "KASST 8"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "05",
+    "genre": "DUBSTEP",
+    "freq": 98.1,
+    "location": "Croydon",
+    "cardImg": "images/Jungle Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "Underground Roots & UK Crossover",
+      "selectorNote": "DMZ nights were about the low end pressing on your chest before you'd even registered a melody. ‘Midnight Request Line’ barely has a tune — it's a room, not a song. That's the whole point of this era.",
+      "subtitle": "UNDERGROUND ROOTS & UK CROSSOVER \u00b7 DMZ, FWD>> & SUB-BASS",
+      "era": "2005\u20132010",
+      "desc": "Dubstep's underground foundations, forged in South London record shops and clubs like DMZ and FWD>>. This episode follows the genre from Skream's cavernous \u201cMidnight Request Line\u201d through Digital Mystikz's dub-heavy sub-bass experiments and Mala's meditative low end, to its first pop crossover moments with Katy B and La Roux. Ten tracks capture the sparse, bass-driven sound at its most minimal and hypnotic, before it crossed the Atlantic and changed shape entirely into something louder and brasher.",
+      "chips": [
+        "140 BPM",
+        "SUB-BASS",
+        "HALF-STEP",
+        "DMZ",
+        "FWD>>"
+      ],
+      "duration": "50:18",
+      "audio": "audio/episode-05-1.mp3",
+      "tracks": [
+        {
+          "title": "Skream \u2014 Midnight Request Line (2005)",
+          "tag": "TEMPA"
+        },
+        {
+          "title": "Digital Mystikz \u2014 AntiWar Dub (2006)",
+          "tag": "DMZ"
+        },
+        {
+          "title": "Coki \u2014 Haunted (2006)",
+          "tag": "DMZ"
+        },
+        {
+          "title": "Mala \u2014 Changes (2007)",
+          "tag": "DEEP MEDI"
+        },
+        {
+          "title": "Rusko \u2014 Cockney Thug (2007)",
+          "tag": "SUB SOLDIERS"
+        },
+        {
+          "title": "Benga & Coki \u2014 Night (2008)",
+          "tag": "TEMPA"
+        },
+        {
+          "title": "TC (Caspa Remix) \u2014 Where's My Money (2008)",
+          "tag": "D-STYLE"
+        },
+        {
+          "title": "La Roux (Skream's Let's Get Ravey Remix) \u2014 In For the Kill (2009)",
+          "tag": "POLYDOR"
+        },
+        {
+          "title": "Katy B \u2014 Katy On a Mission (2010)",
+          "tag": "RINSE"
+        },
+        {
+          "title": "Magnetic Man \u2014 I Need Air (2010)",
+          "tag": "COLUMBIA"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Brostep, US Explosion & Festival Dubstep",
+      "subtitle": "BROSTEP, US EXPLOSION & FESTIVAL DUBSTEP",
+      "era": "2010\u20132015",
+      "desc": "Dubstep goes global \u2014 and gets louder. This episode follows the genre's mutation into brostep and festival-scale EDM, as Skrillex, Flux Pavilion and Nero take the wobble bass from British basements to American main stages and mainstream radio. Eleven tracks trace the shift from underground sound-system pressure to arena-sized, distortion-heavy drops, ending with one of the biggest pop crossovers dubstep \u2014 by this point barely recognisable from its Croydon roots \u2014 ever produced.",
+      "chips": [
+        "140 BPM",
+        "WOBBLE BASS",
+        "BROSTEP",
+        "SOUND SYSTEM",
+        "EDM FESTIVAL"
+      ],
+      "duration": "32:45",
+      "audio": "audio/episode-05-2.mp3",
+      "tracks": [
+        {
+          "title": "Doctor P \u2014 Sweet Shop (2010)",
+          "tag": "CIRCUS RECORDS"
+        },
+        {
+          "title": "Flux Pavilion \u2014 I Can't Stop (2010)",
+          "tag": "CIRCUS RECORDS"
+        },
+        {
+          "title": "Skrillex \u2014 Scary Monsters and Nice Sprites (2010)",
+          "tag": "BIG BEAT"
+        },
+        {
+          "title": "Flux Pavilion \u2014 Bass Cannon (2011)",
+          "tag": "CIRCUS RECORDS"
+        },
+        {
+          "title": "Modestep \u2014 Sunlight (2011)",
+          "tag": "POLYDOR"
+        },
+        {
+          "title": "Skrillex feat. Sirah \u2014 Bangarang (2011)",
+          "tag": "OWSLA"
+        },
+        {
+          "title": "Nero (Skrillex & Nero Remix) \u2014 Promises (2011)",
+          "tag": "MTA RECORDS"
+        },
+        {
+          "title": "Flight Facilities (Adventure Club Remix) \u2014 Crave You (2011)",
+          "tag": "FUTURE CLASSIC"
+        },
+        {
+          "title": "Seven Lions feat. Fiora \u2014 Days to Come (2012)",
+          "tag": "OWSLA"
+        },
+        {
+          "title": "Knife Party \u2014 Bonfire (2012)",
+          "tag": "EARSTORM"
+        },
+        {
+          "title": "Skrillex & Diplo feat. Justin Bieber \u2014 Where Are \u00dc Now (2015)",
+          "tag": "ATLANTIC"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "06",
+    "genre": "UK FUNKY & BASSLINE",
+    "freq": 100.4,
+    "location": "Sheffield, Yorkshire",
+    "cardImg": "images/Baseline magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "The Sheffield Niche Revolution",
+      "selectorNote": "People slept on this scene because it never travelled the way jungle and garage travelled out of London. TRC's ‘Oo Aa Ee’ deserves to be spoken about in the same breath as anything from that era down south.",
+      "subtitle": "THE SHEFFIELD NICHE REVOLUTION \u00b7 UP THE M1 & 4X4 BOUNCE",
+      "era": "2003\u20132007",
+      "desc": "Journey north up the M1 motorway to Sheffield, Leeds, and Birmingham, where northern youth took London's speed garage blueprint and supercharged it into an explosive club movement. Centered around iconic venues like Club Niche, Bassline paired euphoric, pitch-shifted female vocal hooks with bouncing, warped four-to-the-floor organ basslines. Despite heavy-handed venue crackdowns and moral panics, the genre fostered an electric, joyful subculture that dominated ringtones, pirate stations, and provincial dancefloors across Britain.",
+      "chips": [
+        "138 BPM",
+        "SHEFFIELD CLUB NICHE",
+        "WARPED 4X4 ORGAN",
+        "NORTHERN BOUNCE"
+      ],
+      "duration": "45:30",
+      "audio": "audio/episode-06-1.mp3",
+      "tracks": [
+        {
+          "title": "Agent X \u2014 Decoy (2003)",
+          "tag": "HEATSEEKER"
+        },
+        {
+          "title": "TRC \u2014 Oo Aa Ee (2005)",
+          "tag": "BASSLINE MOB"
+        },
+        {
+          "title": "DJ Q \u2014 The Original (2004)",
+          "tag": "WE BUILD HITS"
+        },
+        {
+          "title": "Booda ft. Richard O \u2014 Niche Anthem (2003)",
+          "tag": "NICHE"
+        },
+        {
+          "title": "Delinquent ft. Kcat \u2014 My Destiny (2006)",
+          "tag": "SPOOK"
+        },
+        {
+          "title": "TS7 \u2014 Bradford (2007)",
+          "tag": "TS7 PRODUCTIONS"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Ringtone Anthems & Chart Crashers",
+      "subtitle": "RINGTONE ANTHEMS & CHART CRASHERS \u00b7 BLUETOOTH PHONE CULTURE",
+      "era": "2007\u20132010",
+      "desc": "Between 2007 and 2009, Bassline achieved unprecedented commercial dominance as Sheffield and Midlands anthems crashed the national Top 10. T2 and Jodie's 'Heartbroken' and H 'Two' O's 'What's It Gonna Be' became universal youth anthems, blaring out of phone speakers, modified car stereos, and commercial radio stations. Though licensing battles and club closures forced the scene underground once more, its joyful 4x4 bounce left an indelible mark on British dance music.",
+      "chips": [
+        "140 BPM",
+        "TOP 10 RINGTONES",
+        "4X4 MIDLANDS BOUNCE",
+        "CHART DOMINANCE"
+      ],
+      "duration": "31:15",
+      "audio": "audio/episode-06-2.mp3",
+      "tracks": [
+        {
+          "title": "T2 ft. Jodie \u2014 Heartbroken (2007)",
+          "tag": "ALL AROUND THE WORLD"
+        },
+        {
+          "title": "H 'Two' O ft. Platnum \u2014 What's It Gonna Be (2008)",
+          "tag": "HARD2BEAT"
+        },
+        {
+          "title": "DJ Q ft. MC Bonez \u2014 You Wot! (2007)",
+          "tag": "MINISTRY OF SOUND"
+        },
+        {
+          "title": "Danny Bond \u2014 The Pipe (2008)",
+          "tag": "BOND PRODUCTIONS"
+        },
+        {
+          "title": "Wideboys \u2014 Sambuca (Bassline Mix) (2008)",
+          "tag": "AATW"
+        },
+        {
+          "title": "Crazy Cousinz \u2014 Bongo Jam (2008)",
+          "tag": "DEFECTED"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "07",
+    "genre": "UK R&B",
+    "freq": 102.7,
+    "location": "Peckham, South London",
+    "cardImg": "images/Funky house magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "Soulful House Roots & The Vocal Boom",
+      "selectorNote": "Crazy Cousinz feat. Kyla's ‘Do You Mind’ is the sound of a summer a whole generation of London still measures other summers against. I make no apologies for how much space it takes up in this chapter.",
+      "subtitle": "SOULFUL HOUSE ROOTS & THE VOCAL BOOM \u00b7 TRIBAL PERCUSSION",
+      "era": "2006\u20132009",
+      "desc": "UK Funky's soulful, house-rooted beginnings. This episode follows the genre from its tribal house and soca-influenced foundations through the vocal-driven club anthems that defined 2008 and 2009 \u2014 Crazy Cousinz's \u201cDo You Mind\u201d, Donae'o's dancefloor-ready productions, and Skepta's brief detour into funky territory with Jay Sean. Eleven tracks capture a scene built on warm 4x4 rhythms, percussive hooks and infectious vocal lines, right at its most joyful, celebratory and danceable.",
+      "chips": [
+        "130 BPM",
+        "TRIBAL HOUSE",
+        "SOCA INFLUENCE",
+        "LOG DRUM",
+        "FUNKY HOUSE"
+      ],
+      "duration": "50:11",
+      "audio": "audio/episode-07-1.mp3",
+      "tracks": [
+        {
+          "title": "DJ Gregory \u2014 Don't Panic (2006)",
+          "tag": "DEFECTED"
+        },
+        {
+          "title": "Fish Go Deep & Tracey K (Dennis Ferrer Remix) \u2014 The Cure and the Cause (2006)",
+          "tag": "DEFECTED"
+        },
+        {
+          "title": "Enur feat. Natasja \u2014 Calabria 2007 (2007)",
+          "tag": "DATA RECORDS"
+        },
+        {
+          "title": "T2 feat. Jodie Aysha \u2014 Heartbroken (2007)",
+          "tag": "AATW"
+        },
+        {
+          "title": "Princess Nyah \u2014 Frontline (2008)",
+          "tag": "ILL BLU"
+        },
+        {
+          "title": "Attacca Pesante feat. Shea Soul \u2014 Make It Funky For Me (2009)",
+          "tag": "DEFECTED"
+        },
+        {
+          "title": "Crazy Cousinz feat. Kyla \u2014 Do You Mind (2009)",
+          "tag": "DEFECTED"
+        },
+        {
+          "title": "Egypt \u2014 In the Morning (2009)",
+          "tag": "RISKY ROADZ"
+        },
+        {
+          "title": "Dennis Ferrer \u2014 Hey Hey (2009)",
+          "tag": "OBJECTIVITY"
+        },
+        {
+          "title": "Skepta feat. Jay Sean \u2014 Lush (2009)",
+          "tag": "BOY BETTER KNOW"
+        },
+        {
+          "title": "Donae'o \u2014 Devil in a Blue Dress (2009)",
+          "tag": "ZEPHRON"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "The Harder Edge, Percussive Instrumental & MC Anthems",
+      "subtitle": "THE HARDER EDGE \u00b7 PERCUSSIVE INSTRUMENTALS & MC ANTHEMS",
+      "era": "2008\u20132016",
+      "desc": "UK Funky's harder, more percussive side. This episode tracks the genre's instrumental and MC-driven anthems, from Hardhouse Banton's \u201cSirens\u201d to Roska's remix work and dance-craze records like \u201cMigraine Skank\u201d and \u201cHead, Shoulder, Kneez, and Toez\u201d. Twelve tracks follow the sound through its evolutions, remixes and revivals up to 2016, showing how UK Funky's log-drum rhythms and rolling bassline energy kept dancefloors moving long after its commercial chart peak had already passed.",
+      "chips": [
+        "130 BPM",
+        "LOG DRUM",
+        "DANCE CRAZE",
+        "PERCUSSION",
+        "MC HYPE"
+      ],
+      "duration": "34:50",
+      "audio": "audio/episode-07-2.mp3",
+      "tracks": [
+        {
+          "title": "Hardhouse Banton \u2014 Sirens (2008)",
+          "tag": "SPOOK"
+        },
+        {
+          "title": "DJ Naughty \u2014 QuickTime (2008)",
+          "tag": "ROSKA KICKS"
+        },
+        {
+          "title": "DJ Naughty (Roska Remix) \u2014 QuickTime (2009)",
+          "tag": "ROSKA KICKS"
+        },
+        {
+          "title": "Apple \u2014 De Sievert (2009)",
+          "tag": "DUBPLATE"
+        },
+        {
+          "title": "Perempay & Dee \u2014 Buss It (2009)",
+          "tag": "PEREMPAY"
+        },
+        {
+          "title": "K.I.G \u2014 Head, Shoulder, Kneez, and Toez (2008)",
+          "tag": "LEVELS"
+        },
+        {
+          "title": "Gracious K \u2014 Migraine Skank (2009)",
+          "tag": "SONY MUSIC"
+        },
+        {
+          "title": "Donae'O \u2014 African Warrior (2009)",
+          "tag": "ZEPHRON"
+        },
+        {
+          "title": "Funky Dee \u2014 Are You Gonna Bang Doe? (2010)",
+          "tag": "FUNKY DEE"
+        },
+        {
+          "title": "Roska \u2014 Abrupt (2009)",
+          "tag": "NIGHT SLUGS"
+        },
+        {
+          "title": "Champion \u2014 Lighter VIP (2011)",
+          "tag": "BUTTERZ"
+        },
+        {
+          "title": "Donae'O feat. Big Tobz & Blittz \u2014 My Circle (2016)",
+          "tag": "ZEPHRON"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "08",
+    "genre": "UK RAP & DRILL",
+    "freq": 105.0,
+    "location": "Brixton, South London",
+    "cardImg": "images/Road Rap magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "UK Hip-Hop Roots, Road Rap & The Raw Drill Underground",
+      "selectorNote": "Giggs' ‘Talkin' the Hardest’ is the record I point to when people ask where drill's tone actually came from, years before anyone was calling it that. The lineage matters more than whatever label gets put on it later.",
+      "subtitle": "UK HIP-HOP ROOTS, ROAD RAP & THE RAW DRILL UNDERGROUND",
+      "era": "1990\u20132017",
+      "desc": "UK Drill's deeper roots. Before balaclavas and sliding hi-hats, there was UK Hip-Hop and Road Rap \u2014 London Posse, Roots Manuva and Giggs laying the groundwork for a distinctly British street-rap sound. This episode traces that lineage through Klashnekoff, Krept & Konan and J Hus, to Drill's raw underground arrival via Section Boyz, 67 and Harlem Spartans, showing how decades of UK rap history fed directly into one of Britain's most influential modern genres.",
+      "chips": [
+        "140 BPM",
+        "ROAD RAP",
+        "SLIDING HI-HATS",
+        "808 BASS",
+        "POSTCODE CULTURE"
+      ],
+      "duration": "48:12",
+      "audio": "audio/episode-08-1.mp3",
+      "tracks": [
+        {
+          "title": "London Posse \u2014 Money Mad (1990)",
+          "tag": "MANGO"
+        },
+        {
+          "title": "Roots Manuva \u2014 Witness (1 Hope) (2001)",
+          "tag": "BIG DADA"
+        },
+        {
+          "title": "Klashnekoff \u2014 Murda (2004)",
+          "tag": "KOLD STRIP"
+        },
+        {
+          "title": "Skinnyman \u2014 Council Estate of Mind (2004)",
+          "tag": "LOW LIFE"
+        },
+        {
+          "title": "P.D.C. \u2014 Camberwell / South London (2006)",
+          "tag": "PDC"
+        },
+        {
+          "title": "Giggs \u2014 Talkin' the Hardest (2007)",
+          "tag": "SN1"
+        },
+        {
+          "title": "K Koke \u2014 Are You Enuff (2010)",
+          "tag": "ROC NATION"
+        },
+        {
+          "title": "Wretch 32 feat. Josh Kumra \u2014 Don't Go (2011)",
+          "tag": "MINISTRY"
+        },
+        {
+          "title": "Sneakbo \u2014 Wavey (2012)",
+          "tag": "PLAY DIRTY"
+        },
+        {
+          "title": "Krept & Konan \u2014 Don't Waste My Time (2013)",
+          "tag": "PLAY DIRTY"
+        },
+        {
+          "title": "Yungen feat. Sneakbo \u2014 Ain't On Nuttin (2014)",
+          "tag": "PLAY DIRTY"
+        },
+        {
+          "title": "Section Boyz \u2014 Lock Arff (2015)",
+          "tag": "SECTION"
+        },
+        {
+          "title": "J Hus \u2014 Lean & Bop (2015)",
+          "tag": "BLACK BUTTER"
+        },
+        {
+          "title": "67 x Giggs \u2014 Let's Lurk (2016)",
+          "tag": "67 RECORDS"
+        },
+        {
+          "title": "Loski (Harlem Spartans) \u2014 Hazards (2016)",
+          "tag": "HARLEM"
+        },
+        {
+          "title": "MizOrMac (Harlem Spartans) \u2014 Kennington Where It Started (2017)",
+          "tag": "HARLEM"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "The Golden Era of UK Drill & Modern UK Rap",
+      "subtitle": "THE GOLDEN ERA OF UK DRILL & MODERN UK RAP",
+      "era": "2016\u20132024",
+      "desc": "UK Drill goes mainstream. This episode follows the genre's rapid rise from 2016 to 2024 \u2014 Headie One and Unknown T's breakthrough hits, Dave and Fredo's chart-topping collaborations, Tion Wayne and Russ Millions' number-one remix \u2014 through to Central Cee and Little Simz's global crossover success. Sixteen tracks trace how a raw, hyper-local London sound became one of the most commercially dominant forces in modern UK and international rap music.",
+      "chips": [
+        "142 BPM",
+        "BALACLAVA AESTHETIC",
+        "SAMPLE DRILL",
+        "GRITTY STORYTELLING",
+        "CHART TOPPER"
+      ],
+      "duration": "33:20",
+      "audio": "audio/episode-08-2.mp3",
+      "tracks": [
+        {
+          "title": "Abra Cadabra \u2014 Robbery (Remix) (2016)",
+          "tag": "OVO SOUND"
+        },
+        {
+          "title": "Fredo \u2014 They Ain't 100 (2016)",
+          "tag": "PG RECORDS"
+        },
+        {
+          "title": "K-Trap x Mischief feat. Youngs Teflon \u2014 Trap Line Bling (2017)",
+          "tag": "K-TRAP"
+        },
+        {
+          "title": "Bugzy Malone \u2014 King of the North (2017)",
+          "tag": "ILL GOT RECORDS"
+        },
+        {
+          "title": "Headie One \u2014 Know Better (2018)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "Unknown T \u2014 Homerton B (2018)",
+          "tag": "ISLAND"
+        },
+        {
+          "title": "Dave feat. Fredo \u2014 Funky Friday (2018)",
+          "tag": "NEIGHBOURHOOD"
+        },
+        {
+          "title": "Zone 2 (PS x Trizzac x Narsty) \u2014 No Censor! (2019)",
+          "tag": "ZONE 2"
+        },
+        {
+          "title": "Russ Millions x Tion Wayne \u2014 Keisha & Becky (Remix) (2019)",
+          "tag": "VIRGIN EMI"
+        },
+        {
+          "title": "Dave \u2014 Streatham (2019)",
+          "tag": "NEIGHBOURHOOD"
+        },
+        {
+          "title": "Knucks \u2014 Home (2020)",
+          "tag": "NODAYSOFF"
+        },
+        {
+          "title": "Tion Wayne x Russ Millions \u2014 Body (Remix) (2021)",
+          "tag": "ATLANTIC"
+        },
+        {
+          "title": "Central Cee \u2014 DoJa (2022)",
+          "tag": "CC RECORDS"
+        },
+        {
+          "title": "Little Simz \u2014 Gorilla (2022)",
+          "tag": "FOREVER LIVING ORIGINALS"
+        },
+        {
+          "title": "Central Cee & Dave \u2014 Sprinter (2023)",
+          "tag": "NEIGHBOURHOOD"
+        },
+        {
+          "title": "Nemzzz \u2014 2AM (2024)",
+          "tag": "NEMZZZ"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "09",
+    "genre": "ALTERNATIVE",
+    "freq": 107.3,
+    "location": "London (West End)",
+    "cardImg": "images/Drill Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "Soul, Street-Soul & The Classic Golden Era",
+      "selectorNote": "Sade doesn't usually get filed next to jungle and grime, but she should. ‘Smooth Operator’ is proof that London's Black music scenes were always in conversation with each other — not separate rooms, one continuous lineage.",
+      "subtitle": "SOUL, STREET-SOUL & THE CLASSIC GOLDEN ERA",
+      "era": "1985\u20132005",
+      "desc": "UK R&B's classic golden era. This episode traces the genre from Sade and Loose Ends's smooth 1980s soul through Eternal and Beverley Knight's 90s vocal power, to Craig David and Mis-Teeq's turn-of-the-millennium chart dominance. Thirteen tracks capture British R&B finding its own voice \u2014 silky vocals, garage-adjacent production and confident songwriting that would go on to shape a whole generation of British pop and soul music.",
+      "chips": [
+        "SOUL",
+        "NEO-SOUL",
+        "VOCAL HARMONY",
+        "SMOOTH GROOVE",
+        "STREET-SOUL"
+      ],
+      "duration": "44:50",
+      "audio": "audio/episode-09-1.mp3",
+      "tracks": [
+        {
+          "title": "Loose Ends \u2014 Hangin' on a String (Contemplating) (1985)",
+          "tag": "VIRGIN"
+        },
+        {
+          "title": "Sade \u2014 Smooth Operator (1984)",
+          "tag": "EPIC"
+        },
+        {
+          "title": "Mica Paris \u2014 My One Temptation (1988)",
+          "tag": "4TH & B'WAY"
+        },
+        {
+          "title": "Soul II Soul \u2014 Keep On Movin' (1989)",
+          "tag": "10 RECORDS"
+        },
+        {
+          "title": "Eternal \u2014 Stay (1993)",
+          "tag": "EMI"
+        },
+        {
+          "title": "Beverley Knight \u2014 Flavour of the Old School (1995)",
+          "tag": "DOME RECORDS"
+        },
+        {
+          "title": "Mark Morrison \u2014 Return of the Mack (1996)",
+          "tag": "WEA"
+        },
+        {
+          "title": "Shola Ama \u2014 You Might Need Somebody (1997)",
+          "tag": "FREAKSTREET"
+        },
+        {
+          "title": "Craig David \u2014 7 Days (2000)",
+          "tag": "WILDSTAR"
+        },
+        {
+          "title": "Mis-Teeq \u2014 All I Want (2001)",
+          "tag": "TELSTAR"
+        },
+        {
+          "title": "Lemar \u2014 Dance (With U) (2003)",
+          "tag": "SONY MUSIC"
+        },
+        {
+          "title": "Amy Winehouse \u2014 Fuck Me Pumps (2003)",
+          "tag": "ISLAND"
+        },
+        {
+          "title": "Jay Sean \u2014 Eyes On You (2004)",
+          "tag": "RELENTLESS"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Neo-Soul, Alternative R&B & Global Superstars",
+      "subtitle": "NEO-SOUL, ALTERNATIVE R&B & GLOBAL SUPERSTARS",
+      "era": "2006\u20132024",
+      "desc": "UK R&B's modern, boundary-pushing generation. This episode follows the genre's shift into neo-soul and alternative territory \u2014 James Blake and Sampha's minimalist experimentation, Jorja Smith and Ella Mai's global breakthroughs, Cleo Sol's understated warmth and Odeal's smooth Afro-fusion, through to RAYE's genre-defying, chart-topping run. Thirteen tracks show how British R&B kept evolving decade after decade, blending soul, electronic production and pop into something distinctly its own.",
+      "chips": [
+        "NEO-SOUL",
+        "ALTERNATIVE R&B",
+        "SILKY PRODUCTION",
+        "CROSSOVER POP",
+        "GLOBAL"
+      ],
+      "duration": "30:40",
+      "audio": "audio/episode-09-2.mp3",
+      "tracks": [
+        {
+          "title": "Amy Winehouse \u2014 Tears Dry on Their Own (2006)",
+          "tag": "ISLAND"
+        },
+        {
+          "title": "Estelle feat. Kanye West \u2014 American Boy (2008)",
+          "tag": "ATLANTIC"
+        },
+        {
+          "title": "James Blake \u2014 Retrograde (2013)",
+          "tag": "POLYDOR"
+        },
+        {
+          "title": "Sampha \u2014 Blood On Me (2016)",
+          "tag": "YOUNG TURKS"
+        },
+        {
+          "title": "Nao \u2014 Bad Blood (2016)",
+          "tag": "RCA"
+        },
+        {
+          "title": "Jorja Smith \u2014 Blue Lights (2016)",
+          "tag": "FAMM"
+        },
+        {
+          "title": "Mahalia \u2014 Sober (2017)",
+          "tag": "ATLANTIC"
+        },
+        {
+          "title": "Ella Mai \u2014 Boo'd Up (2017)",
+          "tag": "INTERSCOPE"
+        },
+        {
+          "title": "Cleo Sol \u2014 When I'm in Your Arms (2020)",
+          "tag": "FOREVER LIVING ORIGINALS"
+        },
+        {
+          "title": "Odeal \u2014 More Life (2020)",
+          "tag": "OVMBR"
+        },
+        {
+          "title": "FLO \u2014 Cardboard Box (2022)",
+          "tag": "ISLAND"
+        },
+        {
+          "title": "RAYE feat. 070 Shake \u2014 Escapism. (2022)",
+          "tag": "HUMAN RE SOURCES"
+        },
+        {
+          "title": "RAYE \u2014 Worth It. (2023)",
+          "tag": "HUMAN RE SOURCES"
+        }
+      ]
+    }
+  },
+  {
+    "epNum": "10",
+    "genre": "MODERN DAY",
+    "freq": 109.8,
+    "location": "Stratford, East London",
+    "cardImg": "images/Afro swing Magazine.webp",
+    "hostName": "DJ PRESIDENT BAILEY",
+    "ep1": {
+      "title": "Transatlantic Royalty & Highlife Fusion",
+      "selectorNote": "J Hus's ‘Did You See’ still sounds like nothing else on this dial — that's the whole afroswing story in one track. East London speaking to Lagos and Kingston at the same time, fluently, like it was never a stretch.",
+      "subtitle": "TRANSATLANTIC ROYALTY \u00b7 JAE5 PRODUCTION & HIGHLIFE FUSION",
+      "era": "2016\u20132019",
+      "desc": "The vibrant culmination of second-generation immigrant identity in modern Britain. Afroswing united the deep heritage of Ghanaian highlife and Nigerian afrobeats with Jamaican dancehall, road rap slang, and London bass sensibilities. Led by pioneers across East and South London, this melodic, sun-drenched hybrid claimed prime-time radio, festival mainstages, and global streaming charts, asserting Black British cultural identity as an unshakeable transatlantic powerhouse that continues to shape modern global pop music.",
+      "chips": [
+        "105 BPM",
+        "EAST LONDON FUSION",
+        "MELODIC HIGHLIFE",
+        "JAE5 BEATS"
+      ],
+      "duration": "53:40",
+      "audio": "audio/episode-10-1.mp3",
+      "tracks": [
+        {
+          "title": "J Hus \u2014 Did You See (2017)",
+          "tag": "BLACK BUTTER"
+        },
+        {
+          "title": "Dave ft. J Hus \u2014 Samantha (2017)",
+          "tag": "NEIGHBOURHOOD"
+        },
+        {
+          "title": "Kojo Funds \u2014 Warning (2016)",
+          "tag": "ATLANTIC"
+        },
+        {
+          "title": "Not3s \u2014 Addison Lee (2017)",
+          "tag": "RELENTLESS"
+        },
+        {
+          "title": "IAMDDB \u2014 Shade (2017)",
+          "tag": "UNION IV"
+        },
+        {
+          "title": "Ramz \u2014 Barking (2017)",
+          "tag": "POLYDOR"
+        }
+      ]
+    },
+    "ep2": {
+      "title": "Global Afrobeats & Modern Soundscape",
+      "subtitle": "GLOBAL AFROBEATS & MODERN SOUNDSCAPE \u00b7 STADIUM TOURS",
+      "era": "2020\u20132024",
+      "desc": "In the 2020s, Afroswing's British-diaspora DNA merged directly with the worldwide explosion of West African Afrobeats and South African Amapiano. Major artists like Burna Boy, Wizkid, and J Hus dominated international arena tours and festival headline slots, cementing London as the undisputed cultural capital of modern transatlantic Black music. Its warm melodies, infectious syncopated percussion, and effortless street lyricism continue to soundtrack the UK and influence contemporary urban music across the globe.",
+      "chips": [
+        "108 BPM",
+        "STADIUM AFROBEATS",
+        "TRANSATLANTIC WAVES",
+        "AMAPIANO FUSION"
+      ],
+      "duration": "36:15",
+      "audio": "audio/episode-10-2.mp3",
+      "tracks": [
+        {
+          "title": "J Hus ft. Burna Boy \u2014 Play Play (2020)",
+          "tag": "BLACK BUTTER"
+        },
+        {
+          "title": "Darkoo ft. One Acen \u2014 Gangsta (2020)",
+          "tag": "ATLANTIC"
+        },
+        {
+          "title": "NSG \u2014 Petite (2021)",
+          "tag": "NSG ENTERTAINMENT"
+        },
+        {
+          "title": "Krept & Konan \u2014 Freak of the Week (2015)",
+          "tag": "VIRGIN EMI"
+        },
+        {
+          "title": "Wizkid ft. Tems \u2014 Essence (2020)",
+          "tag": "STARBOY"
+        },
+        {
+          "title": "Jae5 ft. Skepta & Rema \u2014 Dimension (2021)",
+          "tag": "BLACK BUTTER"
+        }
+      ]
+    }
+  }
+];
+
+    let currentStationIndex = 0; // Start on EP 05 Dubstep (98.1 MHz)
+    let currentEpisodeNum = 1;   // Episode 1 by default
+    let isPlaying = false;
+    let isTracksOpen = false;     // Dropdown open by default
+    let timerInterval = null;
+    let secondsElapsed = 0;
+    let currentThemeClass = 'theme-ep01';
+    let audioElement = null;
+
+        // Build Ruler Ticks for 10 Fixed Frequencies (Perfect Station Alignment)
+    function initDialTicks() {
+      const ticksContainer = document.getElementById('dial-ticks');
+      const stationsRow = document.getElementById('dial-stations-row');
+      if (!ticksContainer || !stationsRow) return;
+      ticksContainer.innerHTML = '';
+      stationsRow.innerHTML = '';
+
+      const numStations = STATIONS.length;
+      for (let s = 0; s < numStations; s++) {
+        const seg = document.createElement('div');
+        seg.className = 'ruler-segment';
+        seg.style.width = `${100 / numStations}%`;
+
+        // Sub-ticks
+        const t1 = document.createElement('div');
+        t1.className = 'tick minor';
+        seg.appendChild(t1);
+
+        const t2 = document.createElement('div');
+        t2.className = 'tick minor';
+        seg.appendChild(t2);
+
+        // Aligned Center Major Tick
+        const tMajor = document.createElement('div');
+        tMajor.className = 'tick major' + (s === currentStationIndex ? ' active-tick' : '');
+        tMajor.id = `dial-tick-${s}`;
+        seg.appendChild(tMajor);
+
+        const t3 = document.createElement('div');
+        t3.className = 'tick minor';
+        seg.appendChild(t3);
+
+        const t4 = document.createElement('div');
+        t4.className = 'tick minor';
+        seg.appendChild(t4);
+
+        ticksContainer.appendChild(seg);
+      }
+
+      STATIONS.forEach((st, idx) => {
+        const node = document.createElement('div');
+        node.className = 'station-node' + (idx === currentStationIndex ? ' active' : '');
+        node.id = `station-node-${idx}`;
+        node.innerHTML = `
+          <div class="station-freq">${st.freq.toFixed(1)}</div>
+          <div class="station-genre">${st.genre}</div>
+        `;
+        node.onclick = (e) => {
+          e.stopPropagation();
+          selectStation(idx);
+        };
+        stationsRow.appendChild(node);
+      });
+    }
+
+    // Set Episode (1 or 2) on the current station frequency
+        // Set Episode (1 or 2) on the current station frequency
+        function scrollToTunerDeck(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const deck = document.getElementById('console-card');
+      if (deck) {
+        const yOffset = -90;
+        const y = deck.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+
+    function setEpisodePart(epNum) {
+      currentEpisodeNum = epNum;
+      
+      // Update Part Buttons in switcher
+      const btn1 = document.getElementById('btn-part-1');
+      const btn2 = document.getElementById('btn-part-2');
+      if (btn1 && btn2) {
+        if (epNum === 1) {
+          btn1.classList.add('active');
+          btn2.classList.remove('active');
+        } else {
+          btn2.classList.add('active');
+          btn1.classList.remove('active');
+        }
+      }
+
+      // Update Quick Toggle Button Labels
+      const sideLabel = epNum === 1 ? 'EPISODE 1 (SIDE A)' : 'EPISODE 2 (SIDE B)';
+      const nextSideLabel = epNum === 1 ? 'SWITCH TO EPISODE 2' : 'SWITCH TO EPISODE 1';
+      const quickLabel = document.getElementById('quick-part-toggle-label');
+      if (quickLabel) quickLabel.textContent = sideLabel;
+      
+      const switchText = document.getElementById('switch-btn-text');
+      if (switchText) switchText.textContent = nextSideLabel;
+
+      // Deep link + resume: reflect this episode in the URL and remember it
+      history.replaceState(null, '', buildChapterHash(currentStationIndex, epNum));
+      saveLastVisit(currentStationIndex, epNum);
+
+      // Re-render UI for selected episode (frequency stays untouched)
+      updateEpisodeDisplay();
+    }
+
+    // Toggle Episode between 1 and 2
+    function toggleCurrentPart() {
+      setEpisodePart(currentEpisodeNum === 1 ? 2 : 1);
+    }
+
+    // Advance to the next chapter on the dial (wraps around after the last one)
+    function goToNextChapter() {
+      const nextIdx = (currentStationIndex + 1) % STATIONS.length;
+      selectStation(nextIdx);
+      scrollToTunerDeck();
+    }
+
+    // Select Frequency Station on Tuner
+    function selectStation(idx) {
+      currentStationIndex = idx;
+      const st = STATIONS[idx];
+      if (!st) return;
+
+      const dialContainer = document.getElementById('dial-container');
+      if (dialContainer) {
+        dialContainer.setAttribute('aria-valuenow', String(idx + 1));
+        dialContainer.setAttribute('aria-valuetext', `Chapter ${st.epNum}, ${st.genre}, ${st.freq.toFixed(1)} MHz`);
+      }
+
+      const nextChapterLabel = document.getElementById('next-chapter-label');
+      if (nextChapterLabel) {
+        const nextSt = STATIONS[(idx + 1) % STATIONS.length];
+        nextChapterLabel.textContent = `${nextSt.genre} →`;
+      }
+
+      // Deep link + resume: reflect this chapter in the URL and remember it
+      history.replaceState(null, '', buildChapterHash(idx, currentEpisodeNum));
+      saveLastVisit(idx, currentEpisodeNum);
+
+      // Swap Theme Class on Body (like index.html)
+      if (currentThemeClass) document.body.classList.remove(currentThemeClass);
+      currentThemeClass = `theme-ep${st.epNum}`;
+      document.body.classList.add(currentThemeClass);
+
+      // Update Needle Position
+      const percent = ((idx + 0.5) / STATIONS.length) * 100;
+      const needle = document.getElementById('dial-needle');
+      if (needle) needle.style.left = `${percent}%`;
+
+      // Update Active Node
+      document.querySelectorAll('.station-node').forEach((n, i) => {
+        if (i === idx) n.classList.add('active');
+        else n.classList.remove('active');
+      });
+
+      document.querySelectorAll('.tick.major').forEach((t, i) => {
+        if (i === idx) t.classList.add('active-tick');
+        else t.classList.remove('active-tick');
+      });
+
+      // Update Top Meta
+      const epNumEl = document.getElementById('meta-ep-num');
+      if (epNumEl) epNumEl.textContent = `${st.epNum}/${STATIONS.length}`;
+      
+      const freqEl = document.getElementById('meta-freq');
+      if (freqEl) freqEl.textContent = `${st.freq.toFixed(1)} MHZ`;
+      
+      const genrePill = document.getElementById('tx-genre-pill');
+      if (genrePill) genrePill.textContent = st.genre;
+      
+      const locTag = document.getElementById('tx-location-tag');
+      if (locTag) locTag.innerHTML = `<span>BLACK BUDDHA HQ — ${st.location.toUpperCase()}</span> <span class="host-tech-badge">${st.freq.toFixed(1)} FM</span>`;
+      const sigBadge = document.getElementById('signal-badge-text');
+      if (sigBadge) sigBadge.textContent = `SIGNAL: ${st.freq.toFixed(1)} FM`;
+      
+      const tickerGenre = document.getElementById('ticker-genre');
+      if (tickerGenre) tickerGenre.textContent = st.genre;
+      document.querySelectorAll('.ticker-genre-text').forEach(el => { el.textContent = st.genre; });
+
+      // Render Active Episode on this frequency
+      updateEpisodeDisplay();
+
+      // Play short tuner static burst
+      playTunerStaticSound();
+    }
+
+    // Update all episode elements dynamically on the current frequency
+    function updateEpisodeDisplay() {
+      const st = STATIONS[currentStationIndex];
+      if (!st) return;
+      const epData = currentEpisodeNum === 1 ? st.ep1 : st.ep2;
+      if (!epData) return;
+      const sideTag = currentEpisodeNum === 1 ? 'EPISODE 1' : 'EPISODE 2';
+
+      // Magazine Cover Card
+      const magBadge = document.getElementById('mag-issue-badge');
+      if (magBadge) magBadge.textContent = `CHAPTER ${st.epNum} — ${sideTag}`;
+      
+      const magImg = document.getElementById('mag-real-img');
+      if (magImg) {
+        magImg.src = st.cardImg;
+        magImg.alt = `${st.genre} chapter magazine cover — Chapter ${st.epNum}, ${sideTag}`;
+      }
+
+      // Transmission Top Meta
+      const chapterText = document.getElementById('tx-chapter-text');
+      if (chapterText) chapterText.textContent = `TRANSMISSION EP ${st.epNum}.${currentEpisodeNum} — ${epData.era}`;
+
+      // Title & Highlight
+      const titleEl = document.getElementById('tx-title');
+      const epPrefix = currentEpisodeNum === 1 ? 'EP 01' : 'EP 02';
+      if (titleEl) titleEl.innerHTML = `${epPrefix} <span class="title-genre-highlight">${st.genre}</span>: ${epData.title.toUpperCase()}`;
+
+      // Subtitle (if element exists)
+      const subEl = document.getElementById('tx-subtitle');
+      if (subEl && epData.subtitle) subEl.textContent = epData.subtitle;
+
+      // Micro Chips Row
+      const chipsRow = document.getElementById('tx-chips-row');
+      if (chipsRow) {
+        chipsRow.innerHTML = '';
+        if (epData.chips) {
+          epData.chips.forEach(chip => {
+            const chipEl = document.createElement('span');
+            chipEl.className = 'tx-chip';
+            chipEl.textContent = chip;
+            chipsRow.appendChild(chipEl);
+          });
+        }
+      }
+
+      // Editorial Blurb & Word Count
+      const descBox = document.getElementById('tx-desc-box');
+      if (descBox) descBox.textContent = epData.desc;
+
+      // Selector's Desk — only shown when a chapter has a curator's note
+      const selectorDeskWrapper = document.getElementById('selector-desk-wrapper');
+      const selectorDeskText = document.getElementById('selector-desk-text');
+      if (selectorDeskWrapper && selectorDeskText) {
+        if (epData.selectorNote) {
+          selectorDeskText.textContent = epData.selectorNote;
+          selectorDeskWrapper.style.display = '';
+        } else {
+          selectorDeskWrapper.style.display = 'none';
+        }
+      }
+
+
+      // Location tag
+      const locTag = document.getElementById('tx-location-tag');
+      const freqEl = document.getElementById('meta-freq');
+      if (freqEl) freqEl.textContent = `${st.freq.toFixed(1)} MHZ`;
+      const epNumEl = document.getElementById('meta-ep-num');
+      if (epNumEl) epNumEl.textContent = `${st.epNum}/${STATIONS.length}`;
+      if (locTag) locTag.innerHTML = `<span>BLACK BUDDHA HQ — ${st.location.toUpperCase()}</span> <span class="host-tech-badge">${st.freq.toFixed(1)} FM</span>`;
+      const sigBadge = document.getElementById('signal-badge-text');
+      if (sigBadge) sigBadge.textContent = `SIGNAL: ${st.freq.toFixed(1)} FM`;
+      
+      const tickerGenre = document.getElementById('ticker-genre');
+      if (tickerGenre) tickerGenre.textContent = st.genre;
+      document.querySelectorAll('.ticker-genre-text').forEach(el => { el.textContent = st.genre; });
+
+      // Tracks Header & List
+      const tracksHeading = document.getElementById('tracks-heading-text');
+      if (tracksHeading) tracksHeading.textContent = `KEY TRACKS & DUBPLATES — EPISODE ${currentEpisodeNum}`;
+      
+      renderTracks(epData.tracks);
+
+      // Play & Music Controls
+      const playText = document.getElementById('play-text');
+      if (playText) playText.textContent = isPlaying ? `PAUSE TRANSMISSION (EPISODE ${currentEpisodeNum})` : `TUNE IN & PLAY EPISODE ${currentEpisodeNum}`;
+      
+      // Reset scrubber
+      secondsElapsed = 0;
+      const totalSecs = parseDurationToSeconds(epData.duration);
+      updateScrubberUI(totalSecs, epData.duration);
+      
+      if (audioElement && epData.audio) {
+        audioElement.src = epData.audio;
+      }
+    }
+
+        function renderTracks(tracks) {
+      const listContainer = document.getElementById('tracks-list-container');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      if (!tracks || !Array.isArray(tracks)) return;
+
+      tracks.forEach((track, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        const title = typeof track === 'string' ? track : (track.title || '');
+        const tag = (track && track.tag) ? track.tag : 'DUBPLATE';
+        const row = document.createElement('div');
+        row.className = 'track-row-item';
+        row.innerHTML = `
+          <div class="track-left-meta">
+            <span class="track-row-num">${num}</span>
+            <span class="track-row-title">${title}</span>
+          </div>
+          <span class="track-chip-badge">${tag}</span>
+        `;
+        listContainer.appendChild(row);
+      });
+
+      const badge = document.getElementById('toggle-count-badge');
+      if (badge) badge.textContent = `(${tracks.length} TRACKS)`;
+    }
+
+    // Dropdown Toggle Logic
+    function toggleTracksDropdown() {
+      isTracksOpen = !isTracksOpen;
+      const toggleBtn = document.getElementById('tracks-dropdown-toggle');
+      const wrapper = document.getElementById('tracks-collapsible-wrapper');
+
+      if (isTracksOpen) {
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        wrapper.classList.remove('collapsed');
+      } else {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        wrapper.classList.add('collapsed');
+      }
+    }
+
+    // ── Free-dragging tuner dial ─────────────────────────────────────
+    // The needle can be dragged to any position along the ruler, not just
+    // snapped to a station. It only locks onto a station (and stops the
+    // static) once it's close enough to one; otherwise a static hiss plays,
+    // like scanning between real stations.
+    const DIAL_LOCK_THRESHOLD_PCT = 2.5; // half-width of the "locked on" zone around each station
+    let isDraggingDial = false;
+
+    function dialPercentForClientX(clientX) {
+      const rect = document.getElementById('dial-container').getBoundingClientRect();
+      if (!rect.width) return 0;
+      return Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    }
+
+    function nearestStationForPercent(pct) {
+      const segment = 100 / STATIONS.length;
+      const idx = Math.max(0, Math.min(STATIONS.length - 1, Math.floor(pct / segment)));
+      const stationCenter = (idx + 0.5) * segment;
+      return { idx, distance: Math.abs(pct - stationCenter) };
+    }
+
+    function handleDialPointerDown(e) {
+      // Station-name buttons below the ruler have their own click-to-select
+      // behavior — don't hijack presses on them into a drag.
+      if (e.target.closest && e.target.closest('.station-node')) return;
+
+      isDraggingDial = true;
+      const dial = document.getElementById('dial-container');
+      try { dial.setPointerCapture(e.pointerId); } catch (err) {}
+      const needle = document.getElementById('dial-needle');
+      if (needle) needle.style.transition = 'none';
+      handleDialPointerMove(e);
+    }
+
+    function handleDialPointerMove(e) {
+      if (!isDraggingDial) return;
+      e.preventDefault();
+      const pct = dialPercentForClientX(e.clientX);
+      const needle = document.getElementById('dial-needle');
+      if (needle) needle.style.left = `${pct}%`;
+
+      const { distance } = nearestStationForPercent(pct);
+      if (distance > DIAL_LOCK_THRESHOLD_PCT) {
+        startTuningStatic();
+      } else {
+        stopTuningStatic(true);
+      }
+    }
+
+    function handleDialPointerUp(e) {
+      if (!isDraggingDial) return;
+      isDraggingDial = false;
+      const dial = document.getElementById('dial-container');
+      try { dial.releasePointerCapture(e.pointerId); } catch (err) {}
+      const needle = document.getElementById('dial-needle');
+      if (needle) needle.style.transition = '';
+
+      const pct = dialPercentForClientX(e.clientX);
+      const { idx } = nearestStationForPercent(pct);
+      stopTuningStatic(true);
+      selectStation(idx);
+    }
+
+    function handleDialKeydown(e) {
+      const keyToDelta = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 };
+      if (e.key === 'Home') {
+        e.preventDefault();
+        selectStation(0);
+        return;
+      }
+      if (e.key === 'End') {
+        e.preventDefault();
+        selectStation(STATIONS.length - 1);
+        return;
+      }
+      const delta = keyToDelta[e.key];
+      if (delta === undefined) return;
+      e.preventDefault();
+      const targetIdx = Math.max(0, Math.min(STATIONS.length - 1, currentStationIndex + delta));
+      selectStation(targetIdx);
+    }
+
+        function parseDurationToSeconds(durStr) {
+      if (!durStr) return 3000;
+      const parts = durStr.split(':').map(Number);
+      if (parts.length === 2) return parts[0] * 60 + parts[1];
+      if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+      return 3000;
+    }
+
+    function formatSeconds(secs) {
+      const mins = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(Math.floor(secs % 60)).padStart(2, '0');
+      return `${mins}:${s}`;
+    }
+
+    function handleScrubberClick(e) {
+      const track = document.getElementById('scrubber-track');
+      if (!track) return;
+      const rect = track.getBoundingClientRect();
+      const clickX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+      const pct = clickX / rect.width;
+      
+      const st = STATIONS[currentStationIndex];
+      const epData = currentEpisodeNum === 1 ? st.ep1 : st.ep2;
+      const totalSecs = parseDurationToSeconds(epData.duration);
+      
+      secondsElapsed = Math.floor(pct * totalSecs);
+      
+      if (audioElement && !isNaN(audioElement.duration) && audioElement.duration > 0) {
+        try {
+          audioElement.currentTime = (pct * audioElement.duration);
+        } catch(err) {}
+      }
+      
+      updateScrubberUI(totalSecs, epData.duration);
+    }
+
+    function updateScrubberUI(totalSecs, durationStr) {
+      const currentFormatted = formatSeconds(secondsElapsed);
+      const pct = totalSecs > 0 ? Math.min(100, Math.max(0, (secondsElapsed / totalSecs) * 100)) : 0;
+      
+      const progressEl = document.getElementById('scrubber-progress');
+      if (progressEl) progressEl.style.width = `${pct}%`;
+      
+      const scrubCurrent = document.getElementById('scrub-time-current');
+      if (scrubCurrent) scrubCurrent.textContent = currentFormatted;
+      
+      const scrubTotal = document.getElementById('scrub-time-total');
+      if (scrubTotal) scrubTotal.textContent = durationStr;
+      
+      const timecodeEl = document.getElementById('timecode-display');
+      if (timecodeEl) timecodeEl.textContent = `${currentFormatted} / ${durationStr}`;
+    }
+
+    // Toggle Audio Play / Pause
+    function togglePlayActiveTrack() {
+      isPlaying = !isPlaying;
+      const playText = document.getElementById('play-text');
+      const waveEl = document.getElementById('mini-wave');
+
+      if (isPlaying) {
+        playText.textContent = `PAUSE TRANSMISSION (EPISODE ${currentEpisodeNum})`;
+        waveEl.classList.add('playing');
+        if (audioElement) {
+          try { audioElement.play(); } catch(e) {}
+        }
+        startTimer();
+      } else {
+        playText.textContent = `TUNE IN & PLAY EPISODE ${currentEpisodeNum}`;
+        waveEl.classList.remove('playing');
+        if (audioElement) {
+          audioElement.pause();
+        }
+        clearInterval(timerInterval);
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        const st = STATIONS[currentStationIndex];
+        const epData = currentEpisodeNum === 1 ? st.ep1 : st.ep2;
+        const totalSecs = parseDurationToSeconds(epData.duration);
+        if (secondsElapsed >= totalSecs) {
+          secondsElapsed = 0;
+          togglePlayActiveTrack();
+        }
+        updateScrubberUI(totalSecs, epData.duration);
+      }, 1000);
+    }
+
+    // Single shared AudioContext, reused by every static/noise effect
+    // instead of spinning up a new one on every call.
+    let sharedAudioCtx = null;
+    function getSharedAudioContext() {
+      try {
+        if (!sharedAudioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return null;
+          sharedAudioCtx = new AudioContextClass();
+        }
+        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+        return sharedAudioCtx;
+      } catch (e) { return null; }
+    }
+
+    function playTunerStaticSound() {
+      try {
+        const ctx = getSharedAudioContext();
+        if (!ctx) return;
+        const bufferSize = ctx.sampleRate * 0.08;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        noise.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      } catch (e) {}
+    }
+
+    // ── Sustained "between stations" static (used while dragging the
+    //    dial) — fades itself out automatically 3 seconds after it starts
+    //    or was last refreshed, like scanning through dead air. ──
+    let staticNoiseSource = null;
+    let staticNoiseGain = null;
+    let staticFadeTimer = null;
+
+    function startTuningStatic() {
+      const ctx = getSharedAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      if (staticNoiseSource && staticNoiseGain) {
+        // Already playing — just refresh the fade-out envelope.
+        staticNoiseGain.gain.cancelScheduledValues(now);
+        staticNoiseGain.gain.setValueAtTime(staticNoiseGain.gain.value, now);
+        staticNoiseGain.gain.linearRampToValueAtTime(0.05, now + 0.05);
+        staticNoiseGain.gain.linearRampToValueAtTime(0, now + 3);
+      } else {
+        const bufferSize = ctx.sampleRate * 2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        noise.loop = true;
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.05, now + 0.05);
+        gain.gain.linearRampToValueAtTime(0, now + 3);
+
+        noise.connect(gain);
+        gain.connect(ctx.destination);
+        try { noise.start(); } catch (e) {}
+
+        staticNoiseSource = noise;
+        staticNoiseGain = gain;
+      }
+
+      clearTimeout(staticFadeTimer);
+      staticFadeTimer = setTimeout(() => stopTuningStatic(false), 3000);
+    }
+
+    function stopTuningStatic(fast) {
+      clearTimeout(staticFadeTimer);
+      if (!staticNoiseSource || !staticNoiseGain) return;
+      const ctx = getSharedAudioContext();
+      const src = staticNoiseSource;
+      const fadeSecs = fast ? 0.08 : 0.15;
+      if (ctx) {
+        const now = ctx.currentTime;
+        try {
+          staticNoiseGain.gain.cancelScheduledValues(now);
+          staticNoiseGain.gain.setValueAtTime(staticNoiseGain.gain.value, now);
+          staticNoiseGain.gain.linearRampToValueAtTime(0, now + fadeSecs);
+        } catch (e) {}
+      }
+      setTimeout(() => { try { src.stop(); } catch (e) {} }, (fadeSecs * 1000) + 50);
+      staticNoiseSource = null;
+      staticNoiseGain = null;
+    }
+
+    function openActiveMagazine() {
+      const st = STATIONS[currentStationIndex];
+      if (st && typeof window.openBookletModal === 'function') {
+        window.openBookletModal(st, currentEpisodeNum);
+      }
+    }
+
+    // ── Deep linking & resume ──────────────────────────────────────
+    function buildChapterHash(idx, epNum) {
+      const st = STATIONS[idx];
+      if (!st) return '';
+      return epNum === 2 ? `#ep${st.epNum}-2` : `#ep${st.epNum}`;
+    }
+
+    function parseChapterHash(hash) {
+      const m = /^#ep(\d{2})(?:-(\d))?$/.exec(hash || '');
+      if (!m) return null;
+      const idx = STATIONS.findIndex(st => st.epNum === m[1]);
+      if (idx === -1) return null;
+      return { idx, epPart: m[2] === '2' ? 2 : 1 };
+    }
+
+    function saveLastVisit(idx, epNum) {
+      try {
+        localStorage.setItem('bbfm_last_visit', JSON.stringify({ idx, epNum }));
+      } catch (e) {}
+    }
+
+    function loadLastVisit() {
+      try {
+        const raw = localStorage.getItem('bbfm_last_visit');
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.idx === 'number' && STATIONS[parsed.idx]) {
+          return { idx: parsed.idx, epPart: parsed.epNum === 2 ? 2 : 1 };
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function resolveInitialChapter() {
+      return parseChapterHash(window.location.hash) || loadLastVisit() || { idx: 0, epPart: 1 };
+    }
+
+    // ── Scan to a random chapter ───────────────────────────────────
+    function scanRandomChapter() {
+      if (STATIONS.length <= 1) return;
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * STATIONS.length);
+      } while (idx === currentStationIndex);
+      selectStation(idx);
+      scrollToTunerDeck();
+    }
+
+    // ── Share the current chapter ──────────────────────────────────
+    async function shareCurrentChapter() {
+      const st = STATIONS[currentStationIndex];
+      if (!st) return;
+      const url = window.location.origin + window.location.pathname + buildChapterHash(currentStationIndex, currentEpisodeNum);
+      const shareText = `${st.genre} — Chapter ${st.epNum} on Black Buddha FM`;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'Black Buddha FM', text: shareText, url });
+          return;
+        } catch (e) {
+          // user cancelled the native share sheet, or it's unsupported — fall through to clipboard
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        const btn = document.getElementById('btn-share-chapter');
+        if (btn) {
+          const original = btn.textContent;
+          btn.textContent = 'LINK COPIED';
+          setTimeout(() => { btn.textContent = original; }, 1800);
+        }
+      } catch (e) {}
+    }
+
+    // ── Light / dark theme toggle ──────────────────────────────────
+    function updateThemeToggleUI() {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (!btn) return;
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      btn.setAttribute('aria-pressed', String(isLight));
+      btn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+      btn.textContent = isLight ? '☀' : '☾';
+    }
+
+    function initThemeToggle() {
+      try {
+        if (localStorage.getItem('bbfm_theme') === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+      updateThemeToggleUI();
+    }
+
+    function toggleLightMode() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      try { localStorage.setItem('bbfm_theme', isLight ? 'dark' : 'light'); } catch (e) {}
+      updateThemeToggleUI();
+    }
+
+    // ── Global keyboard shortcuts ──────────────────────────────────
+    document.addEventListener('keydown', (e) => {
+      if (window.isMagazineModalOpen && window.isMagazineModalOpen()) return;
+
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      const isFormControl = ['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT'].includes(tag);
+      if (isFormControl) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlayActiveTrack();
+      } else if (e.key === 'r' || e.key === 'R') {
+        scanRandomChapter();
+      }
+    });
+
+    // Init on load
+    document.addEventListener('DOMContentLoaded', () => {
+      audioElement = document.getElementById('main-audio');
+      initDialTicks();
+      initThemeToggle();
+
+      const initial = resolveInitialChapter();
+      selectStation(initial.idx);
+      setEpisodePart(initial.epPart);
+    });
+  
+</script>
+
+  <!-- PERSISTENT MINI-PLAYER -->
+  <div class="persistent-mini-player" id="persistent-player" aria-label="Persistent Mini Player"
+    style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 2px solid var(--theme-primary); padding: 12px 24px; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+    <div class="mini-player-inner"
+      style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1400px; margin: 0 auto; gap: 16px; flex-wrap: wrap;">
+      <div class="mini-info" style="display: flex; align-items: center; gap: 10px; min-width: 250px;">
+        <span class="mini-ep" id="mini-player-ep"
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--theme-primary); background: rgba(var(--theme-primary-rgb), 0.1); border: 1px solid var(--theme-primary); padding: 2px 6px; border-radius: 2px; letter-spacing: 0.05em;">EP
+          01</span>
+        <span class="mini-genre" id="mini-player-genre"
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #fff; letter-spacing: 0.05em;">JUNGLE</span>
+        <span class="mini-title-sep" style="color: var(--on-surface-variant);">·</span>
+        <span class="mini-title" id="mini-player-title"
+          style="font-family: monospace; font-size: 11px; color: var(--bright-silver); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">Original
+          Nuttah Shockwave</span>
+      </div>
+
+      <div class="mini-controls" style="display: flex; align-items: center; gap: 8px;">
+        <button class="mini-control-btn" id="mini-btn-prev" aria-label="Previous Episode" title="Previous Episode"
+          style="background: none; border: 1px solid rgba(var(--theme-primary-rgb), 0.3); color: #fff; font-family: monospace; font-size: 10px; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">PREV</button>
+        <button class="mini-control-btn mini-play-btn" id="mini-btn-play-pause" aria-label="Play/Pause"
+          title="Play/Pause"
+          style="background: var(--theme-primary); border: none; color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 6px 18px; cursor: pointer; border-radius: 4px; font-weight: bold; letter-spacing: 0.05em; min-width: 80px;">PLAY</button>
+        <button class="mini-control-btn" id="mini-btn-next" aria-label="Next Episode" title="Next Episode"
+          style="background: none; border: 1px solid rgba(var(--theme-primary-rgb), 0.3); color: #fff; font-family: monospace; font-size: 10px; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">NEXT</button>
+      </div>
+
+      <div class="mini-progress-block"
+        style="flex: 1; min-width: 200px; display: flex; align-items: center; gap: 12px;">
+        <div class="mini-progress-track" id="mini-progress-track" aria-label="Audio progress tracker"
+          style="flex: 1; height: 6px; background: #14161d; border-radius: 3px; cursor: pointer; position: relative;">
+          <div class="mini-progress-fill" id="mini-progress-fill"
+            style="width: 0%; height: 100%; background: var(--theme-primary); border-radius: 3px; box-shadow: 0 0 8px var(--theme-primary);">
+          </div>
+        </div>
+        <span class="mini-timer" id="mini-player-timer"
+          style="font-family: monospace; font-size: 10px; color: var(--on-surface-variant); white-space: nowrap;">00:00
+          / 00:00</span>
+      </div>
+
+      <div class="mini-waveform-wrap" style="width: 120px; height: 24px; display: flex; align-items: flex-end;">
+        <div class="waveform mini-waveform" id="mini-wave-persistent"
+          style="display: flex; align-items: flex-end; gap: 2px; height: 100%; width: 100%; margin-bottom: 0;">
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Accessibility Live Announcer -->
+  <div id="a11y-announcer" class="sr-only" aria-live="polite"
+    style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+  </div>
+
+<audio id="main-audio" preload="metadata" style="display:none;"></audio>
+</body>
+
+</html>
