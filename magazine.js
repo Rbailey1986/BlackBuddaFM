@@ -209,7 +209,7 @@
           <div class="booklet-gallery-wrap">
             <h2 class="booklet-title" style="--genre-color: ${color}">VISUAL ARCHIVE</h2>
             <div class="booklet-img-frame img-skeleton">
-              <img src="${galleryImg}" class="booklet-img" alt="Visual archive" loading="lazy" onload="this.closest('.img-skeleton')?.classList.add('loaded')" width="600" height="400">
+              <img src="${galleryImg}" class="booklet-img" alt="Visual archive" loading="lazy" width="600" height="400">
             </div>
             <div>
               <div class="booklet-artists-label">KEY MOVEMENT PROPAGATORS:</div>
@@ -218,6 +218,10 @@
           </div>
           <div class="booklet-page-num">PAGE 04</div>
         </div>`;
+
+      document.querySelector('.booklet-img')?.addEventListener('load', (e) => {
+        e.target.closest('.img-skeleton')?.classList.add('loaded');
+      });
 
       prevBtn.disabled = false;
       nextBtn.disabled = false;

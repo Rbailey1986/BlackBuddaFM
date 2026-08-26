@@ -77,7 +77,7 @@
   <div id="splash-screen" class="splash-screen">
     <div class="splash-overlay"></div>
     <div class="splash-content">
-      <button class="splash-btn" onclick="enterStation();" aria-label="Enter Broadcast Transmission">
+      <button class="splash-btn" id="splash-enter-btn" aria-label="Enter Broadcast Transmission">
         <span class="btn-cap">ENTER TRANSMISSION</span>
       </button>
       <p class="splash-sub">WARNING: HIGH VOLTAGE BASS RELAYS ACTIVE</p>
@@ -113,6 +113,8 @@
         splash.remove();
       }, 800);
     }
+
+    document.getElementById('splash-enter-btn').addEventListener('click', enterStation);
   </script>
 
   <!-- TICKER -->
@@ -133,7 +135,7 @@
     </div>
 
     <div class="ticker-utility">
-      <button class="ticker-util-btn" id="theme-toggle-btn" onclick="toggleLightMode()" aria-pressed="false" title="Switch to light mode" aria-label="Switch to light mode">☾</button>
+      <button class="ticker-util-btn" id="theme-toggle-btn" aria-pressed="false" title="Switch to light mode" aria-label="Switch to light mode">☾</button>
     </div>
   </div>
 
@@ -144,7 +146,7 @@
         <p class="hero-tagline">Preserving Black British Music Culture</p>
         <h1 class="hero-title">BLACK<br><em>BUDDHA</em><br>FM</h1>
         <p class="hero-desc">A living archive documenting the sounds, stories and movements that shaped Black British music culture.</p>
-        <a class="btn-primary" id="hero-play-btn" href="#console-card" onclick="scrollToTunerDeck(event);" style="width: fit-content; text-decoration: none; cursor: pointer;">
+        <a class="btn-primary" id="hero-play-btn" href="#console-card" style="width: fit-content; text-decoration: none; cursor: pointer;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -169,12 +171,12 @@
             <div class="tuner-meta-right" id="tuner-meta-right">
               <span>CHAPTER <span id="meta-ep-num">01/10</span> — <span id="meta-freq" class="meta-freq-accent">88.9 MHZ</span> — <span class="meta-signal-badge">SIGNAL 100%</span></span>
             </div>
-            <button class="btn-scan" id="btn-scan" onclick="scanRandomChapter()" title="Scan to a random chapter">⟲ SCAN</button>
+            <button class="btn-scan" id="btn-scan" title="Scan to a random chapter">⟲ SCAN</button>
           </div>
         </div>
 
         <!-- Ruler Dial with Needle -->
-        <div class="dial-container" id="dial-container" onpointerdown="handleDialPointerDown(event)" onpointermove="handleDialPointerMove(event)" onpointerup="handleDialPointerUp(event)" onpointercancel="handleDialPointerUp(event)" onkeydown="handleDialKeydown(event)" role="slider" tabindex="0" aria-label="Tune to a genre frequency — drag freely or use arrow keys" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
+        <div class="dial-container" id="dial-container" role="slider" tabindex="0" aria-label="Tune to a genre frequency — drag freely or use arrow keys" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
           <div class="dial-ruler-line">
             <div class="dial-ticks" id="dial-ticks">
               <!-- Generated dynamically in JS -->
@@ -196,17 +198,17 @@
         <div class="mag-column">
           <div class="mag-cover-card" id="mag-cover-card">
             <div class="mag-stripes-bg"></div>
-            <img src="images/Jungle Magazine.webp" alt="Jungle chapter magazine cover — Chapter 01, Episode 1" class="mag-real-img" id="mag-real-img" width="900" height="1200" onerror="this.style.opacity='0'"/>
+            <img src="images/Jungle Magazine.webp" alt="Jungle chapter magazine cover — Chapter 01, Episode 1" class="mag-real-img" id="mag-real-img" width="900" height="1200"/>
             
             <div class="mag-issue-badge" id="mag-issue-badge">CHAPTER 01 — EPISODE 1</div>
             </div>
 
-          <button class="btn-open-mag" id="btn-open-mag" onclick="openActiveMagazine()">
+          <button class="btn-open-mag" id="btn-open-mag">
             OPEN MAGAZINE
           </button>
 
           <div class="mag-secondary-actions">
-            <button class="btn-secondary-action" id="btn-share-chapter" onclick="shareCurrentChapter()">SHARE</button>
+            <button class="btn-secondary-action" id="btn-share-chapter">SHARE</button>
           </div>
         </div>
 
@@ -220,10 +222,10 @@
 
             <!-- DUAL EPISODE PART SELECTOR BUTTONS -->
             <div class="episode-part-switcher" role="group" aria-label="Episode Switcher for current frequency">
-              <button class="part-btn active" id="btn-part-1" onclick="setEpisodePart(1)">
+              <button class="part-btn active" id="btn-part-1">
                 <span>●</span> EPISODE 1
               </button>
-              <button class="part-btn" id="btn-part-2" onclick="setEpisodePart(2)">
+              <button class="part-btn" id="btn-part-2">
                 <span>●</span> EPISODE 2
               </button>
             </div>
@@ -234,12 +236,12 @@
                     <!-- ACTIONS & PLAY DECK (MOVED ABOVE HOST ROW) -->
           <div class="tx-actions-row">
             <div class="player-controls-line">
-              <button class="btn-tune-play" id="btn-tune-play" onclick="togglePlayActiveTrack()">
+              <button class="btn-tune-play" id="btn-tune-play">
                 <span id="play-text">TUNE IN & PLAY EPISODE 1</span>
               </button>
 
               <!-- Switch Episode Toggle Button -->
-              <button class="btn-switch-episode" id="btn-switch-episode" onclick="toggleCurrentPart()" title="Switch to Episode 2 on this frequency">
+              <button class="btn-switch-episode" id="btn-switch-episode" title="Switch to Episode 2 on this frequency">
                 <span id="switch-btn-icon">⇄</span>
                 <span id="switch-btn-text">SWITCH TO EPISODE 2</span>
               </button>
@@ -260,7 +262,7 @@
             <!-- Interactive Player Scrubber Bar -->
             <div class="tx-scrubber-wrapper" id="tx-scrubber-wrapper">
               <span class="scrub-time-current" id="scrub-time-current">00:00</span>
-              <div class="scrubber-track" id="scrubber-track" onclick="handleScrubberClick(event)">
+              <div class="scrubber-track" id="scrubber-track">
                 <div class="scrubber-buffered" id="scrubber-buffered" style="width: 100%;"></div>
                 <div class="scrubber-progress" id="scrubber-progress" style="width: 0%;">
                   <div class="scrubber-thumb" id="scrubber-thumb"></div>
@@ -305,7 +307,7 @@
 
           <!-- KEY TRACKS & DUBPLATES DROPDOWN BUTTON -->
           <div class="tracks-section">
-            <button class="tracks-dropdown-toggle" id="tracks-dropdown-toggle" aria-expanded="false" onclick="toggleTracksDropdown()" aria-label="Toggle Key Tracks and Dubplates list">
+            <button class="tracks-dropdown-toggle" id="tracks-dropdown-toggle" aria-expanded="false" aria-label="Toggle Key Tracks and Dubplates list">
               <div class="toggle-left">
                 <span class="tracks-tag-pill"></span>
                 <span id="tracks-heading-text">KEY TRACKS & DUBPLATES — EPISODE 1</span>
@@ -392,7 +394,7 @@
           </div>
 
           <div class="next-chapter-row" id="next-chapter-row">
-            <button class="btn-next-chapter" id="btn-next-chapter" onclick="goToNextChapter()">
+            <button class="btn-next-chapter" id="btn-next-chapter">
               <span>NEXT CHAPTER</span>
               <span id="next-chapter-label" class="next-chapter-label">DRUM &amp; BASS →</span>
             </button>
@@ -2515,11 +2517,40 @@
       }
     });
 
+    // ── Wire up controls that used to carry inline onclick/onerror handlers ──
+    function initControlListeners() {
+      document.getElementById('theme-toggle-btn').addEventListener('click', toggleLightMode);
+      document.getElementById('hero-play-btn').addEventListener('click', scrollToTunerDeck);
+      document.getElementById('btn-scan').addEventListener('click', scanRandomChapter);
+
+      const dial = document.getElementById('dial-container');
+      dial.addEventListener('pointerdown', handleDialPointerDown);
+      dial.addEventListener('pointermove', handleDialPointerMove);
+      dial.addEventListener('pointerup', handleDialPointerUp);
+      dial.addEventListener('pointercancel', handleDialPointerUp);
+      dial.addEventListener('keydown', handleDialKeydown);
+
+      document.getElementById('mag-real-img').addEventListener('error', (e) => {
+        e.target.style.opacity = '0';
+      });
+
+      document.getElementById('btn-open-mag').addEventListener('click', openActiveMagazine);
+      document.getElementById('btn-share-chapter').addEventListener('click', shareCurrentChapter);
+      document.getElementById('btn-part-1').addEventListener('click', () => setEpisodePart(1));
+      document.getElementById('btn-part-2').addEventListener('click', () => setEpisodePart(2));
+      document.getElementById('btn-tune-play').addEventListener('click', togglePlayActiveTrack);
+      document.getElementById('btn-switch-episode').addEventListener('click', toggleCurrentPart);
+      document.getElementById('scrubber-track').addEventListener('click', handleScrubberClick);
+      document.getElementById('tracks-dropdown-toggle').addEventListener('click', toggleTracksDropdown);
+      document.getElementById('btn-next-chapter').addEventListener('click', goToNextChapter);
+    }
+
     // Init on load
     document.addEventListener('DOMContentLoaded', () => {
       audioElement = document.getElementById('main-audio');
       initDialTicks();
       initThemeToggle();
+      initControlListeners();
 
       const initial = resolveInitialChapter();
       selectStation(initial.idx);
