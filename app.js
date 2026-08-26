@@ -301,7 +301,7 @@
         const num = String(i + 1).padStart(2, '0');
         const title = typeof track === 'string' ? track : (track.title || '');
         const tag = (track && track.tag) ? track.tag : 'DUBPLATE';
-        const row = document.createElement('div');
+        const row = document.createElement('li');
         row.className = 'track-row-item';
         row.innerHTML = `
           <div class="track-left-meta">
