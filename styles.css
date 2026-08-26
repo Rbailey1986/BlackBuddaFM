@@ -337,32 +337,10 @@ h1.hero-title {
   }
 }
 
-.hero-desc {
-  font-size: 0.95rem;
-  color: rgba(240, 240, 245, 0.85);
-  line-height: 1.6;
-  background: rgba(10, 12, 16, 0.75);
-  backdrop-filter: blur(8px);
-  padding: 16px;
-  border-left: 4px solid var(--neon-green);
-  width: 100%;
-  max-width: 520px;
-  margin-bottom: 28px;
-}
-
 .btn-primary {
   width: 100%;
   justify-content: center;
   text-align: center;
-}
-
-@media (min-width: 480px) {
-  .btn-primary {
-    width: auto;
-  }
-}
-
-.btn-primary {
   background: var(--theme-primary);
   color: var(--ink, #040507);
   font-family: var(--font-display, 'Archivo Black', sans-serif);
@@ -378,6 +356,12 @@ h1.hero-title {
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 900;
+}
+
+@media (min-width: 480px) {
+  .btn-primary {
+    width: auto;
+  }
 }
 
 .btn-primary:hover {
@@ -831,10 +815,6 @@ h1.hero-title {
 
 /* Body top offset for custom fixed layout */
 /* Body top offset for custom fixed layout */
-body {
-  padding-top: 42px;
-}
-
 /* ── TICKER ── */
 .ticker-bar {
   background: #08080a;
@@ -997,14 +977,9 @@ body {
 }
 
 .hero-title {
-  font-family: var(--font-display, 'Archivo Black', sans-serif) !important;
-  font-size: var(--step-display, clamp(3.5rem, 8vw, 6.5rem)) !important;
-  line-height: 0.92 !important;
-  letter-spacing: -0.035em !important;
-  text-transform: uppercase;
-  color: var(--silver, #EEF0F4);
-  margin-bottom: 20px;
-  font-weight: 900;
+  /* h1.hero-title (above) already sets font/size/line-height/letter-
+     spacing/color/margin/weight at higher specificity — this rule's
+     only live property is text-shadow. */
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9), 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
