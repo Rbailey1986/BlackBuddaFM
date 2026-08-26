@@ -2529,56 +2529,43 @@
 </script>
 
   <!-- PERSISTENT MINI-PLAYER -->
-  <div class="persistent-mini-player" id="persistent-player" aria-label="Persistent Mini Player"
-    style="transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; background: rgba(5, 7, 10, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 2px solid var(--theme-primary); padding: 12px 24px; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: space-between; gap: 24px;">
-    <div class="mini-player-inner"
-      style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1400px; margin: 0 auto; gap: 16px; flex-wrap: wrap;">
-      <div class="mini-info" style="display: flex; align-items: center; gap: 10px; min-width: 250px;">
-        <span class="mini-ep" id="mini-player-ep"
-          style="font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--theme-primary); background: rgba(var(--theme-primary-rgb), 0.1); border: 1px solid var(--theme-primary); padding: 2px 6px; border-radius: 2px; letter-spacing: 0.05em;">EP
+  <div class="persistent-mini-player" id="persistent-player" aria-label="Persistent Mini Player">
+    <div class="mini-player-inner">
+      <div class="mini-info">
+        <span class="mini-ep" id="mini-player-ep">EP
           01</span>
-        <span class="mini-genre" id="mini-player-genre"
-          style="font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #fff; letter-spacing: 0.05em;">JUNGLE</span>
-        <span class="mini-title-sep" style="color: var(--on-surface-variant);">·</span>
-        <span class="mini-title" id="mini-player-title"
-          style="font-family: monospace; font-size: 11px; color: var(--bright-silver); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">Original
+        <span class="mini-genre" id="mini-player-genre">JUNGLE</span>
+        <span class="mini-title-sep">·</span>
+        <span class="mini-title" id="mini-player-title">Original
           Nuttah Shockwave</span>
       </div>
 
-      <div class="mini-controls" style="display: flex; align-items: center; gap: 8px;">
-        <button class="mini-control-btn" id="mini-btn-prev" aria-label="Previous Episode" title="Previous Episode"
-          style="background: none; border: 1px solid rgba(var(--theme-primary-rgb), 0.3); color: #fff; font-family: monospace; font-size: 10px; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">PREV</button>
+      <div class="mini-controls">
+        <button class="mini-control-btn" id="mini-btn-prev" aria-label="Previous Episode" title="Previous Episode">PREV</button>
         <button class="mini-control-btn mini-play-btn" id="mini-btn-play-pause" aria-label="Play/Pause"
-          title="Play/Pause"
-          style="background: var(--theme-primary); border: none; color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 6px 18px; cursor: pointer; border-radius: 4px; font-weight: bold; letter-spacing: 0.05em; min-width: 80px;">PLAY</button>
-        <button class="mini-control-btn" id="mini-btn-next" aria-label="Next Episode" title="Next Episode"
-          style="background: none; border: 1px solid rgba(var(--theme-primary-rgb), 0.3); color: #fff; font-family: monospace; font-size: 10px; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">NEXT</button>
+          title="Play/Pause">PLAY</button>
+        <button class="mini-control-btn" id="mini-btn-next" aria-label="Next Episode" title="Next Episode">NEXT</button>
       </div>
 
-      <div class="mini-progress-block"
-        style="flex: 1; min-width: 200px; display: flex; align-items: center; gap: 12px;">
-        <div class="mini-progress-track" id="mini-progress-track" aria-label="Audio progress tracker"
-          style="flex: 1; height: 6px; background: #14161d; border-radius: 3px; cursor: pointer; position: relative;">
-          <div class="mini-progress-fill" id="mini-progress-fill"
-            style="width: 0%; height: 100%; background: var(--theme-primary); border-radius: 3px; box-shadow: 0 0 8px var(--theme-primary);">
+      <div class="mini-progress-block">
+        <div class="mini-progress-track" id="mini-progress-track" aria-label="Audio progress tracker">
+          <div class="mini-progress-fill" id="mini-progress-fill">
           </div>
         </div>
-        <span class="mini-timer" id="mini-player-timer"
-          style="font-family: monospace; font-size: 10px; color: var(--on-surface-variant); white-space: nowrap;">00:00
+        <span class="mini-timer" id="mini-player-timer">00:00
           / 00:00</span>
       </div>
 
-      <div class="mini-waveform-wrap" style="width: 120px; height: 24px; display: flex; align-items: flex-end;">
-        <div class="waveform mini-waveform" id="mini-wave-persistent"
-          style="display: flex; align-items: flex-end; gap: 2px; height: 100%; width: 100%; margin-bottom: 0;">
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
-          <div class="wave-bar" style="flex: 1; background: var(--neon-green); min-height: 2px; height: 2px;"></div>
+      <div class="mini-waveform-wrap">
+        <div class="waveform mini-waveform" id="mini-wave-persistent">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
         </div>
       </div>
     </div>

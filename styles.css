@@ -1078,10 +1078,162 @@ body {
 
 
 
-/* ─── PERSISTENT MINI-PLAYER OVERRIDES ─── */
+/* ─── PERSISTENT MINI-PLAYER ─── */
+.persistent-mini-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 24px;
+  background: rgba(5, 7, 10, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 2px solid var(--theme-primary);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mini-player-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mini-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 250px;
+}
+
+.mini-ep {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: var(--theme-primary);
+  background: rgba(var(--theme-primary-rgb), 0.1);
+  border: 1px solid var(--theme-primary);
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+
+.mini-genre {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.mini-title-sep {
+  color: var(--on-surface-variant);
+}
+
+.mini-title {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--bright-silver);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.mini-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .mini-control-btn {
+  background: none;
+  border: 1px solid rgba(var(--theme-primary-rgb), 0.3);
+  color: #fff;
+  font-family: monospace;
+  font-size: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
   transition: all 0.2s ease;
 }
+
+.mini-play-btn {
+  background: var(--theme-primary);
+  border: none;
+  color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  padding: 6px 18px;
+  letter-spacing: 0.05em;
+  min-width: 80px;
+}
+
+.mini-progress-block {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-progress-track {
+  flex: 1;
+  height: 6px;
+  background: #14161d;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+}
+
+.mini-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--theme-primary);
+  border-radius: 3px;
+  box-shadow: 0 0 8px var(--theme-primary);
+}
+
+.mini-timer {
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--on-surface-variant);
+  white-space: nowrap;
+}
+
+.mini-waveform-wrap {
+  width: 120px;
+  height: 24px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.mini-waveform.waveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 100%;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.mini-waveform .wave-bar {
+  min-height: 2px;
+  height: 2px;
+}
+
+/* ─── PERSISTENT MINI-PLAYER OVERRIDES ─── */
 
 .mini-control-btn:hover:not(.mini-play-btn) {
   border-color: var(--theme-primary) !important;
@@ -2307,19 +2459,17 @@ body[data-theme="light"] {
       }
     }
 
-    /* Persistent mini-player: the inline min-width/width values on
-       these elements need !important to win over the inline style
-       attribute itself. Waveform is decorative — cut first. */
+    /* Persistent mini-player: waveform is decorative — cut first. */
     @media (max-width: 480px) {
       .mini-waveform-wrap {
-        display: none !important;
+        display: none;
       }
       .mini-info {
-        min-width: 0 !important;
-        max-width: 60% !important;
+        min-width: 0;
+        max-width: 60%;
       }
       .mini-progress-block {
-        min-width: 0 !important;
+        min-width: 0;
       }
     }
 
