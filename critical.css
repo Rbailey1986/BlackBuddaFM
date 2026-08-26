@@ -416,9 +416,9 @@ section {
 .hero {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 48px;
   min-height: calc(100vh - var(--header-height) - 30px);
-  padding: 48px 16px 40px;
+  padding: 64px 32px 64px;
   border-bottom: 1px solid var(--line, #2B2E34);
   position: relative;
   background-color: var(--ink, #040507);
@@ -433,11 +433,10 @@ section {
   text-align: center;
 }
 
-@media (min-width: 1025px) {
+@media (max-width: 1024px) {
   .hero {
-    grid-template-columns: 1fr;
-    padding: 64px 32px 64px;
-    gap: 48px;
+    padding: 48px 16px 40px;
+    gap: 40px;
   }
 }
 

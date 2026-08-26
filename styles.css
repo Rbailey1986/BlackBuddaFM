@@ -338,7 +338,7 @@ h1.hero-title {
 }
 
 .btn-primary {
-  width: 100%;
+  width: auto;
   justify-content: center;
   text-align: center;
   background: var(--theme-primary);
@@ -358,9 +358,9 @@ h1.hero-title {
   font-weight: 900;
 }
 
-@media (min-width: 480px) {
+@media (max-width: 479px) {
   .btn-primary {
-    width: auto;
+    width: 100%;
   }
 }
 
@@ -516,12 +516,12 @@ h1.hero-title {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 24px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   .magazine-modal-overlay {
-    padding: 24px;
+    padding: 12px;
   }
 }
 
@@ -549,7 +549,7 @@ h1.hero-title {
 .booklet-scroll-container {
   width: 100%;
   max-height: 70vh;
-  overflow-y: auto;
+  overflow-y: hidden;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
@@ -558,23 +558,24 @@ h1.hero-title {
 .booklet-container {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  aspect-ratio: 1.45;
   background: #fff;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 639px) {
   .booklet-container {
-    grid-template-columns: 1fr 1fr;
-    aspect-ratio: 1.45;
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
   }
 
   .booklet-scroll-container {
-    overflow-y: hidden;
+    overflow-y: auto;
   }
 }
 
 .booklet-page {
-  padding: 24px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -583,20 +584,21 @@ h1.hero-title {
   min-height: 320px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   .booklet-page {
-    padding: 40px;
+    padding: 24px;
   }
 }
 
 .booklet-page.left-page {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-@media (min-width: 640px) {
+@media (max-width: 639px) {
   .booklet-page.left-page {
-    border-bottom: none;
-    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-right: none;
   }
 }
 
