@@ -68,14 +68,14 @@
 
       const elapsed = bookletAudio.currentTime;
       const otherEp = otherEpData();
-      const durSecs = (typeof parseDurationToSeconds === 'function' && otherEp) ? parseDurationToSeconds(otherEp.duration) : null;
+      const durSecs = (window.BBFM && otherEp) ? window.BBFM.parseDurationToSeconds(otherEp.duration) : null;
       const dur = (durSecs !== null) ? durSecs : (bookletAudio.duration || 0);
       const pct = dur > 0 ? (elapsed / dur) * 100 : 0;
 
       const fill = document.getElementById('special-progress-fill');
       const timeDisplay = document.getElementById('special-current-time');
       if (fill) fill.style.width = pct + '%';
-      if (timeDisplay && typeof formatSeconds === 'function') timeDisplay.textContent = formatSeconds(elapsed);
+      if (timeDisplay && window.BBFM) timeDisplay.textContent = window.BBFM.formatSeconds(elapsed);
 
       bookletRafId = requestAnimationFrame(tick);
     };
@@ -91,8 +91,8 @@
       updateBookletAudioUI();
     } else {
       // Pause main player first if active
-      if (typeof isPlaying !== 'undefined' && isPlaying && typeof togglePlayActiveTrack === 'function') {
-        togglePlayActiveTrack();
+      if (window.BBFM && window.BBFM.isPlayingActiveTrack()) {
+        window.BBFM.togglePlayActiveTrack();
       }
       bookletAudio.play().then(() => {
         bookletAudioPlaying = true;
@@ -107,7 +107,7 @@
     const rect = e.currentTarget.getBoundingClientRect();
     const pct = (e.clientX - rect.left) / rect.width;
     const otherEp = otherEpData();
-    const durSecs = (typeof parseDurationToSeconds === 'function' && otherEp) ? parseDurationToSeconds(otherEp.duration) : null;
+    const durSecs = (window.BBFM && otherEp) ? window.BBFM.parseDurationToSeconds(otherEp.duration) : null;
     const dur = (durSecs !== null) ? durSecs : (bookletAudio.duration || 0);
     bookletAudio.currentTime = pct * dur;
     const fill = document.getElementById('special-progress-fill');

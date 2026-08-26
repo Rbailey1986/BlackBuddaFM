@@ -772,4 +772,15 @@
       selectStation(initial.idx);
       setEpisodePart(initial.epPart);
     });
-  
+
+    // ── Public interface used by magazine.js ──────────────────────
+    // magazine.js renders the booklet's "special stream" player, which
+    // needs to read the main deck's duration/time formatting and pause
+    // the main track if the booklet's own audio starts playing.
+    window.BBFM = {
+      parseDurationToSeconds,
+      formatSeconds,
+      isPlayingActiveTrack: () => isPlaying,
+      togglePlayActiveTrack
+    };
+
