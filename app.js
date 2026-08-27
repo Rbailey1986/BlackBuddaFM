@@ -1,3 +1,98 @@
+
+// ── Tactical Sonar Radar Side Rail Engine ───────────────────────
+const RADAR_BEACONS = [
+  { ep: "01", genre: "JUNGLE", freq: 88.9, postcode: "E8", lat: 51.5450, x: 65, y: 35 },
+  { ep: "02", genre: "DRUM & BASS", freq: 91.2, postcode: "BS2", lat: 51.4545, x: 18, y: 60 },
+  { ep: "03", genre: "UK GARAGE", freq: 93.5, postcode: "RM1", lat: 51.5760, x: 85, y: 28 },
+  { ep: "04", genre: "GRIME", freq: 95.8, postcode: "E3", lat: 51.5300, x: 68, y: 46 },
+  { ep: "05", genre: "DUBSTEP", freq: 98.1, postcode: "CR0", lat: 51.3762, x: 48, y: 82 },
+  { ep: "06", genre: "UK FUNKY & BASSLINE", freq: 100.4, postcode: "S1", lat: 53.3811, x: 35, y: 12 },
+  { ep: "07", genre: "UK R&B", freq: 102.7, postcode: "SE15", lat: 51.4742, x: 56, y: 58 },
+  { ep: "08", genre: "UK RAP & DRILL", freq: 105.0, postcode: "SW9", lat: 51.4613, x: 42, y: 62 },
+  { ep: "09", genre: "ALTERNATIVE", freq: 107.3, postcode: "W10", lat: 51.5170, x: 30, y: 48 },
+  { ep: "10", genre: "MODERN DAY", freq: 109.8, postcode: "E15", lat: 51.5416, x: 74, y: 38 }
+];
+
+const BMV_LOCATIONS = ['Hackney', 'Bristol', 'Romford', 'Bow', 'Croydon', 'Sheffield', 'Peckham', 'Brixton', 'West End', 'Stratford'];
+
+function initV4TransitLine() {
+  const v4Stops = document.getElementById('v4Stops');
+  if (!v4Stops) return;
+  v4Stops.innerHTML = '';
+  RADAR_BEACONS.forEach((beacon, i) => {
+    const pct = (i / (RADAR_BEACONS.length - 1)) * 100;
+    const stop = document.createElement('div');
+    stop.className = `v4-stop ${i === 0 ? 'active' : ''}`;
+    stop.style.top = `${pct}%`;
+    stop.dataset.idx = i;
+    stop.title = `${beacon.genre} — ${BMV_LOCATIONS[i] || ''}`;
+    stop.onclick = (e) => {
+      e.stopPropagation();
+      selectStation(i);
+    };
+    v4Stops.appendChild(stop);
+  });
+}
+
+function initSonarBeacons() {
+  const container = document.getElementById('sonar-beacons-container');
+  if (!container) return;
+  container.innerHTML = '';
+  RADAR_BEACONS.forEach((beacon, idx) => {
+    const dot = document.createElement('div');
+    dot.className = `sonar-beacon-dot ${idx === 0 ? 'active' : ''}`;
+    dot.id = `sonar-beacon-${idx}`;
+    dot.style.left = `${beacon.x}%`;
+    dot.style.top = `${beacon.y}%`;
+    dot.title = `${beacon.genre} (${beacon.freq} MHz)`;
+    dot.onclick = (e) => {
+      e.stopPropagation();
+      selectStation(idx);
+    };
+    container.appendChild(dot);
+  });
+}
+
+function updateSonarRadarTelemetry(idx) {
+  const beacon = RADAR_BEACONS[idx];
+  if (!beacon) return;
+  document.querySelectorAll('.sonar-beacon-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === idx);
+  });
+  const coordEl = document.getElementById('sonar-coord-text');
+  if (coordEl) coordEl.textContent = `${beacon.lat.toFixed(2)}°N / ${beacon.postcode}`;
+  const freqEl = document.getElementById('sonar-freq-text');
+  if (freqEl) freqEl.textContent = `${beacon.freq.toFixed(1)} MHZ`;
+
+  // Update V4 Transit Line
+  const v4LineFill = document.getElementById('v4LineFill');
+  const v4Stops = document.getElementById('v4Stops');
+  if (v4LineFill && v4Stops) {
+    const pct = (idx / (RADAR_BEACONS.length - 1)) * 100;
+    v4LineFill.style.height = `${pct}%`;
+    v4Stops.querySelectorAll('.v4-stop').forEach(stop => {
+      const active = Number(stop.dataset.idx) === idx;
+      stop.classList.toggle('active', active);
+      stop.querySelector('.v4-stop-tag')?.remove();
+      if (active) {
+        const tag = document.createElement('span');
+        tag.className = 'v4-stop-tag';
+        tag.textContent = BMV_LOCATIONS[idx] || '';
+        stop.appendChild(tag);
+      }
+    });
+  }
+
+  // Trigger sequential sonar ring pulse
+  const disc = document.getElementById('sonar-radar-disc');
+  if (disc) {
+    disc.classList.remove('pulsing');
+    void disc.offsetWidth; // forces a reflow so the animation restarts every time
+    disc.classList.add('pulsing');
+  }
+}
+
+
 // app.js — Black Buddha FM tuner deck application logic.
 // Handles the dial/station selection, episode playback UI, magazine link-up,
 // theme toggle, and deep-link/resume state. Depends on STATIONS (stations-data.js)
@@ -144,6 +239,7 @@
       }
 
       // Deep link + resume: reflect this chapter in the URL and remember it
+      updateSonarRadarTelemetry(idx);
       history.replaceState(null, '', buildChapterHash(idx, currentEpisodeNum));
       saveLastVisit(idx, currentEpisodeNum);
 
@@ -694,7 +790,10 @@
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       btn.setAttribute('aria-pressed', String(isLight));
       btn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
-      btn.textContent = isLight ? '☀' : '☾';
+      const icon = document.getElementById('sonar-toggle-icon');
+      if (icon) icon.textContent = isLight ? '☀' : '☾';
+      const label = document.getElementById('sonar-toggle-label');
+      if (label) label.textContent = isLight ? 'LIGHT' : 'DARK';
     }
 
     function initThemeToggle() {
@@ -764,6 +863,8 @@
     // Init on load
     document.addEventListener('DOMContentLoaded', () => {
       audioElement = document.getElementById('main-audio');
+      initSonarBeacons();
+      initV4TransitLine();
       initDialTicks();
       initThemeToggle();
       initControlListeners();

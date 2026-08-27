@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMV Rail V4 — 6 Transit & Telemetry Rail Variations — Black Buddha FM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600;800&family=Bebas+Neue&family=Orbitron:wght@700;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="../critical.css?v=1.8">
+  <link rel="stylesheet" href="../styles.css?v=2.9">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       THEME VARIABLES & LAB BASE STYLING
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --theme-primary: #39FF14;
+      --theme-primary-rgb: 57, 255, 20;
+      --bg-dark: #050709;
+      --card-bg: #0b0e14;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --silver: #EEF0F4;
+      --muted: #8C92A0;
+      --line: #22262e;
+      --font-display: 'Archivo Black', sans-serif;
+      --font-body: 'Archivo', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f0f2f5;
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.1);
+      --silver: #111418;
+      --muted: #5e6676;
+      --line: #dcdfe4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--silver);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 30px 20px 80px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .lab-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ─── Lab Header ─── */
+    .lab-header {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .lab-title-box h1 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--silver);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lab-title-box h1 span {
+      color: var(--theme-primary);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(var(--theme-primary-rgb), 0.12);
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.3);
+    }
+    .lab-title-box p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .lab-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Genre Step Bar */
+    .station-stepper-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card-bg);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .stepper-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .stepper-btn:hover {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+    .stepper-btn.active {
+      background: var(--theme-primary);
+      border-color: var(--theme-primary);
+      color: #000;
+      box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.5);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATIONS GRID
+       ═══════════════════════════════════════════════════════════════ */
+    .variations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 24px;
+      margin-top: 25px;
+    }
+
+    .var-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s ease;
+    }
+    .var-card:hover {
+      border-color: rgba(var(--theme-primary-rgb), 0.4);
+    }
+
+    .var-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .var-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.1);
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.25);
+    }
+    .var-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      text-transform: uppercase;
+      color: var(--silver);
+      margin-top: 4px;
+    }
+    .var-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* Interactive Frame holding the side-rail */
+    .var-frame {
+      flex: 1;
+      height: 480px;
+      background: #040507;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+    [data-theme="light"] .var-frame {
+      background: #090c10;
+    }
+
+    .var-stage-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .var-stage-data {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 6px;
+      color: var(--silver);
+      font-size: 11px;
+    }
+    .var-stage-data strong {
+      color: var(--theme-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BASE RAIL CHROME (SHARED ACROSS ALL 6 VARIATIONS)
+       ═══════════════════════════════════════════════════════════════ */
+    .bmv-rail-mock {
+      width: 140px;
+      height: 100%;
+      background: #07090c;
+      border-right: 2px solid var(--theme-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 0;
+      gap: 12px;
+      position: relative;
+      user-select: none;
+      transition: border-color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    /* Shared Logo Option 01 (Cassette Spine Badge) */
+    .bmv-logo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 34px;
+      border-radius: 4px;
+      border: 1.5px solid var(--theme-primary);
+      overflow: hidden;
+      background: #030406;
+      box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.3);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .bmv-logo-box .top {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--theme-primary);
+      line-height: 1;
+      padding: 3px 0 1px;
+      letter-spacing: 0.05em;
+    }
+    .bmv-logo-box .bot {
+      width: 100%;
+      background: var(--theme-primary);
+      color: #05070a;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 900;
+      line-height: 1;
+      padding: 2px 0;
+      text-align: center;
+      letter-spacing: 0.12em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 1: LONDON TUBE "BASS LINE" SCHEMATIC
+       ═══════════════════════════════════════════════════════════════ */
+    .v1-tube-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+    }
+    .v1-tube-line {
+      position: absolute;
+      top: 10px; bottom: 10px; left: 28px;
+      width: 4px;
+      background: #252a33;
+      border-radius: 2px;
+    }
+    .v1-tube-line-fill {
+      position: absolute;
+      top: 10px; left: 28px;
+      width: 4px;
+      background: var(--theme-primary);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--theme-primary);
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .v1-tube-stops {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v1-stop {
+      position: absolute;
+      left: 28px;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #07090c;
+      border: 2px solid #5a6270;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      z-index: 5;
+    }
+    .v1-stop:hover {
+      border-color: #fff;
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+    .v1-stop.active {
+      background: var(--theme-primary);
+      border-color: #fff;
+      width: 14px; height: 14px;
+      box-shadow: 0 0 10px var(--theme-primary);
+    }
+    .v1-stop-label {
+      position: absolute;
+      left: 38px; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .v1-stop.active .v1-stop-label {
+      color: var(--theme-primary);
+      font-weight: 800;
+      text-shadow: 0 0 6px rgba(var(--theme-primary-rgb), 0.5);
+    }
+    .v1-zone-badge {
+      font-size: 6.5px;
+      padding: 1px 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+      margin-left: 3px;
+      color: var(--silver);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 2: CIRCUIT BOARD PCB SIGNAL TRACE
+       ═══════════════════════════════════════════════════════════════ */
+    .v2-pcb-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      margin: 10px 0;
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 6px);
+    }
+    .v2-pcb-svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .v2-pcb-nodes {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v2-node {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 110px;
+      height: 24px;
+      border-radius: 3px;
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.25);
+      background: rgba(4, 7, 5, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .v2-node:hover {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.1);
+    }
+    .v2-node.active {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.2);
+      box-shadow: 0 0 10px rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .v2-node-smd {
+      width: 4px;
+      height: 10px;
+      background: var(--theme-primary);
+      border-radius: 1px;
+      box-shadow: 0 0 4px var(--theme-primary);
+    }
+    .v2-node-text {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      color: var(--silver);
+      letter-spacing: 0.08em;
+    }
+    .v2-node.active .v2-node-text {
+      color: #fff;
+      font-weight: 900;
+    }
+    .v2-node-ic {
+      font-family: var(--font-mono);
+      font-size: 6px;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 3: PIRATE COAXIAL TRANSMISSION LADDER
+       ═══════════════════════════════════════════════════════════════ */
+    .v3-coax-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .v3-coax-ladder {
+      position: absolute;
+      top: 6px; bottom: 6px;
+      width: 24px;
+      border-left: 2px solid #2b313a;
+      border-right: 2px solid #2b313a;
+      left: 18px;
+    }
+    .v3-coax-fill {
+      position: absolute;
+      top: 6px; left: 18px;
+      width: 24px;
+      border-left: 2px solid var(--theme-primary);
+      border-right: 2px solid var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.12);
+      box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.3);
+      transition: height 0.4s ease;
+    }
+    .v3-nodes-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v3-choke-node {
+      position: absolute;
+      left: 30px;
+      transform: translate(-50%, -50%);
+      width: 18px; height: 10px;
+      border-radius: 2px;
+      background: #111419;
+      border: 1px solid #48505e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .v3-choke-node::before {
+      content: '';
+      width: 6px; height: 4px;
+      background: #555;
+      border-radius: 1px;
+    }
+    .v3-choke-node.active {
+      border-color: var(--theme-primary);
+      background: var(--theme-primary);
+      box-shadow: 0 0 10px var(--theme-primary);
+    }
+    .v3-choke-node.active::before {
+      background: #000;
+    }
+    .v3-meta-tag {
+      position: absolute;
+      left: 46px; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .v3-choke-node.active .v3-meta-tag {
+      color: var(--theme-primary);
+      font-weight: 800;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 4: STUDIO CONSOLE FADER TRACK
+       ═══════════════════════════════════════════════════════════════ */
+    .v4-fader-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+    }
+    .v4-fader-groove {
+      position: absolute;
+      top: 10px; bottom: 10px; left: 34px;
+      width: 6px;
+      background: #020304;
+      border-radius: 3px;
+      border: 1px solid #20252e;
+      box-shadow: inset 0 0 4px #000;
+    }
+    .v4-db-scale {
+      position: absolute;
+      top: 10px; bottom: 10px; left: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 6.5px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .v4-fader-thumb {
+      position: absolute;
+      left: 34px;
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 18px;
+      border-radius: 3px;
+      background: linear-gradient(to bottom, #2b303a, #15181e);
+      border: 1px solid #4a5263;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.8), 0 0 6px rgba(var(--theme-primary-rgb), 0.4);
+      transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+    }
+    .v4-fader-thumb-line {
+      width: 16px;
+      height: 2px;
+      background: var(--theme-primary);
+      box-shadow: 0 0 4px var(--theme-primary);
+    }
+    .v4-fader-stops {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v4-fader-dot {
+      position: absolute;
+      left: 54px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .v4-fader-dot span.led {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #252b36;
+      transition: all 0.2s;
+    }
+    .v4-fader-dot span.txt {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .v4-fader-dot.active span.led {
+      background: var(--theme-primary);
+      box-shadow: 0 0 6px var(--theme-primary);
+    }
+    .v4-fader-dot.active span.txt {
+      color: var(--silver);
+      font-weight: 900;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 5: STEPPED AUDIO WAVEFORM SPINE
+       ═══════════════════════════════════════════════════════════════ */
+    .v5-wave-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .v5-spine-line {
+      position: absolute;
+      top: 6px; bottom: 6px; left: 50%;
+      width: 2px;
+      background: #1e232b;
+      transform: translateX(-50%);
+    }
+    .v5-wave-stops {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v5-wave-row {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 118px;
+      height: 20px;
+      border-radius: 4px;
+      background: rgba(10, 14, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .v5-wave-row:hover {
+      border-color: rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .v5-wave-row.active {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.15);
+      box-shadow: 0 0 10px rgba(var(--theme-primary-rgb), 0.35);
+    }
+    .v5-wave-bars {
+      display: flex;
+      gap: 1.5px;
+      align-items: center;
+      height: 12px;
+    }
+    .v5-bar {
+      width: 2px;
+      background: #444c5c;
+      border-radius: 1px;
+    }
+    .v5-wave-row.active .v5-bar {
+      background: var(--theme-primary);
+      box-shadow: 0 0 3px var(--theme-primary);
+      animation: eqBounce 1.2s infinite ease-in-out alternate;
+    }
+    .v5-bar:nth-child(1) { height: 4px; animation-delay: 0.1s; }
+    .v5-bar:nth-child(2) { height: 8px; animation-delay: 0.3s; }
+    .v5-bar:nth-child(3) { height: 12px; animation-delay: 0.15s; }
+    .v5-bar:nth-child(4) { height: 6px; animation-delay: 0.4s; }
+    .v5-bar:nth-child(5) { height: 10px; animation-delay: 0.2s; }
+    @keyframes eqBounce { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1.3); } }
+    .v5-wave-tag {
+      font-family: var(--font-mono);
+      font-size: 7px;
+      font-weight: 800;
+      color: var(--silver);
+      letter-spacing: 0.05em;
+    }
+    .v5-wave-row.active .v5-wave-tag {
+      color: var(--theme-primary);
+      text-shadow: 0 0 4px var(--theme-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIATION 6: POSTAL DISTRICT RELAY MATRIX
+       ═══════════════════════════════════════════════════════════════ */
+    .v6-postal-wrap {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .v6-postal-stops {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .v6-postcode-pill {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 22px;
+      border-radius: 11px;
+      background: #090c12;
+      border: 1px solid #282f3c;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .v6-postcode-pill:hover {
+      border-color: var(--theme-primary);
+    }
+    .v6-postcode-pill.active {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.2);
+      box-shadow: 0 0 10px rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .v6-code {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 900;
+      color: var(--theme-primary);
+      letter-spacing: 0.08em;
+    }
+    .v6-loc {
+      font-family: var(--font-mono);
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--silver);
+      letter-spacing: 0.04em;
+    }
+    .v6-beacon-led {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #333a47;
+    }
+    .v6-postcode-pill.active .v6-beacon-led {
+      background: var(--theme-primary);
+      box-shadow: 0 0 6px var(--theme-primary);
+      animation: beaconFlash 1.4s infinite;
+    }
+    @keyframes beaconFlash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  </style>
+</head>
+
+<body>
+  <div class="lab-wrap">
+
+    <!-- Header -->
+    <header class="lab-header">
+      <div class="lab-title-box">
+        <h1>BMV Rail V4 Variations <span>6 NEW IDEAS</span></h1>
+        <p>Interactive playground testing 6 new concepts for the <code>class="bmv-rail v4-rail"</code> vertical transit line.</p>
+      </div>
+
+      <div class="lab-toolbar">
+        <div class="station-stepper-bar" id="stationStepperBar" title="Click any station to tune all 6 rails simultaneously"></div>
+      </div>
+    </header>
+
+    <!-- 6 Variations Grid -->
+    <div class="variations-grid">
+
+      <!-- VARIATION 1 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 01</span>
+            <h2 class="var-title">London Underground "Bass Line"</h2>
+            <p class="var-desc">Iconic transit map schematic with glowing interchange dots, zone badges, and active train line fill.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v1-tube-wrap">
+              <div class="v1-tube-line"></div>
+              <div class="v1-tube-line-fill" id="v1Fill"></div>
+              <div class="v1-tube-stops" id="v1Stops"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>Click any stop to navigate</div>
+            <div class="var-stage-data">Active Stop: <strong id="v1ActiveData">JUNGLE (Hackney, E8)</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIATION 2 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 02</span>
+            <h2 class="var-title">PCB Circuit Signal Bus</h2>
+            <p class="var-desc">Industrial circuit board trace layout with micro SMD chips, gold contacts, and IC designation codes.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v2-pcb-wrap">
+              <div class="v2-pcb-nodes" id="v2Nodes"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>Motherboard Signal Trace Bus</div>
+            <div class="var-stage-data">Circuit Node: <strong id="v2ActiveData">IC-01: HACKNEY BUS</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIATION 3 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 03</span>
+            <h2 class="var-title">Pirate Coaxial Feeder Ladder</h2>
+            <p class="var-desc">Twin-lead rooftop RF transmitter ladder line with ferrite chokes and transmission power readings.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v3-coax-wrap">
+              <div class="v3-coax-ladder"></div>
+              <div class="v3-coax-fill" id="v3Fill"></div>
+              <div class="v3-nodes-container" id="v3Nodes"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>Rooftop RF Feeder Array</div>
+            <div class="var-stage-data">Transmission Node: <strong id="v3ActiveData">500W EIRP / E8 MAST</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIATION 4 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 04</span>
+            <h2 class="var-title">Studio Console Channel Fader</h2>
+            <p class="var-desc">Calibrated dB studio mixing console channel strip with a sliding mechanical fader thumb handle.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v4-fader-wrap">
+              <div class="v4-db-scale">
+                <span>+6</span><span>+3</span><span>0dB</span><span>-6</span><span>-12</span><span>-24</span><span>-∞</span>
+              </div>
+              <div class="v4-fader-groove"></div>
+              <div class="v4-fader-thumb" id="v4Thumb">
+                <div class="v4-fader-thumb-line"></div>
+              </div>
+              <div class="v4-fader-stops" id="v4FaderStops"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>Analog Studio Channel Fader</div>
+            <div class="var-stage-data">Fader Position: <strong id="v4ActiveData">EP01 @ 0dB UNITY GAIN</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIATION 5 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 05</span>
+            <h2 class="var-title">Stepped Audio Waveform Spine</h2>
+            <p class="var-desc">Central spine flanked by miniature graphic EQ waveforms that animate into live equalizers when tuned.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v5-wave-wrap">
+              <div class="v5-spine-line"></div>
+              <div class="v5-wave-stops" id="v5WaveStops"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>Dynamic Equalizer Waveform Ladder</div>
+            <div class="var-stage-data">Active Spectrum: <strong id="v5ActiveData">JUNGLE (88.9 MHZ BASS)</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIATION 6 -->
+      <div class="var-card">
+        <div class="var-header">
+          <div>
+            <span class="var-badge">VARIATION 06</span>
+            <h2 class="var-title">Postal District Relay Matrix</h2>
+            <p class="var-desc">London borough dispatch grid with postcode pill badges, beacon LEDs, and direct transmitter coordinates.</p>
+          </div>
+        </div>
+        <div class="var-frame">
+          <div class="bmv-rail-mock">
+            <div class="bmv-logo-box"><span class="top">BB</span><span class="bot">FM</span></div>
+            <div class="v6-postal-wrap">
+              <div class="v6-postal-stops" id="v6PostalStops"></div>
+            </div>
+          </div>
+          <div class="var-stage-main">
+            <div>London Borough Relay Matrix</div>
+            <div class="var-stage-data">Postal Sector: <strong id="v6ActiveData">E8 HACKNEY / 51.54°N</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const STATIONS = [
+      { ep: "01", genre: "JUNGLE", loc: "Hackney", code: "E8", freq: "88.9", hex: "#39FF14", rgb: "57, 255, 20", zone: "Z2" },
+      { ep: "02", genre: "D&B", loc: "Bristol", code: "BS2", freq: "91.2", hex: "#00E5FF", rgb: "0, 229, 255", zone: "SW" },
+      { ep: "03", genre: "UK GARAGE", loc: "Romford", code: "RM1", freq: "93.5", hex: "#FFD700", rgb: "255, 215, 0", zone: "Z6" },
+      { ep: "04", genre: "GRIME", loc: "Bow", code: "E3", freq: "95.8", hex: "#FF6B00", rgb: "255, 107, 0", zone: "Z2" },
+      { ep: "05", genre: "DUBSTEP", loc: "Croydon", code: "CR0", freq: "98.1", hex: "#B5179E", rgb: "181, 23, 158", zone: "Z5" },
+      { ep: "06", genre: "FUNKY", loc: "Sheffield", code: "S1", freq: "100.4", hex: "#FF5376", rgb: "255, 83, 118", zone: "N1" },
+      { ep: "07", genre: "UK R&B", loc: "Peckham", code: "SE15", freq: "102.7", hex: "#E040FB", rgb: "224, 64, 251", zone: "Z2" },
+      { ep: "08", genre: "DRILL", loc: "Brixton", code: "SW9", freq: "105.0", hex: "#00B0FF", rgb: "0, 176, 255", zone: "Z2" },
+      { ep: "09", genre: "ALT", loc: "West End", code: "W10", freq: "107.3", hex: "#76FF03", rgb: "118, 255, 3", zone: "Z1" },
+      { ep: "10", genre: "MODERN", loc: "Stratford", code: "E15", freq: "109.8", hex: "#FFD600", rgb: "255, 214, 0", zone: "Z3" }
+    ];
+
+    let activeIdx = 0;
+
+    function initAllVariations() {
+      // 1. Build Stepper Bar
+      const stepper = document.getElementById('stationStepperBar');
+      stepper.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const btn = document.createElement('button');
+        btn.className = `stepper-btn ${i === 0 ? 'active' : ''}`;
+        btn.textContent = `${st.ep} · ${st.genre}`;
+        btn.onclick = () => selectStation(i);
+        stepper.appendChild(btn);
+      });
+
+      // 2. Init Variation 1 (Tube Line)
+      const v1Stops = document.getElementById('v1Stops');
+      v1Stops.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const stop = document.createElement('div');
+        stop.className = `v1-stop ${i === 0 ? 'active' : ''}`;
+        stop.style.top = `${pct}%`;
+        stop.innerHTML = `<span class="v1-stop-label">${st.loc} <span class="v1-zone-badge">${st.zone}</span></span>`;
+        stop.onclick = () => selectStation(i);
+        v1Stops.appendChild(stop);
+      });
+
+      // 3. Init Variation 2 (PCB Bus)
+      const v2Nodes = document.getElementById('v2Nodes');
+      v2Nodes.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const node = document.createElement('div');
+        node.className = `v2-node ${i === 0 ? 'active' : ''}`;
+        node.style.top = `${pct}%`;
+        node.innerHTML = `
+          <div class="v2-node-smd"></div>
+          <span class="v2-node-text">${st.genre}</span>
+          <span class="v2-node-ic">TX${st.ep}</span>
+        `;
+        node.onclick = () => selectStation(i);
+        v2Nodes.appendChild(node);
+      });
+
+      // 4. Init Variation 3 (Coax Feeder)
+      const v3Nodes = document.getElementById('v3Nodes');
+      v3Nodes.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const node = document.createElement('div');
+        node.className = `v3-choke-node ${i === 0 ? 'active' : ''}`;
+        node.style.top = `${pct}%`;
+        node.innerHTML = `<span class="v3-meta-tag">${st.freq} FM · ${st.code}</span>`;
+        node.onclick = () => selectStation(i);
+        v3Nodes.appendChild(node);
+      });
+
+      // 5. Init Variation 4 (Fader)
+      const v4Stops = document.getElementById('v4FaderStops');
+      v4Stops.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const dot = document.createElement('div');
+        dot.className = `v4-fader-dot ${i === 0 ? 'active' : ''}`;
+        dot.style.top = `${pct}%`;
+        dot.innerHTML = `<span class="led"></span><span class="txt">${st.loc}</span>`;
+        dot.onclick = () => selectStation(i);
+        v4Stops.appendChild(dot);
+      });
+
+      // 6. Init Variation 5 (Wave Spine)
+      const v5Stops = document.getElementById('v5WaveStops');
+      v5Stops.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const row = document.createElement('div');
+        row.className = `v5-wave-row ${i === 0 ? 'active' : ''}`;
+        row.style.top = `${pct}%`;
+        row.innerHTML = `
+          <div class="v5-wave-bars">
+            <div class="v5-bar"></div><div class="v5-bar"></div><div class="v5-bar"></div><div class="v5-bar"></div><div class="v5-bar"></div>
+          </div>
+          <span class="v5-wave-tag">${st.genre}</span>
+        `;
+        row.onclick = () => selectStation(i);
+        v5Stops.appendChild(row);
+      });
+
+      // 7. Init Variation 6 (Postal Grid)
+      const v6Stops = document.getElementById('v6PostalStops');
+      v6Stops.innerHTML = '';
+      STATIONS.forEach((st, i) => {
+        const pct = (i / (STATIONS.length - 1)) * 100;
+        const pill = document.createElement('div');
+        pill.className = `v6-postcode-pill ${i === 0 ? 'active' : ''}`;
+        pill.style.top = `${pct}%`;
+        pill.innerHTML = `
+          <span class="v6-code">${st.code}</span>
+          <span class="v6-loc">${st.loc}</span>
+          <span class="v6-beacon-led"></span>
+        `;
+        pill.onclick = () => selectStation(i);
+        v6Stops.appendChild(pill);
+      });
+
+      updateUI(0);
+    }
+
+    function selectStation(idx) {
+      activeIdx = idx;
+      const st = STATIONS[idx];
+      document.documentElement.style.setProperty('--theme-primary', st.hex);
+      document.documentElement.style.setProperty('--theme-primary-rgb', st.rgb);
+      updateUI(idx);
+    }
+
+    function updateUI(idx) {
+      const st = STATIONS[idx];
+      const pct = (idx / (STATIONS.length - 1)) * 100;
+
+      // Stepper Bar
+      document.querySelectorAll('.stepper-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+      // Var 1 (Tube)
+      const v1Fill = document.getElementById('v1Fill');
+      if (v1Fill) v1Fill.style.height = `${pct}%`;
+      document.querySelectorAll('.v1-stop').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v1ActiveData').textContent = `${st.genre} (${st.loc}, ${st.code})`;
+
+      // Var 2 (PCB)
+      document.querySelectorAll('.v2-node').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v2ActiveData').textContent = `IC-${st.ep}: ${st.loc.toUpperCase()} BUS (${st.freq} MHZ)`;
+
+      // Var 3 (Coax)
+      const v3Fill = document.getElementById('v3Fill');
+      if (v3Fill) v3Fill.style.height = `${pct}%`;
+      document.querySelectorAll('.v3-choke-node').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v3ActiveData').textContent = `${st.freq} FM / ${st.code} RELAY`;
+
+      // Var 4 (Fader)
+      const v4Thumb = document.getElementById('v4Thumb');
+      if (v4Thumb) v4Thumb.style.top = `${pct}%`;
+      document.querySelectorAll('.v4-fader-dot').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v4ActiveData').textContent = `EP${st.ep} ${st.genre} @ 0dB UNITY`;
+
+      // Var 5 (Wave)
+      document.querySelectorAll('.v5-wave-row').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v5ActiveData').textContent = `${st.genre} (${st.freq} MHZ BASS SPECTRUM)`;
+
+      // Var 6 (Postal)
+      document.querySelectorAll('.v6-postcode-pill').forEach((el, i) => el.classList.toggle('active', i === idx));
+      document.getElementById('v6ActiveData').textContent = `${st.code} ${st.loc.toUpperCase()} / TX OK`;
+    }
+
+    document.addEventListener('DOMContentLoaded', initAllVariations);
+  </script>
+</body>
+</html>

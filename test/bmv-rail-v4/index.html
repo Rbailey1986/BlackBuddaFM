@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bmv-rail v4-rail — isolated component</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Site tokens (--theme-primary, --line, --muted, --surface, fonts, theme-epNN classes) -->
+  <link rel="stylesheet" href="../../critical.css?v=1.8">
+  <link rel="stylesheet" href="../../styles.css?v=2.9">
+
+  <!-- The component itself -->
+  <link rel="stylesheet" href="rail.css">
+
+  <style>
+    /* Demo-page-only chrome, not part of the component */
+    body { background: var(--ink, #040507); margin: 0; }
+    .demo-wrap { max-width: 640px; margin: 0 auto; padding: 40px 20px; font-family: var(--font-text, 'Archivo', sans-serif); color: var(--silver, #EEF0F4); }
+    h1 { font-family: var(--font-display, 'Archivo Black', sans-serif); font-size: 18px; text-transform: uppercase; margin-bottom: 24px; }
+    .demo-frame { border: 1px solid var(--line, #2B2E34); border-radius: 6px; overflow: hidden; background: #000; margin-bottom: 24px; }
+    .demo-inner { display: flex; height: 240px; background: #060606; }
+    .demo-content { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; padding: 20px; }
+    .demo-switcher { display: flex; flex-wrap: wrap; gap: 8px; }
+    .demo-btn {
+      background: transparent; border: 1px solid var(--line, #2B2E34); color: var(--muted, #8C92A0);
+      font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 7px 12px; border-radius: 2px; cursor: pointer; text-transform: uppercase;
+    }
+    .demo-btn:hover, .demo-btn.active { border-color: var(--theme-primary); color: var(--theme-primary); }
+  </style>
+</head>
+
+<body class="theme-ep01">
+  <div class="demo-wrap">
+    <h1>bmv-rail v4-rail (isolated)</h1>
+
+    <div class="demo-frame">
+      <div class="demo-inner">
+        <!-- ═══ the component ═══ -->
+        <div class="bmv-rail v4-rail">
+          <div class="bmv-rail-logo">BB<br>FM</div>
+          <div class="v4-line-wrap">
+            <div class="v4-line"></div>
+            <div class="v4-line-fill" id="v4LineFill"></div>
+            <div class="v4-stops" id="v4Stops"></div>
+          </div>
+        </div>
+        <!-- ═══════════════════════ -->
+        <div class="demo-content">Rest of the page / rail content goes here.</div>
+      </div>
+    </div>
+
+    <div class="demo-switcher" id="genre-switcher"></div>
+  </div>
+
+  <script src="rail.js"></script>
+  <script>
+    const GENRES = ['JUNGLE', 'DRUM & BASS', 'UK GARAGE', 'GRIME', 'DUBSTEP', 'UK FUNKY & BASSLINE', 'UK R&B', 'UK RAP & DRILL', 'ALTERNATIVE', 'MODERN DAY'];
+    const LOCATIONS = ['Hackney, London', 'Bristol', 'Romford, Essex', 'Bow, East London', 'Croydon', 'Sheffield, Yorkshire', 'Peckham, South London', 'Brixton, South London', 'London (West End)', 'Stratford, East London'];
+
+    let currentIdx = 0;
+
+    function applyGenre(i) {
+      currentIdx = i;
+      const epNum = String(i + 1).padStart(2, '0');
+      document.body.className = document.body.className.replace(/theme-ep\d\d/, '') + ` theme-ep${epNum}`;
+      document.querySelectorAll('#genre-switcher .demo-btn').forEach((b, bi) => b.classList.toggle('active', bi === i));
+      BMVRailV4.update(currentIdx);
+    }
+
+    const switcher = document.getElementById('genre-switcher');
+    GENRES.forEach((genre, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'demo-btn' + (i === 0 ? ' active' : '');
+      btn.textContent = genre;
+      btn.onclick = () => applyGenre(i);
+      switcher.appendChild(btn);
+    });
+
+    BMVRailV4.init({ genres: GENRES, locations: LOCATIONS, onSelect: applyGenre });
+    applyGenre(0);
+  </script>
+</body>
+
+</html>

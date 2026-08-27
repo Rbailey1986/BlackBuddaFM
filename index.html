@@ -117,27 +117,55 @@
     document.getElementById('splash-enter-btn').addEventListener('click', enterStation);
   </script>
 
-  <!-- TICKER -->
-  <header class="ticker-bar">
-    <div class="logo-block">
-      <span class="logo-name">BLACK BUDDHA FM</span>
-      <span class="logo-sub">PIRATE BROADCASTING 24/7</span>
+    <!-- SIDE-RAIL: Tactical Sonar Radar & Vertical Transit Line -->
+  <aside class="side-rail sonar-side-rail" id="side-rail" aria-label="Tactical Sonar Radar Side Rail">
+    <!-- Option 01: Split-Tone Cassette Spine Block Logo -->
+    <div class="sonar-rail-header" onclick="selectStation(0)" title="Black Buddha FM — Home">
+      <div class="logo-split-badge sonar-rail-logo">
+        <span class="split-top">BB</span>
+        <span class="split-bot">FM</span>
+      </div>
+      <div class="sonar-rail-lamp" title="On air transmission"></div>
     </div>
-    <div class="on-air-lamp">ON AIR</div>
-    <div class="ticker-pill">
-      <span class="dot-gold"></span>
-      <span class="ticker-genre-text" id="ticker-genre">JUNGLE</span>
-    </div>
-    <div class="ticker-scroll">
-      <div class="ticker-inner" id="ticker">
-        <span>★</span> LIVE ON 88.9 FM (LDN) &nbsp; <span>★</span> BLACK BUDDHA FM &nbsp; <span>★</span> PIRATE RADIO &nbsp; <span>★</span> BASS CULTURE.
+
+    <!-- Oblong Tactical Radar Scope -->
+    <div class="sonar-radar-wrap">
+      <div class="sonar-radar-disc" id="sonar-radar-disc" title="Tactical Sonar Radar — Click beacons to tune">
+        <div class="sonar-ring r1"></div>
+        <div class="sonar-ring r2"></div>
+        <div class="sonar-ring r3"></div>
+        <div class="sonar-ring r4"></div>
+        <div class="sonar-cross-h"></div>
+        <div class="sonar-cross-v"></div>
+        <div class="sonar-radar-sweep"></div>
+        <!-- 10 Plotted Transmitter Beacons injected by JS -->
+        <div id="sonar-beacons-container"></div>
+      </div>
+
+      <!-- Original Idea: Vertical Transit Line (BMV V4) -->
+      <div class="v4-line-wrap" id="v4LineWrap" title="Vertical Transit Line — Click stop to tune">
+        <div class="v4-line"></div>
+        <div class="v4-line-fill" id="v4LineFill"></div>
+        <div class="v4-stops" id="v4Stops"></div>
+      </div>
+
+      <!-- Real-Time Telemetry & Coordinates -->
+      <div class="sonar-rail-telemetry">
+        <span class="sonar-rail-coord" id="sonar-coord-text">51.54°N / E8</span>
+        <span class="sonar-rail-freq" id="sonar-freq-text">88.9 MHZ</span>
       </div>
     </div>
 
-    <div class="ticker-utility">
-      <button class="ticker-util-btn" id="theme-toggle-btn" aria-pressed="false" title="Switch to light mode" aria-label="Switch to light mode">☾</button>
-    </div>
-  </header>
+    <!-- Theme Toggle Switch Button -->
+    <button class="ticker-util-btn sonar-rail-util-btn sonar-rail-toggle-btn" id="theme-toggle-btn" aria-pressed="false" title="Switch to light mode" aria-label="Toggle light and dark theme mode">
+      <span class="sonar-toggle-track">
+        <span class="sonar-toggle-thumb">
+          <span class="sonar-toggle-icon" id="sonar-toggle-icon">☾</span>
+        </span>
+      </span>
+      <span class="sonar-toggle-label" id="sonar-toggle-label">DARK</span>
+    </button>
+  </aside>
 
   <main>
         <!-- HERO SECTION -->

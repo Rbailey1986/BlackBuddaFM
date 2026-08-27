@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Side-Rail Logo Design Lab — Black Buddha FM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,600;0,800;1,400&family=JetBrains+Mono:wght@400;600;800&family=Bebas+Neue&family=Orbitron:wght@700;900&family=VT323&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       THEME VARIABLES & LAB BASE STYLING
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --theme-primary: #39FF14;
+      --theme-primary-rgb: 57, 255, 20;
+      --bg-dark: #07090c;
+      --card-bg: #0d1117;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --silver: #EEF0F4;
+      --muted: #8C92A0;
+      --font-display: 'Archivo Black', sans-serif;
+      --font-body: 'Archivo', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --rail-width: 64px;
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f0f2f5;
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.1);
+      --silver: #111418;
+      --muted: #5e6676;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--silver);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      padding: 30px 20px 80px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .lab-container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* ─── Lab Header ─── */
+    .lab-header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .lab-title-box h1 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--silver);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lab-title-box h1 span {
+      color: var(--theme-primary);
+      font-size: 13px;
+      font-family: var(--font-mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(var(--theme-primary-rgb), 0.12);
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.3);
+      vertical-align: middle;
+    }
+    .lab-title-box p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .lab-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Palette Selector */
+    .color-picker-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card-bg);
+      padding: 5px 8px;
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+    }
+    .color-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .color-dot:hover { transform: scale(1.2); }
+    .color-dot.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 8px var(--dot-color); }
+
+    /* Lab Theme Toggle */
+    .lab-theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--silver);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .lab-theme-toggle:hover {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION 1: HIGH-RES MAGNIFIED CARDS
+       ═══════════════════════════════════════════════════════════════ */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--silver);
+      margin: 30px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: var(--theme-primary);
+      border-radius: 2px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .logo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .logo-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(var(--theme-primary-rgb), 0.5);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* Preview Well inside Card */
+    .card-preview-well {
+      width: 100%;
+      height: 120px;
+      background: #05070a;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 18px 0 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    [data-theme="light"] .card-preview-well {
+      background: #090c10;
+    }
+
+    .card-meta {
+      width: 100%;
+      text-align: left;
+    }
+    .card-meta h3 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--silver);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-meta p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       THE 5 LOGO DESIGNS (CSS & MARKUP)
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ──── 1. SPLIT-TONE CASSETTE SPINE BLOCK ──── */
+    .logo-split-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 38px;
+      border-radius: 4px;
+      border: 1.5px solid var(--theme-primary);
+      overflow: hidden;
+      background: #030406;
+      box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.3);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .logo-split-badge:hover {
+      box-shadow: 0 0 14px var(--theme-primary);
+      transform: scale(1.05);
+    }
+    .logo-split-badge .split-top {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--theme-primary);
+      line-height: 1;
+      padding: 4px 0 2px;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 6px rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .logo-split-badge .split-bot {
+      width: 100%;
+      background: var(--theme-primary);
+      color: #05070a;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 900;
+      line-height: 1;
+      padding: 2.5px 0;
+      text-align: center;
+      letter-spacing: 0.12em;
+    }
+
+    /* ──── 2. CIRCULAR TRANSCEIVER DIAL CREST ──── */
+    .logo-dial-crest {
+      width: 44px;
+      height: 44px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .logo-dial-crest:hover {
+      transform: scale(1.08) rotate(15deg);
+    }
+    .logo-dial-crest .dial-svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    .logo-dial-crest .dial-svg circle.outer {
+      stroke: rgba(var(--theme-primary-rgb), 0.4);
+      stroke-width: 1.2;
+      stroke-dasharray: 2 3;
+      fill: rgba(0, 0, 0, 0.4);
+    }
+    .logo-dial-crest .dial-svg circle.inner {
+      stroke: var(--theme-primary);
+      stroke-width: 1.5;
+      fill: none;
+    }
+    .logo-dial-crest .dial-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .logo-dial-crest .dial-letters {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--theme-primary);
+      letter-spacing: 0.04em;
+    }
+    .logo-dial-crest .dial-sub {
+      font-family: var(--font-mono);
+      font-size: 6.5px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--silver);
+      margin-top: 1px;
+    }
+
+    /* ──── 3. BROADCASTING ANTENNA MAST CREST ──── */
+    .logo-antenna-mast {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+    .logo-antenna-mast .mast-waves {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 9px;
+      gap: 3px;
+      margin-bottom: 2px;
+    }
+    .logo-antenna-mast .mast-arc {
+      width: 18px;
+      height: 6px;
+      border-top: 1.5px solid var(--theme-primary);
+      border-radius: 50% 50% 0 0;
+      animation: mastPulse 1.8s infinite ease-out;
+    }
+    @keyframes mastPulse {
+      0% { opacity: 0.3; transform: scaleX(0.7); }
+      50% { opacity: 1; transform: scaleX(1.1); filter: drop-shadow(0 0 3px var(--theme-primary)); }
+      100% { opacity: 0.3; transform: scaleX(0.7); }
+    }
+    .logo-antenna-mast .mast-letters {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--theme-primary);
+      line-height: 0.95;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.5);
+    }
+    .logo-antenna-mast .mast-sub-wrap {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-top: 2px;
+    }
+    .logo-antenna-mast .mast-sub {
+      font-family: var(--font-mono);
+      font-size: 7px;
+      font-weight: 800;
+      color: var(--silver);
+      letter-spacing: 0.14em;
+    }
+    .logo-antenna-mast .mast-tx-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #ff3333;
+      box-shadow: 0 0 4px #ff3333;
+    }
+
+    /* ──── 4. STENCILED DUBPLATE / FLIGHT-CASE STAMP ──── */
+    .logo-stencil-stamp {
+      border: 1px dashed rgba(var(--theme-primary-rgb), 0.6);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 3px 6px;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .logo-stencil-stamp:hover {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .logo-stencil-stamp::before {
+      content: 'TX';
+      position: absolute;
+      top: -4px;
+      right: 3px;
+      font-family: var(--font-mono);
+      font-size: 5.5px;
+      background: var(--theme-primary);
+      color: #000;
+      padding: 0 2px;
+      border-radius: 2px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .logo-stencil-stamp .stencil-letters {
+      font-family: 'Bebas Neue', var(--font-display);
+      font-size: 19px;
+      line-height: 0.88;
+      letter-spacing: 0.08em;
+      color: var(--theme-primary);
+      text-transform: uppercase;
+      text-shadow: 0 0 4px rgba(var(--theme-primary-rgb), 0.5);
+    }
+    .logo-stencil-stamp .stencil-sub {
+      font-family: var(--font-mono);
+      font-size: 7px;
+      font-weight: 800;
+      color: var(--silver);
+      letter-spacing: 0.22em;
+      margin-top: 2px;
+    }
+
+    /* ──── 5. 7-SEGMENT VFD DIGITAL MATRIX ──── */
+    .logo-vfd-matrix {
+      background: #020503;
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.35);
+      border-radius: 4px;
+      padding: 4px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9), 0 0 6px rgba(var(--theme-primary-rgb), 0.25);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .logo-vfd-matrix::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 50%, rgba(0,0,0,0.3));
+      pointer-events: none;
+    }
+    .logo-vfd-matrix .vfd-text {
+      font-family: 'Orbitron', var(--font-mono);
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--theme-primary);
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 8px var(--theme-primary);
+    }
+    .logo-vfd-matrix .vfd-sub {
+      font-family: 'VT323', var(--font-mono);
+      font-size: 11px;
+      line-height: 0.9;
+      color: var(--silver);
+      letter-spacing: 0.16em;
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION 2: FULL SIDE-RAIL SIMULATION (SIDE-BY-SIDE)
+       ═══════════════════════════════════════════════════════════════ */
+    .rails-comparison-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .rail-sim-col {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .rail-sim-col h4 {
+      font-family: var(--font-display);
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+
+    /* Miniature Exact Tactical Side-Rail Mockup */
+    .mock-side-rail {
+      width: var(--rail-width);
+      height: 380px;
+      background: #07090c;
+      border: 1.5px solid var(--theme-primary);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      gap: 10px;
+      box-shadow: 0 0 14px rgba(var(--theme-primary-rgb), 0.25);
+      user-select: none;
+      position: relative;
+    }
+
+    .mock-rail-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .mock-rail-lamp {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ff3333;
+      box-shadow: 0 0 6px #ff3333;
+      animation: lampFlicker 3.5s infinite;
+    }
+    @keyframes lampFlicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+      52% { opacity: 1; }
+      82% { opacity: 0.6; }
+    }
+
+    .mock-radar-wrap {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .mock-radar-disc {
+      width: 50px;
+      height: 120px;
+      position: relative;
+      border-radius: 25px;
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.35);
+      background: radial-gradient(circle at 50% 50%, rgba(var(--theme-primary-rgb), 0.08), #020503);
+      overflow: hidden;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.9);
+    }
+    .mock-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(var(--theme-primary-rgb), 0.22);
+    }
+    .mock-ring.r1 { width: 18px; height: 18px; }
+    .mock-ring.r2 { width: 36px; height: 36px; }
+    .mock-ring.r3 { width: 68px; height: 68px; }
+    .mock-cross-h { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(var(--theme-primary-rgb), 0.15); }
+    .mock-cross-v { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(var(--theme-primary-rgb), 0.15); }
+    .mock-radar-sweep {
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(from 0deg at 50% 50%, rgba(var(--theme-primary-rgb), 0.45) 0deg, rgba(var(--theme-primary-rgb), 0.1) 45deg, transparent 90deg, transparent 360deg);
+      border-radius: 50%;
+      animation: radarScan 3.5s linear infinite;
+    }
+    @keyframes radarScan { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .mock-beacon-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+    }
+    .mock-beacon-dot.active {
+      background: var(--theme-primary);
+      box-shadow: 0 0 6px var(--theme-primary);
+    }
+
+    .mock-telemetry {
+      writing-mode: vertical-rl;
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 4px auto 0;
+    }
+    .mock-telemetry span.act { color: var(--theme-primary); }
+
+    .mock-toggle-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .mock-toggle-track {
+      width: 32px;
+      height: 16px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.4);
+      display: flex;
+      align-items: center;
+      padding: 1px;
+    }
+    .mock-toggle-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--theme-primary);
+      color: #000;
+      font-size: 7px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock-toggle-label {
+      font-family: var(--font-mono);
+      font-size: 6.5px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* ─── Apply Code Action Box ─── */
+    .apply-action-bar {
+      margin-top: 35px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .apply-action-bar h3 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--silver);
+    }
+    .apply-action-bar p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .btn-apply-logo {
+      align-self: flex-start;
+      background: var(--theme-primary);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .btn-apply-logo:hover {
+      box-shadow: 0 0 12px var(--theme-primary);
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="lab-container">
+
+    <!-- Lab Header -->
+    <header class="lab-header">
+      <div class="lab-title-box">
+        <h1>Side-Rail Logo Lab <span>5 VARIATIONS</span></h1>
+        <p>Explore and test 5 new tactical & pirate-radio branding concepts for the vertical radar rail.</p>
+      </div>
+
+      <div class="lab-controls">
+        <!-- Palette selector -->
+        <div class="color-picker-strip" title="Test across station genre themes">
+          <div class="color-dot active" style="--dot-color: #39FF14; background: #39FF14;" onclick="setLabTheme('#39FF14', '57, 255, 20', this)" title="Jungle (Green)"></div>
+          <div class="color-dot" style="--dot-color: #00E5FF; background: #00E5FF;" onclick="setLabTheme('#00E5FF', '0, 229, 255', this)" title="Drum & Bass (Cyan)"></div>
+          <div class="color-dot" style="--dot-color: #FFD700; background: #FFD700;" onclick="setLabTheme('#FFD700', '255, 215, 0', this)" title="UK Garage (Gold)"></div>
+          <div class="color-dot" style="--dot-color: #FF6B00; background: #FF6B00;" onclick="setLabTheme('#FF6B00', '255, 107, 0', this)" title="Grime (Orange)"></div>
+          <div class="color-dot" style="--dot-color: #B5179E; background: #B5179E;" onclick="setLabTheme('#B5179E', '181, 23, 158', this)" title="Dubstep (Magenta)"></div>
+          <div class="color-dot" style="--dot-color: #FF5376; background: #FF5376;" onclick="setLabTheme('#FF5376', '255, 83, 118', this)" title="UK Funky (Pink)"></div>
+        </div>
+
+        <!-- Mode toggle -->
+        <button class="lab-theme-toggle" onclick="toggleLabMode()" id="lab-mode-btn">
+          <span>☾</span> DARK LAB
+        </button>
+      </div>
+    </header>
+
+    <!-- SECTION 1: Magnified Card Breakdown -->
+    <h2 class="section-title">Concept Detail & Close-Up Views</h2>
+    <div class="cards-grid">
+
+      <!-- Concept 1 -->
+      <div class="logo-card">
+        <span class="card-badge">OPTION 01</span>
+        <div class="card-preview-well">
+          <div class="logo-split-badge">
+            <span class="split-top">BB</span>
+            <span class="split-bot">FM</span>
+          </div>
+        </div>
+        <div class="card-meta">
+          <h3>Split-Tone Cassette Spine</h3>
+          <p>Stacked 2-tier mixtape badge. Top BB in glowing phosphor, bottom FM inverted as solid contrast block.</p>
+        </div>
+      </div>
+
+      <!-- Concept 2 -->
+      <div class="logo-card">
+        <span class="card-badge">OPTION 02</span>
+        <div class="card-preview-well">
+          <div class="logo-dial-crest">
+            <svg viewBox="0 0 48 48" class="dial-svg">
+              <circle cx="24" cy="24" r="21" class="outer"/>
+              <circle cx="24" cy="24" r="16" class="inner"/>
+            </svg>
+            <div class="dial-content">
+              <span class="dial-letters">BB</span>
+              <span class="dial-sub">FM</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <h3>Transceiver Rotary Dial</h3>
+          <p>Naval / submarine transceiver bezel with radial tick marks, circular housing and center letter stamping.</p>
+        </div>
+      </div>
+
+      <!-- Concept 3 -->
+      <div class="logo-card">
+        <span class="card-badge">OPTION 03</span>
+        <div class="card-preview-well">
+          <div class="logo-antenna-mast">
+            <div class="mast-waves">
+              <div class="mast-arc"></div>
+            </div>
+            <div class="mast-letters">BB</div>
+            <div class="mast-sub-wrap">
+              <span class="mast-sub">FM</span>
+              <span class="mast-tx-dot"></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <h3>Broadcasting Antenna Mast</h3>
+          <p>Pulsing radio wave arcs radiating upward towards the ON AIR beacon from bold broadcast lettering.</p>
+        </div>
+      </div>
+
+      <!-- Concept 4 -->
+      <div class="logo-card">
+        <span class="card-badge">OPTION 04</span>
+        <div class="card-preview-well">
+          <div class="logo-stencil-stamp">
+            <span class="stencil-letters">BB</span>
+            <span class="stencil-sub">FM</span>
+          </div>
+        </div>
+        <div class="card-meta">
+          <h3>Dubplate Flight-Case Stencil</h3>
+          <p>Gritty industrial stencil typography with micro 'TX' tag corner and dashed sound-system frame.</p>
+        </div>
+      </div>
+
+      <!-- Concept 5 -->
+      <div class="logo-card">
+        <span class="card-badge">OPTION 05</span>
+        <div class="card-preview-well">
+          <div class="logo-vfd-matrix">
+            <span class="vfd-text">BB</span>
+            <span class="vfd-sub">FM</span>
+          </div>
+        </div>
+        <div class="card-meta">
+          <h3>7-Segment VFD Tuner Rack</h3>
+          <p>Retro futuristic digital display matrix with phosphor blooming and unlit segment ghosting.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: Live In-Situ Side-Rail Mockups -->
+    <h2 class="section-title">Live Side-Rail Context Simulation</h2>
+    <div class="rails-comparison-wrap">
+
+      <!-- Col 1 -->
+      <div class="rail-sim-col">
+        <h4>1. Split-Tone Cassette</h4>
+        <div class="mock-side-rail">
+          <div class="mock-rail-header">
+            <div class="logo-split-badge" style="width: 34px;">
+              <span class="split-top" style="font-size: 11px; padding: 3px 0 1px;">BB</span>
+              <span class="split-bot" style="font-size: 8px; padding: 2px 0;">FM</span>
+            </div>
+            <div class="mock-rail-lamp"></div>
+          </div>
+          <div class="mock-radar-wrap">
+            <div class="mock-radar-disc">
+              <div class="mock-ring r1"></div><div class="mock-ring r2"></div><div class="mock-ring r3"></div>
+              <div class="mock-cross-h"></div><div class="mock-cross-v"></div>
+              <div class="mock-radar-sweep"></div>
+              <div class="mock-beacon-dot active" style="left: 65%; top: 35%;"></div>
+              <div class="mock-beacon-dot" style="left: 25%; top: 60%;"></div>
+            </div>
+            <div class="mock-telemetry">
+              <span class="act">51.54°N</span>
+              <span>88.9 FM</span>
+            </div>
+          </div>
+          <div class="mock-toggle-btn">
+            <div class="mock-toggle-track"><div class="mock-toggle-thumb">☾</div></div>
+            <span class="mock-toggle-label">DARK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2 -->
+      <div class="rail-sim-col">
+        <h4>2. Transceiver Dial</h4>
+        <div class="mock-side-rail">
+          <div class="mock-rail-header">
+            <div class="logo-dial-crest" style="width: 38px; height: 38px;">
+              <svg viewBox="0 0 48 48" class="dial-svg">
+                <circle cx="24" cy="24" r="21" class="outer"/>
+                <circle cx="24" cy="24" r="16" class="inner"/>
+              </svg>
+              <div class="dial-content">
+                <span class="dial-letters" style="font-size: 11px;">BB</span>
+                <span class="dial-sub" style="font-size: 6px;">FM</span>
+              </div>
+            </div>
+            <div class="mock-rail-lamp"></div>
+          </div>
+          <div class="mock-radar-wrap">
+            <div class="mock-radar-disc">
+              <div class="mock-ring r1"></div><div class="mock-ring r2"></div><div class="mock-ring r3"></div>
+              <div class="mock-cross-h"></div><div class="mock-cross-v"></div>
+              <div class="mock-radar-sweep"></div>
+              <div class="mock-beacon-dot active" style="left: 65%; top: 35%;"></div>
+              <div class="mock-beacon-dot" style="left: 25%; top: 60%;"></div>
+            </div>
+            <div class="mock-telemetry">
+              <span class="act">51.54°N</span>
+              <span>88.9 FM</span>
+            </div>
+          </div>
+          <div class="mock-toggle-btn">
+            <div class="mock-toggle-track"><div class="mock-toggle-thumb">☾</div></div>
+            <span class="mock-toggle-label">DARK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 3 -->
+      <div class="rail-sim-col">
+        <h4>3. Antenna Mast Wave</h4>
+        <div class="mock-side-rail">
+          <div class="mock-rail-header">
+            <div class="logo-antenna-mast">
+              <div class="mast-waves" style="height: 7px;">
+                <div class="mast-arc" style="width: 16px;"></div>
+              </div>
+              <div class="mast-letters" style="font-size: 13px;">BB</div>
+              <div class="mast-sub-wrap">
+                <span class="mast-sub" style="font-size: 6.5px;">FM</span>
+                <span class="mast-tx-dot"></span>
+              </div>
+            </div>
+            <div class="mock-rail-lamp"></div>
+          </div>
+          <div class="mock-radar-wrap">
+            <div class="mock-radar-disc">
+              <div class="mock-ring r1"></div><div class="mock-ring r2"></div><div class="mock-ring r3"></div>
+              <div class="mock-cross-h"></div><div class="mock-cross-v"></div>
+              <div class="mock-radar-sweep"></div>
+              <div class="mock-beacon-dot active" style="left: 65%; top: 35%;"></div>
+              <div class="mock-beacon-dot" style="left: 25%; top: 60%;"></div>
+            </div>
+            <div class="mock-telemetry">
+              <span class="act">51.54°N</span>
+              <span>88.9 FM</span>
+            </div>
+          </div>
+          <div class="mock-toggle-btn">
+            <div class="mock-toggle-track"><div class="mock-toggle-thumb">☾</div></div>
+            <span class="mock-toggle-label">DARK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 4 -->
+      <div class="rail-sim-col">
+        <h4>4. Flight-Case Stencil</h4>
+        <div class="mock-side-rail">
+          <div class="mock-rail-header">
+            <div class="logo-stencil-stamp" style="padding: 2px 4px;">
+              <span class="stencil-letters" style="font-size: 16px;">BB</span>
+              <span class="stencil-sub" style="font-size: 6.5px;">FM</span>
+            </div>
+            <div class="mock-rail-lamp"></div>
+          </div>
+          <div class="mock-radar-wrap">
+            <div class="mock-radar-disc">
+              <div class="mock-ring r1"></div><div class="mock-ring r2"></div><div class="mock-ring r3"></div>
+              <div class="mock-cross-h"></div><div class="mock-cross-v"></div>
+              <div class="mock-radar-sweep"></div>
+              <div class="mock-beacon-dot active" style="left: 65%; top: 35%;"></div>
+              <div class="mock-beacon-dot" style="left: 25%; top: 60%;"></div>
+            </div>
+            <div class="mock-telemetry">
+              <span class="act">51.54°N</span>
+              <span>88.9 FM</span>
+            </div>
+          </div>
+          <div class="mock-toggle-btn">
+            <div class="mock-toggle-track"><div class="mock-toggle-thumb">☾</div></div>
+            <span class="mock-toggle-label">DARK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 5 -->
+      <div class="rail-sim-col">
+        <h4>5. VFD Tuner Matrix</h4>
+        <div class="mock-side-rail">
+          <div class="mock-rail-header">
+            <div class="logo-vfd-matrix" style="padding: 3px 5px;">
+              <span class="vfd-text" style="font-size: 11px;">BB</span>
+              <span class="vfd-sub" style="font-size: 9px;">FM</span>
+            </div>
+            <div class="mock-rail-lamp"></div>
+          </div>
+          <div class="mock-radar-wrap">
+            <div class="mock-radar-disc">
+              <div class="mock-ring r1"></div><div class="mock-ring r2"></div><div class="mock-ring r3"></div>
+              <div class="mock-cross-h"></div><div class="mock-cross-v"></div>
+              <div class="mock-radar-sweep"></div>
+              <div class="mock-beacon-dot active" style="left: 65%; top: 35%;"></div>
+              <div class="mock-beacon-dot" style="left: 25%; top: 60%;"></div>
+            </div>
+            <div class="mock-telemetry">
+              <span class="act">51.54°N</span>
+              <span>88.9 FM</span>
+            </div>
+          </div>
+          <div class="mock-toggle-btn">
+            <div class="mock-toggle-track"><div class="mock-toggle-thumb">☾</div></div>
+            <span class="mock-toggle-label">DARK</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Navigation / Info Box -->
+    <div class="apply-action-bar">
+      <h3>Ready to try one on the live page?</h3>
+      <p>Pick your favorite number (1 through 5) or tell me what elements you like, and I will apply it directly to <code>test/index-side-rail-sonar.html</code>.</p>
+    </div>
+
+  </div>
+
+  <script>
+    function setLabTheme(hex, rgb, el) {
+      document.documentElement.style.setProperty('--theme-primary', hex);
+      document.documentElement.style.setProperty('--theme-primary-rgb', rgb);
+      document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+      if (el) el.classList.add('active');
+    }
+
+    function toggleLabMode() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      const btn = document.getElementById('lab-mode-btn');
+      if (btn) {
+        btn.innerHTML = isLight ? '<span>☾</span> DARK LAB' : '<span>☀</span> LIGHT LAB';
+      }
+    }
+  </script>
+</body>
+</html>

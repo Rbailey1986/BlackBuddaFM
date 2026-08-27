@@ -1,0 +1,95 @@
+/* ═══════════════════════════════════════════════════════════════
+   bmv-rail v4-rail — "Vertical Transit Line"
+   Extracted from test/bass-map-variations.html (V4).
+   Depends on CSS custom properties defined in critical.css / styles.css:
+     --theme-primary, --line, --muted, --surface, --font-display, --font-mono
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── shared rail chrome (also used by v1–v3, v5) ── */
+.bmv-rail {
+  flex-shrink: 0;
+  background: #08080a;
+  border-right: 2px solid var(--theme-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.bmv-rail-logo {
+  font-family: var(--font-display);
+  font-size: 10px;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--theme-primary);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+/* ── V4: Vertical Transit Line ── */
+.v4-rail { width: 130px; padding: 16px 0; }
+
+.v4-line-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+}
+
+.v4-line {
+  position: absolute;
+  top: 4px; bottom: 4px; left: 50%;
+  width: 2px;
+  background: var(--line, #2B2E34);
+  transform: translateX(-50%);
+}
+
+.v4-line-fill {
+  position: absolute;
+  top: 4px; left: 50%;
+  width: 2px;
+  background: var(--theme-primary);
+  transform: translateX(-50%);
+  transition: height 0.4s ease, background 0.3s ease;
+}
+
+.v4-stops {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.v4-stop {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--surface, #111316);
+  border: 1.5px solid var(--muted, #8C92A0);
+  cursor: pointer;
+}
+
+.v4-stop.active {
+  background: var(--theme-primary);
+  border-color: var(--theme-primary);
+  width: 9px; height: 9px;
+  box-shadow: 0 0 8px var(--theme-primary);
+}
+
+.v4-stop-tag {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: var(--theme-primary);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}

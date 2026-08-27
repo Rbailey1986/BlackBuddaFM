@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Buddha FM — About Section (Option 01 Workbench)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ═══ DESIGN SYSTEM TOKENS ═══ */
+    :root {
+      --bg: #05070a;
+      --bg-surface: #0a0d14;
+      --bg-card: #0f131c;
+      --bg-card-hover: #141924;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #EEF0F4;
+      --text-muted: #9AA0AC;
+      --text-dim: #5A6272;
+      --font-display: 'Archivo Black', 'Syne', sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Genre Palette Active (Default Jungle) */
+      --theme-primary: #39FF14;
+      --theme-primary-rgb: 57, 255, 20;
+      --theme-glow: rgba(57, 255, 20, 0.25);
+    }
+
+    [data-theme="light"] {
+      --bg: #F2F4F8;
+      --bg-surface: #FFFFFF;
+      --bg-card: #F8F9FB;
+      --bg-card-hover: #E9ECEF;
+      --border: rgba(0, 0, 0, 0.1);
+      --border-strong: rgba(0, 0, 0, 0.18);
+      --text: #0E121A;
+      --text-muted: #4B5262;
+      --text-dim: #8C94A4;
+      --theme-primary: #0A8A00;
+      --theme-primary-rgb: 10, 138, 0;
+      --theme-glow: rgba(10, 138, 0, 0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding-bottom: 120px;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* ═══ WORKBENCH CONTROL TOOLBAR ═══ */
+    .workbench-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 7, 10, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .workbench-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .workbench-badge {
+      font-family: var(--font-display);
+      font-size: 11px;
+      background: var(--theme-primary);
+      color: #000;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+    .workbench-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .workbench-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .wb-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .wb-btn:hover {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+    .wb-btn.active {
+      background: var(--theme-primary);
+      border-color: var(--theme-primary);
+      color: #000;
+      box-shadow: 0 0 10px var(--theme-glow);
+    }
+
+    .genre-pill-group {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .genre-dot-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .genre-dot-btn:hover { transform: scale(1.2); }
+    .genre-dot-btn.active { border-color: #fff; transform: scale(1.15); }
+
+    /* ═══ ABOUT SECTION (OPTION 01 COMPONENT) ═══ */
+    .about-section-wrapper {
+      width: 100%;
+      max-width: var(--container-width, 1100px);
+      margin: 48px auto;
+      padding: 0 24px;
+      transition: max-width 0.3s ease;
+    }
+
+    .about-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 48px 40px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Ambient Background Accent Glow */
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(var(--theme-primary-rgb), 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: background 0.3s ease;
+    }
+
+    /* Header Block */
+    .about-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .about-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .about-kicker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--theme-primary);
+      box-shadow: 0 0 8px var(--theme-primary);
+    }
+    .about-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.8vw, 42px);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      color: var(--text);
+    }
+
+    /* Two-Column Grid */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .about-grid { grid-template-columns: 1fr; gap: 28px; }
+      .about-card { padding: 32px 24px; }
+    }
+
+    .about-lead-p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+    .about-body-p {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .about-body-p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* Pull Quote Box */
+    .about-quote-box {
+      border-left: 3.5px solid var(--theme-primary);
+      padding: 20px 24px;
+      background: rgba(255, 255, 255, 0.025);
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    [data-theme="light"] .about-quote-box {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    .about-quote-text {
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.45;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+    .about-quote-author {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--theme-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* Footer Metadata Bar */
+    .about-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      margin-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .about-badges-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .about-meta-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+    .about-curator-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* Editable Highlight State */
+    [contenteditable="true"] {
+      outline: 1.5px dashed var(--theme-primary);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WORKBENCH CONTROL BAR -->
+  <header class="workbench-bar">
+    <div class="workbench-brand">
+      <span class="workbench-badge">OPTION 01</span>
+      <span class="workbench-title">About Section Workbench</span>
+    </div>
+
+    <div class="workbench-controls">
+      <!-- Container Width Switcher -->
+      <button class="wb-btn active" onclick="setContainerWidth('1100px', this)" id="btn-w1100">1100px</button>
+      <button class="wb-btn" onclick="setContainerWidth('1280px', this)">1280px</button>
+      <button class="wb-btn" onclick="setContainerWidth('900px', this)">900px</button>
+
+      <!-- Edit Mode Toggle -->
+      <button class="wb-btn" onclick="toggleEditMode(this)" id="editToggleBtn">✎ EDIT TEXT</button>
+
+      <!-- Genre Palette Switcher -->
+      <div class="genre-pill-group" title="Switch Theme Accent Palette">
+        <button class="genre-dot-btn active" style="background: #39FF14;" onclick="setThemePalette('#39FF14', '57, 255, 20')" title="Jungle Green"></button>
+        <button class="genre-dot-btn" style="background: #00E5FF;" onclick="setThemePalette('#00E5FF', '0, 229, 255')" title="D&B Cyan"></button>
+        <button class="genre-dot-btn" style="background: #FFD700;" onclick="setThemePalette('#FFD700', '255, 215, 0')" title="UKG Gold"></button>
+        <button class="genre-dot-btn" style="background: #FF6B00;" onclick="setThemePalette('#FF6B00', '255, 107, 0')" title="Grime Orange"></button>
+        <button class="genre-dot-btn" style="background: #B5179E;" onclick="setThemePalette('#B5179E', '181, 23, 158')" title="Dubstep Purple"></button>
+      </div>
+
+      <!-- Dark / Light Toggle -->
+      <button class="wb-btn" onclick="toggleThemeMode()" id="themeBtn">☾ DARK</button>
+    </div>
+  </header>
+
+  <!-- ABOUT SECTION (OPTION 01 COMPONENT) -->
+  <main class="about-section-wrapper" id="aboutSectionWrapper">
+    <section class="about-card" aria-label="About Black Buddha FM">
+      
+      <!-- Section Header -->
+      <div class="about-header">
+        <div class="about-kicker" id="aboutKicker">About Black Buddha FM</div>
+        <h2 class="about-title" id="aboutTitle">A Living Sonic Archive of Black British Bass Culture</h2>
+      </div>
+
+      <!-- Two-Column Editorial Story Grid -->
+      <div class="about-grid">
+        
+        <!-- Left Column: Story & Lineage -->
+        <div class="about-col-left">
+          <p class="about-lead-p" id="aboutLead">
+            <strong>Black Buddha FM</strong> is an interactive audio documentary and cultural archive celebrating the pioneers, sound systems, DJs, and MCs who built the sonic foundation of modern Britain.
+          </p>
+          <p class="about-body-p">
+            From the arrival of Jamaican sound systems in 1970s community halls to the clandestine rooftop pirate radio transmitters of 1990s London, Black Britain created an unbroken continuum of sonic rebellion that reshaped global music.
+          </p>
+          <p class="about-body-p">
+            Across ten curated chapters, this project traces how heavy dubplate culture and sound system preamps evolved into <strong>Jungle, Drum & Bass, UK Garage, Grime, Dubstep, UK Funky, and UK Drill</strong>.
+          </p>
+        </div>
+
+        <!-- Right Column: Pull Quote & Narrative Context -->
+        <div class="about-col-right">
+          <blockquote class="about-quote-box">
+            <p class="about-quote-text">
+              "Pirate radio wasn't just music on the airwaves — it was community, resistance, and the sonic blueprint of British youth culture."
+            </p>
+            <span class="about-quote-author">— Black Buddha FM Archive Manifesto</span>
+          </blockquote>
+
+          <p class="about-body-p">
+            We preserve the raw tape rips, handwritten cassette inlay tracklists, tower block broadcast coordinates, and studio hardware that turned local council estate frequencies into worldwide cultural movements.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Footer Metadata Bar -->
+      <div class="about-footer">
+        <div class="about-badges-row">
+          <span class="about-meta-badge">10 CHAPTERS</span>
+          <span class="about-meta-badge">1970s – PRESENT</span>
+          <span class="about-meta-badge">NON-COMMERCIAL ARCHIVE</span>
+          <span class="about-meta-badge">LONDON · BRISTOL · SHEFFIELD</span>
+        </div>
+        <span class="about-curator-tag">CURATED BY BLACK BUDDHA FM // BASS CULTURE UK</span>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // ── Palette Switcher ──
+    function setThemePalette(hex, rgb) {
+      document.documentElement.style.setProperty('--theme-primary', hex);
+      document.documentElement.style.setProperty('--theme-primary-rgb', rgb);
+      document.documentElement.style.setProperty('--theme-glow', `rgba(${rgb}, 0.25)`);
+      document.querySelectorAll('.genre-dot-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.style.background === hex || btn.getAttribute('style').includes(hex));
+      });
+    }
+
+    // ── Theme Mode Toggle ──
+    function toggleThemeMode() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = next === 'dark' ? '☾ DARK' : '☀ LIGHT';
+    }
+
+    // ── Container Width Switcher ──
+    function setContainerWidth(width, btnEl) {
+      document.getElementById('aboutSectionWrapper').style.setProperty('--container-width', width);
+      document.querySelectorAll('.wb-btn').forEach(b => {
+        if (b.textContent.includes('px')) b.classList.remove('active');
+      });
+      if (btnEl) btnEl.classList.add('active');
+    }
+
+    // ── Live Editable Content Toggle ──
+    let isEditing = false;
+    function toggleEditMode(btn) {
+      isEditing = !isEditing;
+      const editableElements = document.querySelectorAll('.about-title, .about-lead-p, .about-body-p, .about-quote-text, .about-quote-author');
+      editableElements.forEach(el => {
+        el.setAttribute('contenteditable', isEditing ? 'true' : 'false');
+      });
+      btn.classList.toggle('active', isEditing);
+      btn.textContent = isEditing ? '✓ EDITING ACTIVE' : '✎ EDIT TEXT';
+    }
+  </script>
+</body>
+</html>

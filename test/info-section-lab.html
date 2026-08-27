@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Buddha FM — Bottom Info Section Concepts Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ═══ DESIGN SYSTEM TOKENS ═══ */
+    :root {
+      --bg: #05070a;
+      --bg-surface: #0a0d14;
+      --bg-card: #0f131c;
+      --bg-card-hover: #141924;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #EEF0F4;
+      --text-muted: #8C92A0;
+      --text-dim: #505664;
+      --font-display: 'Archivo Black', 'Syne', sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Genre Palette Active (Default Jungle) */
+      --theme-primary: #39FF14;
+      --theme-primary-rgb: 57, 255, 20;
+      --theme-glow: rgba(57, 255, 20, 0.25);
+    }
+
+    [data-theme="light"] {
+      --bg: #F0F2F6;
+      --bg-surface: #FFFFFF;
+      --bg-card: #F8F9FB;
+      --bg-card-hover: #E9ECEF;
+      --border: rgba(0, 0, 0, 0.1);
+      --border-strong: rgba(0, 0, 0, 0.2);
+      --text: #0B0E14;
+      --text-muted: #4A5160;
+      --text-dim: #8C92A0;
+      --theme-primary: #0A8A00;
+      --theme-primary-rgb: 10, 138, 0;
+      --theme-glow: rgba(10, 138, 0, 0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding-bottom: 120px;
+      overflow-x: hidden;
+    }
+
+    /* ═══ LAB HEADER & CONTROLS ═══ */
+    .lab-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 7, 10, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .lab-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lab-badge {
+      font-family: var(--font-display);
+      font-size: 11px;
+      background: var(--theme-primary);
+      color: #000;
+      padding: 3px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .lab-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .lab-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lab-btn:hover {
+      border-color: var(--theme-primary);
+      color: var(--theme-primary);
+    }
+    .lab-btn.active {
+      background: var(--theme-primary);
+      border-color: var(--theme-primary);
+      color: #000;
+      box-shadow: 0 0 10px var(--theme-glow);
+    }
+
+    .genre-pill-group {
+      display: flex;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .genre-dot-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .genre-dot-btn:hover { transform: scale(1.2); }
+    .genre-dot-btn.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 0 8px currentColor; }
+
+    /* ═══ LAB HERO BANNER ═══ */
+    .lab-hero {
+      max-width: 1200px;
+      margin: 36px auto 20px;
+      padding: 0 24px;
+    }
+    .lab-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 44px);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .lab-hero p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 750px;
+      line-height: 1.6;
+    }
+
+    /* ═══ CONCEPT SECTION CONTAINER ═══ */
+    .concept-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+    .concept-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 60px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .concept-header-bar {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .concept-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .concept-title-group h2 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--text);
+    }
+    .concept-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       OPTION 01: THE TRANSMITTER MAST TECHNICAL SPEC & MANIFESTO
+    ═══════════════════════════════════════════════════════════════════ */
+    .mast-section {
+      padding: 40px 32px;
+      background: radial-gradient(circle at 100% 0%, rgba(var(--theme-primary-rgb), 0.05) 0%, transparent 60%);
+    }
+    .mast-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 40px;
+    }
+    @media (max-width: 860px) {
+      .mast-grid { grid-template-columns: 1fr; }
+    }
+    .manifesto-kicker {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .manifesto-kicker::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--theme-primary);
+      box-shadow: 0 0 8px var(--theme-primary);
+    }
+    .manifesto-headline {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.5vw, 32px);
+      text-transform: uppercase;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .manifesto-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .manifesto-quote {
+      border-left: 3px solid var(--theme-primary);
+      padding-left: 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .spec-rack {
+      background: #020407;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .spec-rack::before {
+      content: 'TRANSMITTER PARAMETERS // DTI CLASSIFIED';
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .spec-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      padding-bottom: 6px;
+    }
+    .spec-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .spec-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--theme-primary);
+      text-shadow: 0 0 8px rgba(var(--theme-primary-rgb), 0.4);
+    }
+    .spec-counters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .counter-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .counter-num {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--text);
+    }
+    .counter-lbl {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       OPTION 02: THE WALL OF SOUND PREAMP & SIGNAL FLOW
+    ═══════════════════════════════════════════════════════════════════ */
+    .preamp-section {
+      padding: 36px 32px;
+      background: #07090e;
+    }
+    .preamp-rack {
+      border: 2px solid #252b38;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #121620 0%, #0a0c12 100%);
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .preamp-screw {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #252b38;
+      border: 1px solid #4a5468;
+      box-shadow: inset 0 1px 2px #000;
+    }
+    .preamp-screw.tl { top: 8px; left: 8px; }
+    .preamp-screw.tr { top: 8px; right: 8px; }
+    .preamp-screw.bl { bottom: 8px; left: 8px; }
+    .preamp-screw.br { bottom: 8px; right: 8px; }
+
+    .preamp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #202634;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+    .preamp-brand {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      color: #fff;
+    }
+    .preamp-model {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--theme-primary);
+      letter-spacing: 0.15em;
+    }
+
+    .crossover-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .crossover-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .crossover-card {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #202634;
+      border-radius: 6px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .crossover-card:hover, .crossover-card.active {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.08);
+      transform: translateY(-2px);
+    }
+    .crossover-band {
+      font-family: var(--font-display);
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .crossover-freq {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--theme-primary);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .crossover-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .vu-meter {
+      height: 6px;
+      background: #11141c;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 12px;
+      display: flex;
+      gap: 2px;
+    }
+    .vu-bar {
+      flex: 1;
+      background: #252d3d;
+      border-radius: 1px;
+      transition: background 0.3s;
+    }
+    .crossover-card.active .vu-bar:nth-child(-n+4) { background: #39FF14; box-shadow: 0 0 4px #39FF14; }
+    .crossover-card.active .vu-bar:nth-child(5) { background: #FFD700; box-shadow: 0 0 4px #FFD700; }
+    .crossover-card.active .vu-bar:nth-child(6) { background: #FF3333; box-shadow: 0 0 4px #FF3333; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       OPTION 03: THE POSTCODE DISPATCH TRANSMISSION GRID
+    ═══════════════════════════════════════════════════════════════════ */
+    .dispatch-section {
+      padding: 36px 32px;
+      background: #06080d;
+    }
+    .dispatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .dispatch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .dispatch-card:hover, .dispatch-card.active {
+      border-color: var(--theme-primary);
+      background: rgba(var(--theme-primary-rgb), 0.08);
+      box-shadow: 0 0 16px rgba(var(--theme-primary-rgb), 0.15);
+    }
+    .dispatch-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .dispatch-code {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--theme-primary);
+    }
+    .dispatch-status {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #39FF14;
+      box-shadow: 0 0 6px #39FF14;
+    }
+    .dispatch-borough {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+    .dispatch-genre {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .dispatch-details-panel {
+      background: #020305;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .detail-info h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .detail-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 650px;
+    }
+    .detail-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--theme-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       OPTION 04: THE CASSETTE SHELF & DUBPLATE VAULT
+    ═══════════════════════════════════════════════════════════════════ */
+    .cassette-section {
+      padding: 36px 32px;
+      background: #080a0f;
+    }
+    .cassette-shelf {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .tape-spine {
+      flex: 0 0 100px;
+      height: 180px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #181d28 0%, #0d1017 100%);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--theme-primary);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .tape-spine:hover, .tape-spine.active {
+      transform: translateY(-8px);
+      border-color: var(--theme-primary);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.6), 0 0 12px rgba(var(--theme-primary-rgb), 0.3);
+    }
+    .tape-num {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-dim);
+    }
+    .tape-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: auto 0;
+    }
+    .tape-badge {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 4px;
+      border-radius: 2px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .jcard-drawer {
+      background: #030406;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .jcard-drawer { grid-template-columns: 1fr; }
+    }
+    .jcard-notes h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--theme-primary);
+    }
+    .jcard-notes p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .gear-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px;
+    }
+    .gear-list h5 {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .gear-item {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       OPTION 05: THE CRT TELETEXT & SHOUTOUT HOTLINE
+    ═══════════════════════════════════════════════════════════════════ */
+    .crt-section {
+      padding: 36px 32px;
+      background: #020406;
+    }
+    .crt-monitor {
+      background: #000;
+      border: 3px solid #1a202c;
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 0 30px rgba(0,0,0,0.9), inset 0 0 40px rgba(var(--theme-primary-rgb), 0.06);
+      overflow: hidden;
+    }
+    .crt-monitor::before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .teletext-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--theme-primary);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .teletext-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .teletext-btn.active {
+      background: var(--theme-primary);
+      color: #000;
+      border-color: var(--theme-primary);
+    }
+    .teletext-screen {
+      font-family: var(--font-mono);
+      color: var(--theme-primary);
+      text-shadow: 0 0 6px rgba(var(--theme-primary-rgb), 0.6);
+      min-height: 220px;
+    }
+    .teletext-header-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      border-bottom: 1px dashed rgba(var(--theme-primary-rgb), 0.4);
+      padding-bottom: 6px;
+    }
+    .teletext-content-text {
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: #D6FFD0;
+    }
+
+    .hotline-input-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .hotline-input {
+      flex: 1;
+      background: #090e09;
+      border: 1px solid rgba(var(--theme-primary-rgb), 0.4);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #fff;
+      outline: none;
+    }
+    .hotline-input:focus {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 10px rgba(var(--theme-primary-rgb), 0.3);
+    }
+    .hotline-submit {
+      background: var(--theme-primary);
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LAB CONTROLLER BAR -->
+  <header class="lab-header">
+    <div class="lab-brand">
+      <span class="lab-badge">INFO LAB</span>
+      <span class="lab-title">Black Buddha FM — Bottom Section Brainstorm</span>
+    </div>
+    <div class="lab-controls">
+      <a href="#concept-1" class="lab-btn">01. Manifesto Spec</a>
+      <a href="#concept-2" class="lab-btn">02. Sound System</a>
+      <a href="#concept-3" class="lab-btn">03. Postcode Grid</a>
+      <a href="#concept-4" class="lab-btn">04. Tape Vault</a>
+      <a href="#concept-5" class="lab-btn">05. CRT Teletext</a>
+
+      <!-- Genre Palette Switcher -->
+      <div class="genre-pill-group" title="Switch Genre Theme Palette">
+        <button class="genre-dot-btn active" style="background: #39FF14;" onclick="setThemePalette('#39FF14', '57, 255, 20')" title="Jungle"></button>
+        <button class="genre-dot-btn" style="background: #00E5FF;" onclick="setThemePalette('#00E5FF', '0, 229, 255')" title="D&B"></button>
+        <button class="genre-dot-btn" style="background: #FFD700;" onclick="setThemePalette('#FFD700', '255, 215, 0')" title="UKG"></button>
+        <button class="genre-dot-btn" style="background: #FF6B00;" onclick="setThemePalette('#FF6B00', '255, 107, 0')" title="Grime"></button>
+        <button class="genre-dot-btn" style="background: #B5179E;" onclick="setThemePalette('#B5179E', '181, 23, 158')" title="Dubstep"></button>
+      </div>
+
+      <button class="lab-btn" onclick="toggleThemeMode()" id="themeBtn">☾ DARK</button>
+    </div>
+  </header>
+
+  <!-- LAB HERO -->
+  <div class="lab-hero">
+    <h1>Bottom Info Section Concepts</h1>
+    <p>Explore 5 distinct interactive ideas for the base of the Black Buddha FM website. Each concept balances cultural heritage, technical pirate radio telemetry, and tactile interactive elements.</p>
+  </div>
+
+  <div class="concept-container">
+
+    <!-- ════ CONCEPT 01 ════ -->
+    <div class="concept-card" id="concept-1">
+      <div class="concept-header-bar">
+        <div class="concept-title-group">
+          <span class="concept-tag">Option 01 // Industrial Blueprint</span>
+          <h2>The Transmitter Mast & Cultural Manifesto</h2>
+        </div>
+        <span class="concept-desc">High-contrast cultural storytelling paired with authentic DTI transmitter hardware specs.</span>
+      </div>
+
+      <div class="mast-section">
+        <div class="mast-grid">
+          <div class="manifesto-col">
+            <div class="manifesto-kicker">Heritage & Bass Culture</div>
+            <h3 class="manifesto-headline">The Unofficial Archive of Black Britain's Underground Frequencies.</h3>
+            <p class="manifesto-body">
+              Black Buddha FM chronicles the sonic evolution that turned pirate aerials on London tower block roofs into global musical movements. From the heavy Jamaican sound systems that landed on British soil in the 1970s to the breakbeat pressure of Jungle, the swing of UK Garage, the raw asphalt energy of Grime, and the sub-low vibrations of Dubstep.
+            </p>
+            <div class="manifesto-quote">
+              "We didn't wait for broadcast licenses. We wired the transmitters, climbed the lift shafts, and gave London the sound of its own streets."
+            </div>
+          </div>
+
+          <div class="spec-col">
+            <div class="spec-rack">
+              <div class="spec-row">
+                <span class="spec-label">Broadcast Rig</span>
+                <span class="spec-val">150W ERP Mosfet TX</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Polarization</span>
+                <span class="spec-val">Vertical Folded Dipole</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Rooftop Mast</span>
+                <span class="spec-val">51.5450°N // Hackney E8</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Bandwidth Range</span>
+                <span class="spec-val">88.9 – 109.8 MHz</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Audio Carrier</span>
+                <span class="spec-val">Stereo MPX + RDS Pilot</span>
+              </div>
+
+              <div class="spec-counters">
+                <div class="counter-box">
+                  <div class="counter-num">10</div>
+                  <div class="counter-lbl">Chapters</div>
+                </div>
+                <div class="counter-box">
+                  <div class="counter-num">30+</div>
+                  <div class="counter-lbl">Yrs History</div>
+                </div>
+                <div class="counter-box">
+                  <div class="counter-num">120+</div>
+                  <div class="counter-lbl">Dubplates</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ CONCEPT 02 ════ -->
+    <div class="concept-card" id="concept-2">
+      <div class="concept-header-bar">
+        <div class="concept-title-group">
+          <span class="concept-tag">Option 02 // Analog Acoustics</span>
+          <h2>The Sound System "Wall of Sound" Preamp & Signal Flow</h2>
+        </div>
+        <span class="concept-desc">Interactive 4-way frequency crossover breakdown exploring the physics of UK bass.</span>
+      </div>
+
+      <div class="preamp-section">
+        <div class="preamp-rack">
+          <div class="preamp-screw tl"></div>
+          <div class="preamp-screw tr"></div>
+          <div class="preamp-screw bl"></div>
+          <div class="preamp-screw br"></div>
+
+          <div class="preamp-header">
+            <div class="preamp-brand">BLACK BUDDHA CUSTOM PREAMP</div>
+            <div class="preamp-model">MODEL: BB-4WAY-1994 // ACTIVE CROSSOVER</div>
+          </div>
+
+          <div class="crossover-grid">
+            <div class="crossover-card active" onclick="selectCrossover(this, 'SUB')">
+              <div class="crossover-band">SUB-BASS</div>
+              <div class="crossover-freq">20Hz – 80Hz</div>
+              <div class="crossover-desc">18" Folded horn scoop bins. Earth-shaking physical weight powering Jungle 808s and Dubstep sub-lows.</div>
+              <div class="vu-meter">
+                <div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div>
+              </div>
+            </div>
+
+            <div class="crossover-card" onclick="selectCrossover(this, 'BASS')">
+              <div class="crossover-band">MID-BASS</div>
+              <div class="crossover-freq">80Hz – 250Hz</div>
+              <div class="crossover-desc">Punchy kick transients, distorted Reese basslines, and syncopated 2-step UK Garage rhythm bounce.</div>
+              <div class="vu-meter">
+                <div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div>
+              </div>
+            </div>
+
+            <div class="crossover-card" onclick="selectCrossover(this, 'MID')">
+              <div class="crossover-band">MID-RANGE</div>
+              <div class="crossover-freq">250Hz – 4kHz</div>
+              <div class="crossover-desc">Crisp MC toasting, ragga vocal samples, fast Grime 140bpm bars, and Amen break snares.</div>
+              <div class="vu-meter">
+                <div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div>
+              </div>
+            </div>
+
+            <div class="crossover-card" onclick="selectCrossover(this, 'TOP')">
+              <div class="crossover-band">TOP-END</div>
+              <div class="crossover-freq">4kHz – 20kHz</div>
+              <div class="crossover-desc">Bullet tweeters, tape hiss, spring reverb splashes, and siren FX piercing through the dance.</div>
+              <div class="vu-meter">
+                <div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div><div class="vu-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ CONCEPT 03 ════ -->
+    <div class="concept-card" id="concept-3">
+      <div class="concept-header-bar">
+        <div class="concept-title-group">
+          <span class="concept-tag">Option 03 // Urban Dispatch</span>
+          <h2>The "Postcode Dispatch" Transmission Grid</h2>
+        </div>
+        <span class="concept-desc">Interactive matrix mapping pirate radio transmitter strongholds across London boroughs.</span>
+      </div>
+
+      <div class="dispatch-section">
+        <div class="dispatch-grid">
+          <div class="dispatch-card active" onclick="selectDispatch(this, 'E8', 'HACKNEY', 'Jungle & Drum & Bass', 'Kingsland Estate tower blocks, Kool FM studios, early Jungle dubplate culture.')">
+            <div class="dispatch-top"><span class="dispatch-code">E8</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Hackney</div>
+            <div class="dispatch-genre">Jungle / D&B</div>
+          </div>
+
+          <div class="dispatch-card" onclick="selectDispatch(this, 'E3', 'BOW', 'Grime & Roll Deep', 'Roman Road, Rhythm Division record shop, Deja Vu FM, early Dizzee Rascal & Wiley clashing.')">
+            <div class="dispatch-top"><span class="dispatch-code">E3</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Bow</div>
+            <div class="dispatch-genre">Grime 140</div>
+          </div>
+
+          <div class="dispatch-card" onclick="selectDispatch(this, 'CR0', 'CROYDON', 'Dubstep & FWD>>', 'Big Apple Records, Hatcha, Skream, Benga, and the birth of 140bpm sub-low architecture.')">
+            <div class="dispatch-top"><span class="dispatch-code">CR0</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Croydon</div>
+            <div class="dispatch-genre">Dubstep</div>
+          </div>
+
+          <div class="dispatch-card" onclick="selectDispatch(this, 'RM1', 'ROMFORD', 'UK Garage & 2-Step', 'Sunday scene at Hollywoods, pirate transmissions across Essex and East London corridors.')">
+            <div class="dispatch-top"><span class="dispatch-code">RM1</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Romford</div>
+            <div class="dispatch-genre">UK Garage</div>
+          </div>
+
+          <div class="dispatch-card" onclick="selectDispatch(this, 'SW9', 'BRIXTON', 'Sound Systems & Drill', 'Sir Coxsone Outernational, Frontline heritage, and the evolution into modern UK Drill.')">
+            <div class="dispatch-top"><span class="dispatch-code">SW9</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Brixton</div>
+            <div class="dispatch-genre">Drill / Heritage</div>
+          </div>
+
+          <div class="dispatch-card" onclick="selectDispatch(this, 'BS2', 'BRISTOL', 'Trip-Hop & Dubwise D&B', 'St Pauls Carnival sound systems, Full Cycle, Roni Size Reprazent, and sub-heavy dub lineage.')">
+            <div class="dispatch-top"><span class="dispatch-code">BS2</span><div class="dispatch-status"></div></div>
+            <div class="dispatch-borough">Bristol</div>
+            <div class="dispatch-genre">Bristol Sound</div>
+          </div>
+        </div>
+
+        <div class="dispatch-details-panel" id="dispatchPanel">
+          <div class="detail-info">
+            <h3 id="panelTitle">E8 HACKNEY // TRANSMITTER RELAY</h3>
+            <p id="panelDesc">Kingsland Estate tower blocks, Kool FM studios, early Jungle dubplate culture.</p>
+            <div class="detail-meta">
+              <span>GENRE: JUNGLE / D&B</span>
+              <span>STATIONS: KOOL FM 94.5 · WEEKENDER FM</span>
+              <span>STATUS: LIVE RELAY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ CONCEPT 04 ════ -->
+    <div class="concept-card" id="concept-4">
+      <div class="concept-header-bar">
+        <div class="concept-title-group">
+          <span class="concept-tag">Option 04 // Physical Vault</span>
+          <h2>The Cassette Tape Shelf & Dubplate Studio</h2>
+        </div>
+        <span class="concept-desc">Tactile tape pack spines and pull-out J-cards with recording studio master gear notes.</span>
+      </div>
+
+      <div class="cassette-section">
+        <div class="cassette-shelf">
+          <div class="tape-spine active" onclick="selectTape(this, 'EP 01', 'JUNGLE FOUNDATIONS', 'Recorded live off Kool FM broadcast 1994. 160bpm Amen breaks sliced on Akai S950.')">
+            <span class="tape-num">VOL. 01</span>
+            <span class="tape-title">JUNGLE 94</span>
+            <span class="tape-badge">TAPE PACK</span>
+          </div>
+
+          <div class="tape-spine" onclick="selectTape(this, 'EP 02', 'DRUM & BASS PRESSURE', 'Optical & Ed Rush techstep era. Roland JV-1080 synthesizers and E-mu E6400 ultra filters.')">
+            <span class="tape-num">VOL. 02</span>
+            <span class="tape-title">DRUM & BASS</span>
+            <span class="tape-badge">DUBPLATE</span>
+          </div>
+
+          <div class="tape-spine" onclick="selectTape(this, 'EP 03', 'UKG 2-STEP SWING', 'Sunday Scene master cut. Spaced-out Rhodes pianos, vocal chops, and classic Todd Edwards 4x4 swing.')">
+            <span class="tape-num">VOL. 03</span>
+            <span class="tape-title">GARAGE SWING</span>
+            <span class="tape-badge">TAPE PACK</span>
+          </div>
+
+          <div class="tape-spine" onclick="selectTape(this, 'EP 04', 'BOW 140 ESKIBEAT', 'FruityLoops 3.5 square waves, Korg Triton glides, and 8-bar MC clashes recorded in E3.')">
+            <span class="tape-num">VOL. 04</span>
+            <span class="tape-title">GRIME 140</span>
+            <span class="tape-badge">WHITE LABEL</span>
+          </div>
+
+          <div class="tape-spine" onclick="selectTape(this, 'EP 05', 'CROYDON SUB-ZERO', '10\" acetate dubplates cut at Transition Mastering. Half-step sub frequencies and metallic snare hits.')">
+            <span class="tape-num">VOL. 05</span>
+            <span class="tape-title">DUBSTEP SUB</span>
+            <span class="tape-badge">ACETATE</span>
+          </div>
+        </div>
+
+        <div class="jcard-drawer">
+          <div class="jcard-notes">
+            <h4 id="tapeTitle">EP 01 // JUNGLE FOUNDATIONS</h4>
+            <p id="tapeDesc">Recorded live off Kool FM broadcast 1994. 160bpm Amen breaks sliced on Akai S950.</p>
+          </div>
+
+          <div class="gear-list">
+            <h5>STUDIO MASTERING RIG</h5>
+            <div class="gear-item"><span>Sampler:</span> <span>Akai S950 (12-bit)</span></div>
+            <div class="gear-item"><span>Desk:</span> <span>Soundcraft 200B</span></div>
+            <div class="gear-item"><span>Turntables:</span> <span>Technics SL-1210 MK2</span></div>
+            <div class="gear-item"><span>Master Medium:</span> <span>TDK SA-90 Type II</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════ CONCEPT 05 ════ -->
+    <div class="concept-card" id="concept-5">
+      <div class="concept-header-bar">
+        <div class="concept-title-group">
+          <span class="concept-tag">Option 05 // Retro Broadcast</span>
+          <h2>The "Black Buddha Terminal" CRT Teletext Dispatch</h2>
+        </div>
+        <span class="concept-desc">1990s pirate radio teletext system with an interactive shoutout hotline logger.</span>
+      </div>
+
+      <div class="crt-section">
+        <div class="crt-monitor">
+          <div class="teletext-nav">
+            <button class="teletext-btn active" onclick="selectTeletext(100)">P100: MANIFESTO</button>
+            <button class="teletext-btn" onclick="selectTeletext(200)">P200: TRANSMITTERS</button>
+            <button class="teletext-btn" onclick="selectTeletext(300)">P300: DUB ARCHIVE</button>
+            <button class="teletext-btn" onclick="selectTeletext(400)">P400: SHOUTOUTS</button>
+          </div>
+
+          <div class="teletext-screen" id="teletextScreen">
+            <div class="teletext-header-row">
+              <span>BLACK BUDDHA CEEFAX // P100</span>
+              <span>27 AUG 2026 13:00</span>
+            </div>
+            <div class="teletext-content-text" id="teletextContent">
+              ============================================================<br>
+              BLACK BUDDHA FM // BASS CULTURE TRANSMISSIONS<br>
+              ============================================================<br><br>
+              • DEDICATED TO 30+ YEARS OF BRITISH PIRATE RADIO INNOVATION.<br>
+              • PRESERVING THE TAPES, DUBPLATES, AND SOUND SYSTEM RIGS.<br>
+              • TRANSMITTING ACROSS 10 CHAPTERS FROM LONDON TO THE WORLD.<br><br>
+              SELECT [P200] FOR TRANSMITTER RIG SPECS OR [P400] TO SEND A LIVE SHOUTOUT.
+            </div>
+          </div>
+
+          <form class="hotline-input-bar" onsubmit="submitHotline(event)">
+            <input type="text" class="hotline-input" id="hotlineInput" placeholder="SEND A SHOUTOUT TO THE PIRATE HOTLINE (E.G. 'SHOUTS TO EAST LONDON JUNGLE CREW')..." required>
+            <button type="submit" class="hotline-submit">SEND</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Genre Palette Switcher ──
+    function setThemePalette(hex, rgb) {
+      document.documentElement.style.setProperty('--theme-primary', hex);
+      document.documentElement.style.setProperty('--theme-primary-rgb', rgb);
+      document.documentElement.style.setProperty('--theme-glow', `rgba(${rgb}, 0.25)`);
+      document.querySelectorAll('.genre-dot-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.style.background === hex || btn.getAttribute('style').includes(hex));
+      });
+    }
+
+    // ── Dark / Light Toggle ──
+    function toggleThemeMode() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = next === 'dark' ? '☾ DARK' : '☀ LIGHT';
+    }
+
+    // ── Preamp Crossover Selector ──
+    function selectCrossover(el, band) {
+      document.querySelectorAll('.crossover-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // ── Dispatch Borough Selector ──
+    function selectDispatch(el, code, borough, genre, desc) {
+      document.querySelectorAll('.dispatch-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('panelTitle').textContent = `${code} ${borough} // TRANSMITTER RELAY`;
+      document.getElementById('panelDesc').textContent = desc;
+    }
+
+    // ── Tape Shelf Selector ──
+    function selectTape(el, ep, title, desc) {
+      document.querySelectorAll('.tape-spine').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tapeTitle').textContent = `${ep} // ${title}`;
+      document.getElementById('tapeDesc').textContent = desc;
+    }
+
+    // ── Teletext Page Switcher ──
+    const TELETEXT_PAGES = {
+      100: `============================================================<br>BLACK BUDDHA FM // BASS CULTURE TRANSMISSIONS<br>============================================================<br><br>• DEDICATED TO 30+ YEARS OF BRITISH PIRATE RADIO INNOVATION.<br>• PRESERVING THE TAPES, DUBPLATES, AND SOUND SYSTEM RIGS.<br>• TRANSMITTING ACROSS 10 CHAPTERS FROM LONDON TO THE WORLD.<br><br>SELECT [P200] FOR TRANSMITTER RIG SPECS OR [P400] TO SEND A LIVE SHOUTOUT.`,
+      200: `============================================================<br>TRANSMITTER MAST MATRIX // RIG SPECS<br>============================================================<br><br>• FREQUENCY RANGE: 88.9 MHz -> 109.8 MHz<br>• POWER OUTPUT: 150W ERP STEREO MPX<br>• POLARIZATION: VERTICAL FOLDED DIPOLE AERIALS<br>• TOWER LOCATIONS: HACKNEY, BOW, CROYDON, SHEFFIELD, BRISTOL<br>• SEIZURE STATUS: 0 ACTIVE INTERVENTIONS`,
+      300: `============================================================<br>DUBPLATE & ACETATE VAULT ARCHIVE<br>============================================================<br><br>• 10 CHAPTER EPISODES LOGGED<br>• 120+ EXCLUSIVE DUBPLATES PRESERVED<br>• FEATURING AMEN BREAKS, REESE BASS, 2-STEP, 140 ESKIBEAT<br>• SOUND SYSTEM PREAMP MASTERED`,
+      400: `============================================================<br>PIRATE RADIO HOTLINE // LIVE SHOUTOUT FEED<br>============================================================<br><br>• [13:02] "SHOUT OUT TO THE HACKNEY E8 CREW LOCKING IN LIVE"<br>• [12:58] "BIG UP KOOL FM & RINSE FM PIONEERS EVERY TIME"<br>• [12:45] "BASSLINE RUNNING DUBWISE THROUGH THE RIG"<br><br>TYPE BELOW TO ADD YOUR VOICE TO THE TELETEXT LOG.`
+    };
+
+    function selectTeletext(pageNum) {
+      document.querySelectorAll('.teletext-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', btn.textContent.includes(pageNum.toString()));
+      });
+      const contentEl = document.getElementById('teletextContent');
+      if (contentEl && TELETEXT_PAGES[pageNum]) {
+        contentEl.innerHTML = TELETEXT_PAGES[pageNum];
+      }
+    }
+
+    // ── Hotline Submit ──
+    function submitHotline(e) {
+      e.preventDefault();
+      const input = document.getElementById('hotlineInput');
+      const val = input.value.trim();
+      if (!val) return;
+      selectTeletext(400);
+      const contentEl = document.getElementById('teletextContent');
+      const timeStr = new Date().toTimeString().substring(0, 5);
+      TELETEXT_PAGES[400] = TELETEXT_PAGES[400].replace(
+        '============================================================<br><br>',
+        `============================================================<br><br>• [${timeStr}] "${val.toUpperCase()}"<br>`
+      );
+      contentEl.innerHTML = TELETEXT_PAGES[400];
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
